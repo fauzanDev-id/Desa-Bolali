@@ -15,39 +15,47 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
   const displayItems = potensiList.slice(0, 4)
 
   return (
-    <SectionCard className="h-full flex flex-col justify-between">
+    <SectionCard className="h-full flex flex-col justify-between rounded-desa-card border border-desa-border shadow-desa-sm bg-white p-5">
       <div>
         <SectionTitle
           title="Potensi Unggulan Desa"
-          icon={<Sparkles className="w-4 h-4 text-desa-green-800" />}
+          icon={<Sparkles className="w-4 h-4 text-desa-accentGreen" />}
           linkText="Lihat Semua"
           linkHref="/potensi-desa"
         />
 
-        {/* 4 Cards Grid (2x2) */}
+        {/* 4 Ubin Foto Rounded (Grid 2x2) Sesuai Mockup */}
         <div className="grid grid-cols-2 gap-3 mt-3">
           {displayItems.map((item, idx) => {
-            const imgUrl = getMediaUrl(item.gambar, `/images/potensi-${idx + 1}.jpg`)
+            const defaultImg =
+              idx === 0
+                ? '/seed/potensi-pertanian.jpg'
+                : idx === 1
+                ? '/seed/potensi-umkm.jpg'
+                : idx === 2
+                ? '/seed/potensi-wisata.jpg'
+                : '/seed/potensi-budaya.jpg'
+            const imgUrl = getMediaUrl(item.gambar, defaultImg)
 
             return (
               <Link
                 key={item.id}
                 href={`/potensi-desa#${item.slug}`}
-                className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm bg-slate-100 border border-slate-200/80 block"
+                className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-xs bg-slate-100 border border-desa-border block"
               >
                 <Image
                   src={imgUrl}
                   alt={item.judul}
                   fill
-                  sizes="(max-width: 768px) 50vw, 200px"
-                  className="object-cover transition-transform duration-300 group-hover:scale-108"
+                  sizes="(max-width: 768px) 50vw, 220px"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                {/* Gradient Overlay Gelap di Bawah agar Teks Label Kontras */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                {/* Label Text */}
-                <div className="absolute bottom-2 left-2 right-2 text-center">
-                  <span className="text-xs sm:text-sm font-bold text-white tracking-tight drop-shadow group-hover:text-desa-gold-300 transition-colors">
+                {/* Label di Sudut Kiri Bawah Sesuai Mockup */}
+                <div className="absolute bottom-2 left-2.5 right-2 text-left">
+                  <span className="text-xs sm:text-sm font-bold text-white tracking-tight drop-shadow-sm group-hover:text-desa-gold transition-colors font-sans">
                     {item.judul}
                   </span>
                 </div>

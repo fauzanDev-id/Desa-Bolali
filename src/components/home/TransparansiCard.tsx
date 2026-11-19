@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { FileText, Download, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { FileText, Download, ArrowRight, BarChart3 } from 'lucide-react'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import type { DokumenTransparansiItem } from '@/lib/cms'
@@ -11,42 +11,43 @@ interface TransparansiCardProps {
 }
 
 export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
-  // Ambil persentase dari item pertama atau fallback ke 92.3
+  // Ambil persentase dari item pertama atau fallback ke 92.3%
   const primaryDoc = dokumenList.find((d) => d.persentaseRealisasi) || dokumenList[0]
   const percentage = primaryDoc?.persentaseRealisasi ?? 92.3
-  const circumference = 2 * Math.PI * 40 // Radius 40
+  const circumference = 2 * Math.PI * 38 // Radius 38
   const strokeDashoffset = circumference - (percentage / 100) * circumference
 
   return (
-    <SectionCard className="h-full flex flex-col justify-between">
+    <SectionCard className="h-full flex flex-col justify-between rounded-desa-card border border-desa-border shadow-desa-sm bg-white p-5">
       <div>
         <SectionTitle
           title="Transparansi Desa"
-          icon={<CheckCircle2 className="w-4 h-4 text-desa-green-800" />}
+          icon={<BarChart3 className="w-4 h-4 text-desa-accentGreen" />}
           linkText="Lihat Detail"
           linkHref="/transparansi"
         />
 
-        {/* Circular Donut Progress Chart & Summary */}
-        <div className="flex items-center gap-4 p-3.5 bg-desa-green-50/60 rounded-xl border border-desa-green-100 mt-3">
-          {/* Circular SVG Donut */}
+        {/* Donut Chart Realisasi APBDes Sesuai Mockup */}
+        <div className="flex items-center gap-4 p-3 bg-desa-lightGreen/50 rounded-xl border border-emerald-100/80 mt-3">
+          {/* Donut Chart Ringan SVG (Hijau Tua + Segmen Kuning) */}
           <div className="relative w-20 h-20 shrink-0 flex items-center justify-center">
             <svg className="w-20 h-20 -rotate-90 transform" viewBox="0 0 100 100">
-              {/* Background circle */}
+              {/* Lingkaran Dasar / Sisa (Aksen Kuning Emas) */}
               <circle
                 cx="50"
                 cy="50"
-                r="40"
-                stroke="#E2E8F0"
+                r="38"
+                stroke="#EAB308"
                 strokeWidth="10"
                 fill="transparent"
+                opacity="0.35"
               />
-              {/* Progress ring in Emerald Green */}
+              {/* Segmen Hijau Tua Realisasi */}
               <circle
                 cx="50"
                 cy="50"
-                r="40"
-                stroke="#15803D"
+                r="38"
+                stroke="#0B4625"
                 strokeWidth="10"
                 strokeDasharray={circumference}
                 strokeDashoffset={strokeDashoffset}
@@ -56,24 +57,27 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs font-black text-slate-800">{percentage}%</span>
+              <span className="text-[11px] font-black text-desa-darkGreen">
+                {String(percentage).replace('.', ',')}%
+              </span>
             </div>
           </div>
 
-          <div className="flex-1 min-w-0 space-y-1.5">
-            <h4 className="text-xs font-bold text-slate-900 leading-snug">
-              Realisasi APBDes <br />
-              <span className="text-desa-green-800 font-extrabold text-sm">
-                Tahun {primaryDoc?.tahun || 2026}
-              </span>
-            </h4>
-            <div className="text-base font-black text-desa-green-800 tracking-tight">
-              {percentage}%
+          {/* Keterangan & Persen Besar di Kanan */}
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-semibold text-slate-700 leading-tight">
+              Realisasi APBDes
             </div>
-            <div>
+            <div className="text-xs font-bold text-desa-textDark">
+              Tahun {primaryDoc?.tahun || 2026}
+            </div>
+            <div className="text-xl sm:text-2xl font-black text-desa-primaryGreen tracking-tight mt-0.5">
+              {String(percentage).replace('.', ',')}%
+            </div>
+            <div className="mt-1.5">
               <Link
                 href="/transparansi"
-                className="inline-flex items-center gap-1 text-[11px] font-bold text-white bg-desa-green-900 hover:bg-desa-green-800 px-3 py-1 rounded-md transition-colors shadow-sm"
+                className="inline-flex items-center gap-1 text-[11px] font-bold text-white bg-desa-primaryGreen hover:bg-desa-greenHover px-3 py-1 rounded-full transition-colors shadow-xs"
               >
                 <span>Lihat Laporan</span>
                 <ArrowRight className="w-3 h-3" />
@@ -82,19 +86,19 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
           </div>
         </div>
 
-        {/* List of 3 Downloadable Documents */}
-        <div className="mt-4 space-y-2">
+        {/* 3 Baris Dokumen Unduhan (Ikon, Nama, "Download ↓") */}
+        <div className="mt-3.5 space-y-2">
           {dokumenList.slice(0, 3).map((item) => {
-            const pdfUrl = getMediaUrl(item.filePdf, '/docs/dokumen-apbdes.pdf')
+            const pdfUrl = getMediaUrl(item.filePdf, '/docs/apbdes-2026.pdf')
 
             return (
               <div
                 key={item.id}
-                className="flex items-center justify-between p-2 rounded-lg bg-slate-50 hover:bg-desa-green-50/70 border border-slate-200/80 transition-colors group"
+                className="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-desa-lightGreen/60 border border-desa-border transition-colors group"
               >
                 <div className="flex items-center gap-2 min-w-0 pr-2">
-                  <FileText className="w-4 h-4 text-desa-green-800 shrink-0" />
-                  <span className="text-xs font-semibold text-slate-800 truncate group-hover:text-desa-green-950">
+                  <FileText className="w-4 h-4 text-desa-accentGreen shrink-0" />
+                  <span className="text-xs font-semibold text-desa-textDark truncate group-hover:text-desa-darkGreen font-sans">
                     {item.judul}
                   </span>
                 </div>
@@ -103,10 +107,10 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
                   href={pdfUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-desa-green-800 hover:text-desa-green-950 px-2 py-0.5 rounded hover:bg-desa-green-100 transition-colors shrink-0"
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-desa-accentGreen hover:text-desa-darkGreen px-2 py-0.5 rounded transition-colors shrink-0"
                 >
                   <span>Download</span>
-                  <Download className="w-3.5 h-3.5" />
+                  <Download className="w-3 h-3" />
                 </a>
               </div>
             )
