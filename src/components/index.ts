@@ -3,12 +3,14 @@ export * from './ui/Button'
 export * from './ui/SectionCard'
 export * from './ui/SectionTitle'
 export * from './ui/Breadcrumb'
+export * from './ui/RichText'
 
 // Global Layout Components
 export * from './layout/TopBar'
 export * from './layout/Navbar'
 export * from './layout/Footer'
 export * from './layout/AccessibilityResizer'
+export * from './layout/SidebarSubmenu'
 
 // Home Sections
 export * from './home/HeroSection'

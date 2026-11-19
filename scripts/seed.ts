@@ -509,14 +509,23 @@ async function seed() {
         urutan: 4,
       },
     })
+  }
 
-    // Aparatur
+  // Aparatur Desa
+  console.log('🏛️ Menyemai Aparatur Perangkat Desa...')
+  const existingPerangkat = await payload.find({ collection: 'perangkat-desa', limit: 20 })
+  if (existingPerangkat.totalDocs < 5) {
+    for (const doc of existingPerangkat.docs) {
+      await payload.delete({ collection: 'perangkat-desa', id: doc.id })
+    }
+
     await payload.create({
       collection: 'perangkat-desa',
       data: {
         nama: 'H. Ahmad Santoso [Data Dummy]',
         jabatan: 'Kepala Desa',
         kategoriJabatan: 'Kepala-Desa',
+        niap: '19750815 200801 1 001',
         foto: kadesMedia ? kadesMedia.id : undefined,
         urutan: 1,
         statusAktif: true,
@@ -529,10 +538,257 @@ async function seed() {
         nama: 'Joko Susilo, S.Sos [Data Dummy]',
         jabatan: 'Sekretaris Desa',
         kategoriJabatan: 'Sekretariat',
+        niap: '19820312 201202 1 004',
+        foto: kadesMedia ? kadesMedia.id : undefined,
         urutan: 2,
         statusAktif: true,
       },
     })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Siti Rahmawati, S.E. [Data Dummy]',
+        jabatan: 'Kepala Urusan Keuangan',
+        kategoriJabatan: 'Sekretariat',
+        niap: '19870520 201503 2 007',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 3,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Hendro Wibowo, S.T. [Data Dummy]',
+        jabatan: 'Kepala Urusan Perencanaan',
+        kategoriJabatan: 'Sekretariat',
+        niap: '19891114 201604 1 012',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 4,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Tri Wahyuni, A.Md. [Data Dummy]',
+        jabatan: 'Kepala Urusan Tata Usaha & Umum',
+        kategoriJabatan: 'Sekretariat',
+        niap: '19910408 201705 2 015',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 5,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Agus Riyadi, S.AP. [Data Dummy]',
+        jabatan: 'Kepala Seksi Pemerintahan',
+        kategoriJabatan: 'Teknis',
+        niap: '19840228 201402 1 009',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 6,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Danang Prasetyo, S.P. [Data Dummy]',
+        jabatan: 'Kepala Seksi Kesejahteraan',
+        kategoriJabatan: 'Teknis',
+        niap: '19860910 201508 1 011',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 7,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Nurul Hidayati, S.IP. [Data Dummy]',
+        jabatan: 'Kepala Seksi Pelayanan',
+        kategoriJabatan: 'Teknis',
+        niap: '19920716 201801 2 019',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 8,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Sutrisno [Data Dummy]',
+        jabatan: 'Kepala Dusun I (Bolali I)',
+        kategoriJabatan: 'Kewilayahan',
+        niap: '19780105 201001 1 003',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 9,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Bambang Irawan [Data Dummy]',
+        jabatan: 'Kepala Dusun II (Bolali II)',
+        kategoriJabatan: 'Kewilayahan',
+        niap: '19800612 201103 1 006',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 10,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Wahyu Widodo [Data Dummy]',
+        jabatan: 'Kepala Dusun III (Tegalrejo)',
+        kategoriJabatan: 'Kewilayahan',
+        niap: '19831024 201305 1 008',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 11,
+        statusAktif: true,
+      },
+    })
+
+    await payload.create({
+      collection: 'perangkat-desa',
+      data: {
+        nama: 'Agus Setiawan [Data Dummy]',
+        jabatan: 'Kepala Dusun IV (Karanganyar)',
+        kategoriJabatan: 'Kewilayahan',
+        niap: '19851203 201407 1 010',
+        foto: kadesMedia ? kadesMedia.id : undefined,
+        urutan: 12,
+        statusAktif: true,
+      },
+    })
+  }
+
+  // 7b. SEED BPD (Badan Permusyawaratan Desa)
+  console.log('🏛️ Menyemai Badan Permusyawaratan Desa (BPD)...')
+  const existingBpd = await payload.find({ collection: 'bpd', limit: 1 })
+  if (existingBpd.totalDocs === 0) {
+    const bpdMembers = [
+      {
+        nama: 'Prof. Dr. Ir. Gunawan Wibisono, M.T. [Data Dummy]',
+        jabatan: 'Ketua BPD',
+        keterangan: 'Keterwakilan Tokoh Pendidikan & Dusun Bolali I',
+        urutan: 1,
+      },
+      {
+        nama: 'Dra. Hj. Sri Lestari, M.Pd. [Data Dummy]',
+        jabatan: 'Wakil Ketua BPD',
+        keterangan: 'Keterwakilan Perempuan & Tokoh Masyarakat',
+        urutan: 2,
+      },
+      {
+        nama: 'Muhammad Ridwan, S.Pd. [Data Dummy]',
+        jabatan: 'Sekretaris BPD',
+        keterangan: 'Keterwakilan Dusun Bolali II',
+        urutan: 3,
+      },
+      {
+        nama: 'Drs. Hartono [Data Dummy]',
+        jabatan: 'Anggota BPD',
+        keterangan: 'Keterwakilan Dusun Tegalrejo',
+        urutan: 4,
+      },
+      {
+        nama: 'Budi Santoso [Data Dummy]',
+        jabatan: 'Anggota BPD',
+        keterangan: 'Keterwakilan Dusun Karanganyar',
+        urutan: 5,
+      },
+      {
+        nama: 'Siti Maryam, S.Ag. [Data Dummy]',
+        jabatan: 'Anggota BPD',
+        keterangan: 'Keterwakilan Tokoh Agama',
+        urutan: 6,
+      },
+      {
+        nama: 'Eko Prasetyo, S.Kom. [Data Dummy]',
+        jabatan: 'Anggota BPD',
+        keterangan: 'Keterwakilan Pemuda & Karang Taruna',
+        urutan: 7,
+      },
+    ]
+
+    for (const member of bpdMembers) {
+      await payload.create({
+        collection: 'bpd',
+        data: {
+          ...member,
+          foto: kadesMedia ? kadesMedia.id : undefined,
+        },
+      })
+    }
+  }
+
+  // 7c. SEED RT & RW
+  console.log('🏘️ Menyemai Lembaga RT & RW...')
+  const existingRtRw = await payload.find({ collection: 'rt-rw', limit: 1 })
+  if (existingRtRw.totalDocs === 0) {
+    const dusunDocs = await payload.find({ collection: 'dusun', limit: 10, sort: 'urutan' })
+    const dusun1Id = dusunDocs.docs[0]?.id
+    const dusun2Id = dusunDocs.docs[1]?.id
+    const dusun3Id = dusunDocs.docs[2]?.id
+    const dusun4Id = dusunDocs.docs[3]?.id
+
+    const rtRwData = [
+      // Dusun Bolali I (RW 01 & RW 02)
+      { nama: 'H. Sudirman [Data Dummy]', jenis: 'RW', nomor: '01', dusun: dusun1Id, telepon: '081234560001', urutan: 1 },
+      { nama: 'Supriyanto [Data Dummy]', jenis: 'RT', nomor: '01', dusun: dusun1Id, telepon: '081234560002', urutan: 2 },
+      { nama: 'Triyono [Data Dummy]', jenis: 'RT', nomor: '02', dusun: dusun1Id, telepon: '081234560003', urutan: 3 },
+      { nama: 'Wahyudi [Data Dummy]', jenis: 'RT', nomor: '03', dusun: dusun1Id, telepon: '081234560004', urutan: 4 },
+      { nama: 'Darto [Data Dummy]', jenis: 'RW', nomor: '02', dusun: dusun1Id, telepon: '081234560005', urutan: 5 },
+      { nama: 'Mulyadi [Data Dummy]', jenis: 'RT', nomor: '04', dusun: dusun1Id, telepon: '081234560006', urutan: 6 },
+      { nama: 'Slamet Widodo [Data Dummy]', jenis: 'RT', nomor: '05', dusun: dusun1Id, telepon: '081234560007', urutan: 7 },
+      { nama: 'Sunardi [Data Dummy]', jenis: 'RT', nomor: '06', dusun: dusun1Id, telepon: '081234560008', urutan: 8 },
+
+      // Dusun Bolali II (RW 03 & RW 04)
+      { nama: 'Sukirno [Data Dummy]', jenis: 'RW', nomor: '03', dusun: dusun2Id, telepon: '081234560009', urutan: 9 },
+      { nama: 'Kuswanto [Data Dummy]', jenis: 'RT', nomor: '01', dusun: dusun2Id, telepon: '081234560010', urutan: 10 },
+      { nama: 'Priyadi [Data Dummy]', jenis: 'RT', nomor: '02', dusun: dusun2Id, telepon: '081234560011', urutan: 11 },
+      { nama: 'Maryanto [Data Dummy]', jenis: 'RW', nomor: '04', dusun: dusun2Id, telepon: '081234560012', urutan: 12 },
+      { nama: 'Handoko [Data Dummy]', jenis: 'RT', nomor: '03', dusun: dusun2Id, telepon: '081234560013', urutan: 13 },
+      { nama: 'Sugeng [Data Dummy]', jenis: 'RT', nomor: '04', dusun: dusun2Id, telepon: '081234560014', urutan: 14 },
+      { nama: 'Suratno [Data Dummy]', jenis: 'RT', nomor: '05', dusun: dusun2Id, telepon: '081234560015', urutan: 15 },
+
+      // Dusun Tegalrejo (RW 05)
+      { nama: 'Yulianto [Data Dummy]', jenis: 'RW', nomor: '05', dusun: dusun3Id, telepon: '081234560016', urutan: 16 },
+      { nama: 'Kurniawan [Data Dummy]', jenis: 'RT', nomor: '01', dusun: dusun3Id, telepon: '081234560017', urutan: 17 },
+      { nama: 'Santiko [Data Dummy]', jenis: 'RT', nomor: '02', dusun: dusun3Id, telepon: '081234560018', urutan: 18 },
+      { nama: 'Edi Santoso [Data Dummy]', jenis: 'RT', nomor: '03', dusun: dusun3Id, telepon: '081234560019', urutan: 19 },
+      { nama: 'Widodo [Data Dummy]', jenis: 'RT', nomor: '04', dusun: dusun3Id, telepon: '081234560020', urutan: 20 },
+
+      // Dusun Karanganyar (RW 06 & RW 07)
+      { nama: 'Heri Prasetyo [Data Dummy]', jenis: 'RW', nomor: '06', dusun: dusun4Id, telepon: '081234560021', urutan: 21 },
+      { nama: 'Anto [Data Dummy]', jenis: 'RT', nomor: '01', dusun: dusun4Id, telepon: '081234560022', urutan: 22 },
+      { nama: 'Wawan [Data Dummy]', jenis: 'RT', nomor: '02', dusun: dusun4Id, telepon: '081234560023', urutan: 23 },
+      { nama: 'Rahmat [Data Dummy]', jenis: 'RW', nomor: '07', dusun: dusun4Id, telepon: '081234560024', urutan: 24 },
+      { nama: 'Budi Utomo [Data Dummy]', jenis: 'RT', nomor: '03', dusun: dusun4Id, telepon: '081234560025', urutan: 25 },
+      { nama: 'Suryanto [Data Dummy]', jenis: 'RT', nomor: '04', dusun: dusun4Id, telepon: '081234560026', urutan: 26 },
+      { nama: 'Gunawan [Data Dummy]', jenis: 'RT', nomor: '05', dusun: dusun4Id, telepon: '081234560027', urutan: 27 },
+    ]
+
+    for (const item of rtRwData) {
+      await payload.create({
+        collection: 'rt-rw',
+        data: item as any,
+      })
+    }
   }
 
   // 8. UPDATE GLOBALS (Pengaturan Website, Statistik, Sambutan, Kontak)
@@ -631,7 +887,59 @@ async function seed() {
               children: [
                 {
                   type: 'text',
-                  text: 'Desa Bolali adalah sebuah desa yang terletak di Kecamatan Wonosari, Kabupaten Klaten, Jawa Tengah. Dikenal dengan hamparan persawahan yang subur serta tradisi gotong royong warga yang mengakar kuat [Data Dummy].',
+                  text: 'Desa Bolali merupakan salah satu desa agraris bersejarah yang terletak di Kecamatan Wonosari, Kabupaten Klaten, Provinsi Jawa Tengah. Terletak di hamparan dataran rendah yang subur diapit jalur irigasi alami, desa ini memiliki riwayat panjang peradaban pedesaan agraris Jawa yang sarat kearifan lokal [Data Dummy].',
+                },
+              ],
+            },
+            {
+              type: 'heading',
+              tag: 'h3',
+              version: 1,
+              children: [
+                {
+                  type: 'text',
+                  text: 'Asal-Usul Nama Desa Bolali',
+                },
+              ],
+            },
+            {
+              type: 'paragraph',
+              version: 1,
+              children: [
+                {
+                  type: 'text',
+                  text: 'Menurut cerita tutur turun-temurun dari para sesepuh desa, nama "Bolali" berakar dari filosofi kekerabatan masyarakat Jawa, di mana setiap pendatang maupun warga yang tinggal merasa begitu disambut hangat, damai, dan tentram bagaikan di rumah sendiri [Data Dummy].',
+                },
+              ],
+            },
+            {
+              type: 'paragraph',
+              version: 1,
+              children: [
+                {
+                  type: 'text',
+                  text: 'Pada masa lampau, wilayah ini dirintis oleh para sesepuh desa yang gigih membuka lahan pertanian produktif dan mengelola sumber air irigasi secara mufakat. Semangat gotong royong inilah yang kemudian merekatkan kebersamaan warga hingga terbentuknya empat wilayah pedukuhan: Dusun Bolali I, Dusun Bolali II, Dusun Tegalrejo, dan Dusun Karanganyar.',
+                },
+              ],
+            },
+            {
+              type: 'heading',
+              tag: 'h3',
+              version: 1,
+              children: [
+                {
+                  type: 'text',
+                  text: 'Transformasi Menuju Era Modern & Desa Digital',
+                },
+              ],
+            },
+            {
+              type: 'paragraph',
+              version: 1,
+              children: [
+                {
+                  type: 'text',
+                  text: 'Memasuki era reformasi hingga era digital saat ini, Desa Bolali terus bertransformasi secara dinamis. Dari desa agraris tradisional menjadi Desa Mandiri yang mengedepankan keterbukaan informasi publik, akuntabilitas APBDes, modernisasi pelayanan administrasi warga secara digital, serta penguatan BUMDes dan sentra UMKM lokal demi kesejahteraan bersama [Data Dummy].',
                 },
               ],
             },
