@@ -87,6 +87,7 @@ export interface DokumenTransparansiItem {
   filePdf?: any
   keterangan?: string | null
   tampilkanDiBeranda?: boolean | null
+  urutan?: number | null
 }
 
 export interface PotensiItem {
@@ -95,7 +96,10 @@ export interface PotensiItem {
   slug: string
   kategori: string
   ringkasan: string
+  deskripsi?: any
   gambar?: any
+  kontakPengelola?: string | null
+  lokasi?: string | null
   unggulan?: boolean | null
   urutan?: number | null
 }
@@ -791,106 +795,221 @@ export const defaultAgendaList: AgendaItem[] = [
 export const defaultTransparansiList: DokumenTransparansiItem[] = [
   {
     id: 1,
-    judul: 'APBDes 2026',
+    judul: 'APBDes Tahun Anggaran 2026',
     kategori: 'APBDes',
     tahun: 2026,
     persentaseRealisasi: 92.3,
+    nominalAnggaran: 1850000000,
     filePdf: '/docs/apbdes-2026.pdf',
+    keterangan: 'Rincian Anggaran Pendapatan dan Belanja Desa Bolali Tahun 2026 [Data Dummy]',
     tampilkanDiBeranda: true,
+    urutan: 1,
   },
   {
     id: 2,
-    judul: 'Laporan Realisasi',
+    judul: 'Laporan Realisasi APBDes 2026 (Semester I)',
     kategori: 'Realisasi',
     tahun: 2026,
+    persentaseRealisasi: 92.3,
+    nominalAnggaran: 1707550000,
     filePdf: '/docs/laporan-realisasi.pdf',
+    keterangan: 'Laporan Realisasi Pelaksanaan APBDes Semester Berjalan [Data Dummy]',
     tampilkanDiBeranda: true,
+    urutan: 2,
   },
   {
     id: 3,
-    judul: 'Rencana Kerja',
+    judul: 'Rencana Kerja Pemerintah Desa (RKPDes) 2026',
     kategori: 'Rencana Kerja',
     tahun: 2026,
     filePdf: '/docs/rkpdes-2026.pdf',
+    keterangan: 'Rencana Kerja Pemerintah Desa Bolali Tahun 2026 [Data Dummy]',
     tampilkanDiBeranda: true,
+    urutan: 3,
+  },
+  {
+    id: 4,
+    judul: 'Laporan Progres Pembangunan Infrastruktur Fisik 2026',
+    kategori: 'Laporan Pembangunan',
+    tahun: 2026,
+    nominalAnggaran: 480000000,
+    filePdf: '/docs/laporan-realisasi.pdf',
+    keterangan: 'Laporan berkala kemajuan fisik proyek jalan rabat beton dan drainase [Data Dummy]',
+    tampilkanDiBeranda: false,
+    urutan: 4,
+  },
+  {
+    id: 5,
+    judul: 'Laporan Pertanggungjawaban (LPJ) Realisasi APBDes 2025',
+    kategori: 'Realisasi',
+    tahun: 2025,
+    persentaseRealisasi: 98.7,
+    nominalAnggaran: 1720000000,
+    filePdf: '/docs/laporan-realisasi.pdf',
+    keterangan: 'Laporan Pertanggungjawaban Realisasi Pelaksanaan APBDes TA 2025 [Data Dummy]',
+    tampilkanDiBeranda: false,
+    urutan: 5,
+  },
+  {
+    id: 6,
+    judul: 'APBDes Murni Tahun Anggaran 2025',
+    kategori: 'APBDes',
+    tahun: 2025,
+    nominalAnggaran: 1750000000,
+    filePdf: '/docs/apbdes-2026.pdf',
+    keterangan: 'Dokumen Perdes APBDes Tahun Anggaran 2025 [Data Dummy]',
+    tampilkanDiBeranda: false,
+    urutan: 6,
   },
 ]
 
 export const defaultPotensiList: PotensiItem[] = [
   {
     id: 1,
-    judul: 'Pertanian',
-    slug: 'pertanian',
-    kategori: 'Pertanian',
-    ringkasan: 'Lahan persawahan subur penghasil padi organik berkualitas unggul.',
-    gambar: '/images/potensi-pertanian.jpg',
+    judul: 'BUMDes Bolali Makmur Sejahtera',
+    slug: 'bumdes-bolali-makmur-sejahtera',
+    kategori: 'BUMDes',
+    ringkasan: 'Badan usaha desa yang mengelola pengolahan gabah, sewa alsintan, dan unit simpan pinjam produktif.',
+    deskripsi: 'BUMDes Bolali Makmur Sejahtera merupakan pilar ekonomi desa yang didirikan untuk mendayagunakan potensi ekonomi masyarakat. Mengelola unit usaha penggilingan gabah modern, penyewaan alat mesin pertanian (alsintan), toko saprotan, serta kemitraan simpan pinjam modal usaha bagi UMKM mikro [Data Dummy].',
+    gambar: '/images/potensi-umkm.jpg',
+    kontakPengelola: '0812-3456-7891 (Bpk. Mulyono - Direktur BUMDes)',
+    lokasi: 'Kompleks Balai Desa Bolali, Jl. Mawar No. 10',
     unggulan: true,
+    urutan: 1,
   },
   {
     id: 2,
-    judul: 'UMKM',
-    slug: 'umkm',
-    kategori: 'UMKM',
-    ringkasan: 'Kerajinan gerabah, olahan pangan lokal, dan produk kreatif rumahan.',
-    gambar: '/images/potensi-umkm.jpg',
+    judul: 'Pertanian Padi Organik & Hortikultura',
+    slug: 'pertanian-padi-organik-dan-hortikultura',
+    kategori: 'Pertanian',
+    ringkasan: 'Lahan persawahan subur irigasi teknis penghasil beras organik premium berkualitas unggul.',
+    deskripsi: 'Hamparan persawahan seluas lebih dari 240 hektar di Desa Bolali didukung sistem irigasi teknis mandiri. Gabungan Kelompok Tani memproduksi padi varietas unggul ramah lingkungan tanpa pestisida kimia berlebih, serta sayuran hortikultura musiman yang menyuplai pasar kabupaten [Data Dummy].',
+    gambar: '/images/potensi-pertanian.jpg',
+    kontakPengelola: '0813-9876-5432 (Ketua Gapoktan Sumber Makmur)',
+    lokasi: 'Dusun Bolali I & Dusun Tegalrejo',
     unggulan: true,
+    urutan: 2,
   },
   {
     id: 3,
-    judul: 'Wisata Alam',
-    slug: 'wisata-alam',
-    kategori: 'Wisata',
-    ringkasan: 'Pesona embung desa, aliran sungai jernih, dan agrowisata pedesaan.',
-    gambar: '/images/potensi-wisata.jpg',
+    judul: 'Sentra Kerajinan Gerabah & Olahan Pangan UMKM',
+    slug: 'sentra-kerajinan-gerabah-dan-olahan-pangan-umkm',
+    kategori: 'UMKM',
+    ringkasan: 'Produk kreatif gerabah tanah liat tradisional serta industri rumahan olahan keripik dan kue basah.',
+    deskripsi: 'Keahlian membuat gerabah tanah liat secara turun-temurun menjadi mata pencaharian kebanggaan sebagian warga. Di samping itu, tumbuh subur industri rumahan olahan keripik singkong, rempeyek, dan aneka jajanan tradisional yang dipasarkan secara offline maupun digital [Data Dummy].',
+    gambar: '/images/potensi-umkm.jpg',
+    kontakPengelola: '0815-6789-0123 (Ibu Siti - Paguyuban UMKM)',
+    lokasi: 'Sentra Dusun Bolali II, Desa Bolali',
     unggulan: true,
+    urutan: 3,
   },
   {
     id: 4,
-    judul: 'Budaya',
-    slug: 'budaya',
-    kategori: 'Seni & Budaya',
-    ringkasan: 'Kesenian jathilan, karawitan, dan tradisi bersih dusun yang lestari.',
-    gambar: '/images/potensi-budaya.jpg',
+    judul: 'Agrowisata Embung & Wisata Alam Pedesaan',
+    slug: 'agrowisata-embung-dan-wisata-alam-pedesaan',
+    kategori: 'Wisata',
+    ringkasan: 'Pesona embung penampung air desa berlatar panorama alam asri, spot pemancingan, dan jogging track.',
+    deskripsi: 'Kawasan Embung Desa Bolali tidak hanya berfungsi sebagai tandon air cadangan pertanian, tetapi telah ditata menjadi ruang publik wisata alam ramah keluarga. Dilengkapi spot foto estetik, gazebo istirahat, wahana pemancingan ikan, dan deretan kuliner khas pedesaan [Data Dummy].',
+    gambar: '/images/potensi-wisata.jpg',
+    kontakPengelola: '0857-1234-5678 (Pokdarwis Desa Bolali)',
+    lokasi: 'Kawasan Embung Desa, Dusun Karanganyar',
     unggulan: true,
+    urutan: 4,
+  },
+  {
+    id: 5,
+    judul: 'Pelestarian Seni Jathilan & Karawitan Tradisional',
+    slug: 'pelestarian-seni-jathilan-dan-karawitan-tradisional',
+    kategori: 'Seni-Budaya',
+    ringkasan: 'Kesenian jathilan, grup karawitan gamelan laras madya, dan tradisi merti dusun yang lestari.',
+    deskripsi: 'Warisan seni dan kebudayaan Jawa dijaga kelestariannya melalui sanggar tari tradisional dan paguyuban karawitan yang aktif berlatih. Setiap tahun diselenggarakan tradisi kirab gunungan hasil bumi dan bersih dusun sebagai wujud rasa syukur bersama [Data Dummy].',
+    gambar: '/images/potensi-budaya.jpg',
+    kontakPengelola: '0821-3456-7890 (Ki Harsono - Tokoh Budaya)',
+    lokasi: 'Sanggar Budaya Dusun Bolali I',
+    unggulan: true,
+    urutan: 5,
   },
 ]
 
 export const defaultGaleriList: GaleriItem[] = [
   {
     id: 1,
-    judul: 'Wisata Embung & Alam',
-    slug: 'wisata-embung-alam',
+    judul: 'Pesona Keindahan Alam Embung Desa Bolali',
+    slug: 'pesona-keindahan-alam-embung-desa-bolali',
     tipe: 'foto',
     album: 'Pariwisata',
     foto: '/images/galeri-1.jpg',
     tanggal: '2026-11-08',
+    keterangan: 'Pemandangan asri embung desa di waktu pagi hari menjadi sarana rekreasi warga [Data Dummy].',
+    tampilkanDiBeranda: true,
   },
   {
     id: 2,
-    judul: 'Sentra UMKM Gerabah',
-    slug: 'sentra-umkm-gerabah',
+    judul: 'Aktivitas Pengrajin Sentra UMKM Gerabah',
+    slug: 'aktivitas-pengrajin-sentra-umkm-gerabah',
     tipe: 'foto',
     album: 'Perekonomian',
     foto: '/images/galeri-2.jpg',
     tanggal: '2026-11-04',
+    keterangan: 'Proses pembentukan dan pembakaran gerabah tanah liat tradisional berkualitas [Data Dummy].',
+    tampilkanDiBeranda: true,
   },
   {
     id: 3,
-    judul: 'Tradisi & Budaya Gotong Royong',
-    slug: 'tradisi-budaya-gotong-royong',
+    judul: 'Karnaval & Kirab Budaya Tradisi Bersih Dusun',
+    slug: 'karnaval-dan-kirab-budaya-tradisi-bersih-dusun',
     tipe: 'foto',
     album: 'Kebudayaan',
     foto: '/images/galeri-3.jpg',
     tanggal: '2026-10-25',
+    keterangan: 'Warga mengenakan pakaian adat Jawa dalam kirab gunungan hasil bumi desa [Data Dummy].',
+    tampilkanDiBeranda: true,
   },
   {
     id: 4,
-    judul: 'Pembangunan Infrastruktur Dusun',
-    slug: 'pembangunan-infrastruktur-dusun',
+    judul: 'Pengerjaan Rabat Beton Jalan Poros Antar Dusun',
+    slug: 'pengerjaan-rabat-beton-jalan-poros-antar-dusun',
     tipe: 'foto',
     album: 'Pembangunan',
     foto: '/images/galeri-4.jpg',
     tanggal: '2026-10-18',
+    keterangan: 'Gotong royong warga dan tim pelaksana pembangunan mempercepat perbaikan jalan tani [Data Dummy].',
+    tampilkanDiBeranda: true,
+  },
+  {
+    id: 5,
+    judul: 'Hamparan Sawah Hijau dan Musim Tanam Padi',
+    slug: 'hamparan-sawah-hijau-dan-musim-tanam-padi',
+    tipe: 'foto',
+    album: 'Pariwisata',
+    foto: '/images/potensi-pertanian.jpg',
+    tanggal: '2026-10-12',
+    keterangan: 'Suasana fajar di persawahan Dusun Tegalrejo dengan udara segar menyejukkan [Data Dummy].',
+    tampilkanDiBeranda: false,
+  },
+  {
+    id: 6,
+    judul: 'Profil Video Resmi Pemerintah Desa Bolali 2026',
+    slug: 'profil-video-resmi-pemerintah-desa-bolali-2026',
+    tipe: 'video',
+    album: 'Pariwisata',
+    foto: '/images/hero-desa.jpg',
+    videoUrl: 'https://www.youtube.com/watch?v=7hR_1b3c9Wk',
+    tanggal: '2026-11-01',
+    keterangan: 'Video dokumentasi selayang pandang potensi desa, inovasi pelayanan, dan keramahan warga Bolali [Data Dummy].',
+    tampilkanDiBeranda: true,
+  },
+  {
+    id: 7,
+    judul: 'Liputan Festival Budaya dan Kirab Gunungan Desa',
+    slug: 'liputan-festival-budaya-dan-kirab-gunungan-desa',
+    tipe: 'video',
+    album: 'Kebudayaan',
+    foto: '/images/potensi-budaya.jpg',
+    videoUrl: 'https://www.youtube.com/watch?v=kXYiU_JCYtU',
+    tanggal: '2026-10-26',
+    keterangan: 'Dokumentasi video pentas seni jathilan dan tari karawitan semalam suntuk [Data Dummy].',
+    tampilkanDiBeranda: false,
   },
 ]
 
@@ -1594,17 +1713,198 @@ export async function getPotensiUnggulan(limit = 4): Promise<PotensiItem[]> {
   }
 }
 
-export async function getGaleriTerbaru(limit = 6): Promise<GaleriItem[]> {
+export async function getPotensiList(options?: {
+  kategori?: string
+  search?: string
+}): Promise<PotensiItem[]> {
+  const kategori = options?.kategori
+  const search = options?.search
+
   try {
     const payload = await getPayload({ config: configPromise })
+    const where: any = {}
+
+    if (kategori && kategori !== 'Semua') {
+      where.kategori = { equals: kategori }
+    }
+
+    if (search && search.trim() !== '') {
+      where.or = [
+        { judul: { contains: search.trim() } },
+        { ringkasan: { contains: search.trim() } },
+      ]
+    }
+
     const result = await payload.find({
-      collection: 'galeri',
-      sort: '-tanggal',
-      limit,
+      collection: 'potensi',
+      where,
+      sort: 'urutan',
+      limit: 50,
     })
 
     if (!result.docs || result.docs.length === 0) {
-      return defaultGaleriList
+      let list = defaultPotensiList
+      if (kategori && kategori !== 'Semua') {
+        list = list.filter((p) => p.kategori.toLowerCase() === kategori.toLowerCase())
+      }
+      if (search && search.trim() !== '') {
+        const q = search.trim().toLowerCase()
+        list = list.filter((p) => p.judul.toLowerCase().includes(q) || p.ringkasan.toLowerCase().includes(q))
+      }
+      return list
+    }
+
+    return result.docs.map((doc: any) => ({
+      id: doc.id,
+      judul: doc.judul,
+      slug: doc.slug,
+      kategori: doc.kategori,
+      ringkasan: doc.ringkasan,
+      deskripsi: doc.deskripsi,
+      gambar: doc.gambar,
+      kontakPengelola: doc.kontakPengelola,
+      lokasi: doc.lokasi,
+      unggulan: doc.unggulan,
+      urutan: doc.urutan,
+    }))
+  } catch (error) {
+    let list = defaultPotensiList
+    if (kategori && kategori !== 'Semua') {
+      list = list.filter((p) => p.kategori.toLowerCase() === kategori.toLowerCase())
+    }
+    return list
+  }
+}
+
+export async function getPotensiBySlug(slug: string): Promise<PotensiItem | null> {
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'potensi',
+      where: {
+        slug: { equals: slug },
+      },
+      limit: 1,
+    })
+
+    if (result.docs && result.docs.length > 0) {
+      const doc = result.docs[0]
+      return {
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        kategori: doc.kategori,
+        ringkasan: doc.ringkasan,
+        deskripsi: doc.deskripsi,
+        gambar: doc.gambar,
+        kontakPengelola: doc.kontakPengelola,
+        lokasi: doc.lokasi,
+        unggulan: doc.unggulan,
+        urutan: doc.urutan,
+      }
+    }
+  } catch (error) {}
+
+  const match = defaultPotensiList.find((p) => p.slug === slug)
+  return match || null
+}
+
+export async function getDokumenTransparansiList(options?: {
+  tahun?: number
+  kategori?: string
+}): Promise<DokumenTransparansiItem[]> {
+  const tahun = options?.tahun
+  const kategori = options?.kategori
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const where: any = {}
+
+    if (tahun) {
+      where.tahun = { equals: tahun }
+    }
+
+    if (kategori && kategori !== 'Semua') {
+      where.kategori = { equals: kategori }
+    }
+
+    const result = await payload.find({
+      collection: 'dokumen-transparansi',
+      where,
+      sort: 'urutan',
+      limit: 100,
+    })
+
+    if (!result.docs || result.docs.length === 0) {
+      let list = defaultTransparansiList
+      if (tahun) {
+        list = list.filter((d) => d.tahun === tahun)
+      }
+      if (kategori && kategori !== 'Semua') {
+        list = list.filter((d) => d.kategori.toLowerCase() === kategori.toLowerCase())
+      }
+      return list
+    }
+
+    return result.docs.map((doc: any) => ({
+      id: doc.id,
+      judul: doc.judul,
+      kategori: doc.kategori,
+      tahun: doc.tahun,
+      persentaseRealisasi: doc.persentaseRealisasi,
+      nominalAnggaran: doc.nominalAnggaran,
+      filePdf: doc.filePdf,
+      keterangan: doc.keterangan,
+      tampilkanDiBeranda: doc.tampilkanDiBeranda,
+      urutan: doc.urutan,
+    }))
+  } catch (error) {
+    let list = defaultTransparansiList
+    if (tahun) {
+      list = list.filter((d) => d.tahun === tahun)
+    }
+    if (kategori && kategori !== 'Semua') {
+      list = list.filter((d) => d.kategori.toLowerCase() === kategori.toLowerCase())
+    }
+    return list
+  }
+}
+
+export async function getGaleriList(options?: {
+  tipe?: 'foto' | 'video' | 'semua'
+  album?: string
+}): Promise<GaleriItem[]> {
+  const tipe = options?.tipe
+  const album = options?.album
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const where: any = {}
+
+    if (tipe && tipe !== 'semua') {
+      where.tipe = { equals: tipe }
+    }
+
+    if (album && album !== 'Semua') {
+      where.album = { equals: album }
+    }
+
+    const result = await payload.find({
+      collection: 'galeri',
+      where,
+      sort: '-tanggal',
+      limit: 100,
+    })
+
+    if (!result.docs || result.docs.length === 0) {
+      let list = defaultGaleriList
+      if (tipe && tipe !== 'semua') {
+        list = list.filter((g) => g.tipe === tipe)
+      }
+      if (album && album !== 'Semua') {
+        list = list.filter((g) => g.album?.toLowerCase() === album.toLowerCase())
+      }
+      return list
     }
 
     return result.docs.map((doc: any) => ({
@@ -1620,6 +1920,33 @@ export async function getGaleriTerbaru(limit = 6): Promise<GaleriItem[]> {
       tampilkanDiBeranda: doc.tampilkanDiBeranda,
     }))
   } catch (error) {
-    return defaultGaleriList
+    let list = defaultGaleriList
+    if (tipe && tipe !== 'semua') {
+      list = list.filter((g) => g.tipe === tipe)
+    }
+    if (album && album !== 'Semua') {
+      list = list.filter((g) => g.album?.toLowerCase() === album.toLowerCase())
+    }
+    return list
   }
+}
+
+export async function getGaleriAlbums(): Promise<string[]> {
+  try {
+    const items = await getGaleriList()
+    const albumSet = new Set<string>()
+    for (const item of items) {
+      if (item.album && item.album.trim() !== '') {
+        albumSet.add(item.album.trim())
+      }
+    }
+    return Array.from(albumSet)
+  } catch (error) {
+    return ['Pariwisata', 'Perekonomian', 'Kebudayaan', 'Pembangunan']
+  }
+}
+
+export async function getGaleriTerbaru(limit = 6): Promise<GaleriItem[]> {
+  const items = await getGaleriList()
+  return items.slice(0, limit)
 }

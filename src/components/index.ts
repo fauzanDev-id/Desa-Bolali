@@ -24,3 +24,7 @@ export * from './home/GaleriSection'
 
 // Informasi Components
 export * from './informasi/AgendaView'
+
+// Galeri & Kontak Components
+export * from './galeri/GaleriGrid'
+export * from './kontak/FormulirPesan'

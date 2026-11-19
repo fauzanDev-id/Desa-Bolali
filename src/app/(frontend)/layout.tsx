@@ -8,6 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getWebsiteSettings()
 
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'https://bolali.desa.id'),
     title: {
       default: `${settings.namaInstansi} | ${settings.tagline}`,
       template: `%s | ${settings.namaInstansi}`,

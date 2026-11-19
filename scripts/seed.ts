@@ -514,161 +514,133 @@ async function seed() {
 
   // 4. SEED DOKUMEN TRANSPARANSI
   console.log('📊 Menyemai Dokumen Transparansi APBDes...')
-  const existingTrans = await payload.find({ collection: 'dokumen-transparansi', limit: 1 })
-  if (existingTrans.totalDocs === 0) {
-    await payload.create({
-      collection: 'dokumen-transparansi',
-      data: {
-        judul: 'APBDes 2026',
-        kategori: 'APBDes',
-        tahun: 2026,
-        persentaseRealisasi: 92.3,
-        nominalAnggaran: 1850000000,
-        filePdf: docApbdes ? docApbdes.id : (heroMedia ? heroMedia.id : 1),
-        keterangan: 'Rincian Anggaran Pendapatan dan Belanja Desa Bolali Tahun Anggaran 2026 [Data Dummy]',
-        tampilkanDiBeranda: true,
-        urutan: 1,
-      },
-    })
+  const existingTrans = await payload.find({ collection: 'dokumen-transparansi', limit: 10 })
+  if (existingTrans.totalDocs < 5) {
+    if (existingTrans.totalDocs === 0) {
+      await payload.create({
+        collection: 'dokumen-transparansi',
+        data: {
+          judul: 'APBDes 2026',
+          kategori: 'APBDes',
+          tahun: 2026,
+          persentaseRealisasi: 92.3,
+          nominalAnggaran: 1850000000,
+          filePdf: docApbdes ? docApbdes.id : (heroMedia ? heroMedia.id : 1),
+          keterangan: 'Rincian Anggaran Pendapatan dan Belanja Desa Bolali Tahun Anggaran 2026 [Data Dummy]',
+          tampilkanDiBeranda: true,
+          urutan: 1,
+        },
+      })
+
+      await payload.create({
+        collection: 'dokumen-transparansi',
+        data: {
+          judul: 'Laporan Realisasi',
+          kategori: 'Realisasi',
+          tahun: 2026,
+          nominalAnggaran: 1707550000,
+          filePdf: docRealisasi ? docRealisasi.id : (heroMedia ? heroMedia.id : 1),
+          keterangan: 'Laporan Realisasi Pelaksanaan APBDes Semester Berjalan [Data Dummy]',
+          tampilkanDiBeranda: true,
+          urutan: 2,
+        },
+      })
+
+      await payload.create({
+        collection: 'dokumen-transparansi',
+        data: {
+          judul: 'Rencana Kerja',
+          kategori: 'Rencana Kerja',
+          tahun: 2026,
+          filePdf: docRkpdes ? docRkpdes.id : (heroMedia ? heroMedia.id : 1),
+          keterangan: 'Rencana Kerja Pemerintah Desa (RKPDes) Bolali Tahun 2026 [Data Dummy]',
+          tampilkanDiBeranda: true,
+          urutan: 3,
+        },
+      })
+    }
 
     await payload.create({
       collection: 'dokumen-transparansi',
       data: {
-        judul: 'Laporan Realisasi',
-        kategori: 'Realisasi',
+        judul: 'Laporan Progres Pembangunan Fisik 2026',
+        kategori: 'Laporan Pembangunan',
         tahun: 2026,
-        nominalAnggaran: 1707550000,
+        nominalAnggaran: 480000000,
         filePdf: docRealisasi ? docRealisasi.id : (heroMedia ? heroMedia.id : 1),
-        keterangan: 'Laporan Realisasi Pelaksanaan APBDes Semester Berjalan [Data Dummy]',
-        tampilkanDiBeranda: true,
-        urutan: 2,
+        keterangan: 'Laporan berkala kemajuan fisik proyek jalan rabat beton dan drainase [Data Dummy]',
+        tampilkanDiBeranda: false,
+        urutan: 4,
       },
     })
 
     await payload.create({
       collection: 'dokumen-transparansi',
       data: {
-        judul: 'Rencana Kerja',
-        kategori: 'Rencana Kerja',
-        tahun: 2026,
-        filePdf: docRkpdes ? docRkpdes.id : (heroMedia ? heroMedia.id : 1),
-        keterangan: 'Rencana Kerja Pemerintah Desa (RKPDes) Bolali Tahun 2026 [Data Dummy]',
-        tampilkanDiBeranda: true,
-        urutan: 3,
+        judul: 'Laporan Pertanggungjawaban (LPJ) Realisasi APBDes 2025',
+        kategori: 'Realisasi',
+        tahun: 2025,
+        persentaseRealisasi: 98.7,
+        nominalAnggaran: 1720000000,
+        filePdf: docRealisasi ? docRealisasi.id : (heroMedia ? heroMedia.id : 1),
+        keterangan: 'Laporan Pertanggungjawaban Realisasi Pelaksanaan APBDes TA 2025 [Data Dummy]',
+        tampilkanDiBeranda: false,
+        urutan: 5,
       },
     })
   }
 
   // 5. SEED POTENSI UNGGULAN
   console.log('🌾 Menyemai Potensi Unggulan Desa...')
-  const existingPotensi = await payload.find({ collection: 'potensi', limit: 1 })
-  if (existingPotensi.totalDocs === 0) {
+  const existingPotensi = await payload.find({ collection: 'potensi', limit: 10 })
+  if (existingPotensi.totalDocs < 5) {
     await payload.create({
       collection: 'potensi',
       data: {
-        judul: 'Pertanian',
-        slug: 'pertanian',
-        kategori: 'Pertanian',
-        ringkasan: 'Lahan persawahan subur penghasil padi organik berkualitas unggul.',
-        gambar: potPertanian ? potPertanian.id : (heroMedia ? heroMedia.id : 1),
-        unggulan: true,
-        urutan: 1,
-      },
-    })
-
-    await payload.create({
-      collection: 'potensi',
-      data: {
-        judul: 'UMKM',
-        slug: 'umkm',
-        kategori: 'UMKM',
-        ringkasan: 'Kerajinan gerabah, olahan pangan lokal, dan produk kreatif rumahan.',
+        judul: 'BUMDes Bolali Makmur Sejahtera',
+        slug: 'bumdes-bolali-makmur-sejahtera',
+        kategori: 'BUMDes',
+        ringkasan: 'Badan usaha desa yang mengelola pengolahan gabah, sewa alsintan, dan unit simpan pinjam produktif.',
         gambar: potUmkm ? potUmkm.id : (heroMedia ? heroMedia.id : 1),
+        kontakPengelola: '0812-3456-7891 (Bpk. Mulyono)',
+        lokasi: 'Kompleks Balai Desa Bolali',
         unggulan: true,
-        urutan: 2,
-      },
-    })
-
-    await payload.create({
-      collection: 'potensi',
-      data: {
-        judul: 'Wisata Alam',
-        slug: 'wisata-alam',
-        kategori: 'Wisata',
-        ringkasan: 'Pesona embung desa, aliran sungai jernih, dan agrowisata pedesaan.',
-        gambar: potWisata ? potWisata.id : (heroMedia ? heroMedia.id : 1),
-        unggulan: true,
-        urutan: 3,
-      },
-    })
-
-    await payload.create({
-      collection: 'potensi',
-      data: {
-        judul: 'Budaya',
-        slug: 'budaya',
-        kategori: 'Seni-Budaya',
-        ringkasan: 'Kesenian jathilan, karawitan, dan tradisi gotong royong yang lestari.',
-        gambar: potBudaya ? potBudaya.id : (heroMedia ? heroMedia.id : 1),
-        unggulan: true,
-        urutan: 4,
+        urutan: 0,
       },
     })
   }
 
   // 6. SEED GALERI DESA
   console.log('🖼️ Menyemai Galeri Foto Kegiatan...')
-  const existingGaleri = await payload.find({ collection: 'galeri', limit: 1 })
-  if (existingGaleri.totalDocs === 0) {
+  const existingGaleri = await payload.find({ collection: 'galeri', limit: 10 })
+  if (existingGaleri.totalDocs < 6) {
     await payload.create({
       collection: 'galeri',
       data: {
-        judul: 'Wisata Embung',
-        slug: 'wisata-embung',
-        tipe: 'foto',
+        judul: 'Profil Video Resmi Pemerintah Desa Bolali 2026',
+        slug: 'profil-video-resmi-pemerintah-desa-bolali-2026',
+        tipe: 'video',
         album: 'Pariwisata',
-        foto: gal1 ? gal1.id : (heroMedia ? heroMedia.id : 1),
-        tanggal: '2026-11-08',
+        foto: heroMedia ? heroMedia.id : 1,
+        videoUrl: 'https://www.youtube.com/watch?v=7hR_1b3c9Wk',
+        tanggal: '2026-11-01',
         tampilkanDiBeranda: true,
+        keterangan: 'Video dokumentasi selayang pandang potensi desa dan keramahan warga Bolali [Data Dummy].',
       },
     })
 
     await payload.create({
       collection: 'galeri',
       data: {
-        judul: 'Sentra UMKM',
-        slug: 'sentra-umkm',
-        tipe: 'foto',
-        album: 'Perekonomian',
-        foto: gal2 ? gal2.id : (heroMedia ? heroMedia.id : 1),
-        tanggal: '2026-11-04',
-        tampilkanDiBeranda: true,
-      },
-    })
-
-    await payload.create({
-      collection: 'galeri',
-      data: {
-        judul: 'Tradisi Budaya',
-        slug: 'tradisi-budaya',
-        tipe: 'foto',
+        judul: 'Liputan Festival Budaya dan Kirab Gunungan Desa',
+        slug: 'liputan-festival-budaya-dan-kirab-gunungan-desa',
+        tipe: 'video',
         album: 'Kebudayaan',
-        foto: gal3 ? gal3.id : (heroMedia ? heroMedia.id : 1),
-        tanggal: '2026-10-25',
-        tampilkanDiBeranda: true,
-      },
-    })
-
-    await payload.create({
-      collection: 'galeri',
-      data: {
-        judul: 'Pembangunan Fisik',
-        slug: 'pembangunan-fisik',
-        tipe: 'foto',
-        album: 'Pembangunan',
-        foto: gal4 ? gal4.id : (heroMedia ? heroMedia.id : 1),
-        tanggal: '2026-10-18',
-        tampilkanDiBeranda: true,
+        foto: potBudaya ? potBudaya.id : (heroMedia ? heroMedia.id : 1),
+        videoUrl: 'https://www.youtube.com/watch?v=kXYiU_JCYtU',
+        tanggal: '2026-10-26',
+        tampilkanDiBeranda: false,
+        keterangan: 'Dokumentasi video pentas seni jathilan dan tari karawitan semalam suntuk [Data Dummy].',
       },
     })
   }
