@@ -48,6 +48,7 @@ export function TopBar({ contact, settings }: TopBarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="YouTube Resmi Desa Bolali"
+                aria-label="Kanal YouTube Resmi Desa Bolali"
                 className="hover:text-desa-gold-400 transition-colors p-0.5"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -62,6 +63,7 @@ export function TopBar({ contact, settings }: TopBarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Facebook Resmi Desa Bolali"
+                aria-label="Halaman Facebook Resmi Desa Bolali"
                 className="hover:text-desa-gold-400 transition-colors p-0.5"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -76,6 +78,7 @@ export function TopBar({ contact, settings }: TopBarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Instagram Resmi Desa Bolali"
+                aria-label="Akun Instagram Resmi Desa Bolali"
                 className="hover:text-desa-gold-400 transition-colors p-0.5"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -90,6 +93,7 @@ export function TopBar({ contact, settings }: TopBarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="TikTok Resmi Desa Bolali"
+                aria-label="Akun TikTok Resmi Desa Bolali"
                 className="hover:text-desa-gold-400 transition-colors p-0.5"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">

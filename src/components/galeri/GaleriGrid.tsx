@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import type { GaleriItem } from '@/lib/cms'
 import { getMediaUrl, formatDateIndonesia } from '@/lib/utils'
@@ -37,6 +37,16 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
     return true
   })
 
+  const nextLightbox = useCallback(() => {
+    if (lightboxIndex === null || filteredItems.length === 0) return
+    setLightboxIndex((prev) => (prev !== null ? (prev + 1) % filteredItems.length : null))
+  }, [lightboxIndex, filteredItems.length])
+
+  const prevLightbox = useCallback(() => {
+    if (lightboxIndex === null || filteredItems.length === 0) return
+    setLightboxIndex((prev) => (prev !== null ? (prev - 1 + filteredItems.length) % filteredItems.length : null))
+  }, [lightboxIndex, filteredItems.length])
+
   // Keyboard navigation for lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -51,7 +61,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [lightboxIndex, activeVideo, filteredItems.length])
+  }, [lightboxIndex, activeVideo, nextLightbox, prevLightbox])
 
   const openItem = (item: GaleriItem) => {
     if (item.tipe === 'video') {
@@ -60,16 +70,6 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
       const idx = filteredItems.findIndex((it) => it.id === item.id)
       setLightboxIndex(idx >= 0 ? idx : 0)
     }
-  }
-
-  const nextLightbox = () => {
-    if (lightboxIndex === null) return
-    setLightboxIndex((prev) => (prev! + 1) % filteredItems.length)
-  }
-
-  const prevLightbox = () => {
-    if (lightboxIndex === null) return
-    setLightboxIndex((prev) => (prev! - 1 + filteredItems.length) % filteredItems.length)
   }
 
   const currentLightboxItem = lightboxIndex !== null ? filteredItems[lightboxIndex] : null

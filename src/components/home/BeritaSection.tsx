@@ -45,7 +45,7 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
           {featured && (
             <div className="lg:col-span-7 flex flex-col justify-between group">
               <Link
-                href={`/informasi/berita/${featured.slug}`}
+                href={`/berita/${featured.slug}`}
                 className="block relative aspect-[16/10] w-full rounded-xl overflow-hidden shadow-sm bg-slate-100"
               >
                 <Image
@@ -64,7 +64,7 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
 
               <div className="mt-3 space-y-1.5">
                 <Link
-                  href={`/informasi/berita/${featured.slug}`}
+                  href={`/berita/${featured.slug}`}
                   className="text-base font-bold text-slate-900 group-hover:text-desa-green-800 transition-colors line-clamp-2 leading-snug"
                 >
                   {featured.judul}
@@ -92,7 +92,7 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
               return (
                 <Link
                   key={item.id}
-                  href={`/informasi/berita/${item.slug}`}
+                  href={`/berita/${item.slug}`}
                   className="group flex items-center gap-3 py-2.5 first:pt-0 last:pb-0"
                 >
                   <div className="relative w-20 h-16 rounded-lg overflow-hidden shrink-0 bg-slate-100 shadow-sm border border-slate-100">

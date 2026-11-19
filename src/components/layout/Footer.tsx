@@ -99,7 +99,8 @@ export function Footer({ contact, settings }: FooterProps) {
                     href={sosmed.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="YouTube"
+                    title="YouTube Desa Bolali"
+                    aria-label="Kunjungi Kanal YouTube Desa Bolali"
                     className="w-8 h-8 rounded-full bg-desa-green-800/80 hover:bg-desa-gold-500 hover:text-slate-900 border border-emerald-700/60 flex items-center justify-center transition-all duration-200"
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -113,7 +114,8 @@ export function Footer({ contact, settings }: FooterProps) {
                     href={sosmed.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="Facebook"
+                    title="Facebook Desa Bolali"
+                    aria-label="Kunjungi Halaman Facebook Desa Bolali"
                     className="w-8 h-8 rounded-full bg-desa-green-800/80 hover:bg-desa-gold-500 hover:text-slate-900 border border-emerald-700/60 flex items-center justify-center transition-all duration-200"
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -127,7 +129,8 @@ export function Footer({ contact, settings }: FooterProps) {
                     href={sosmed.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="Instagram"
+                    title="Instagram Desa Bolali"
+                    aria-label="Kunjungi Akun Instagram Desa Bolali"
                     className="w-8 h-8 rounded-full bg-desa-green-800/80 hover:bg-desa-gold-500 hover:text-slate-900 border border-emerald-700/60 flex items-center justify-center transition-all duration-200"
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -141,7 +144,8 @@ export function Footer({ contact, settings }: FooterProps) {
                     href={sosmed.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="TikTok"
+                    title="TikTok Desa Bolali"
+                    aria-label="Kunjungi Akun TikTok Desa Bolali"
                     className="w-8 h-8 rounded-full bg-desa-green-800/80 hover:bg-desa-gold-500 hover:text-slate-900 border border-emerald-700/60 flex items-center justify-center transition-all duration-200"
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">

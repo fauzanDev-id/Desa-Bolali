@@ -33,6 +33,7 @@ export function AccessibilityResizer() {
           type="button"
           onClick={() => changeSize('small')}
           title="Perkecil Ukuran Font (A-)"
+          aria-label="Perkecil Ukuran Font (A-)"
           className={`px-1.5 py-0.5 rounded text-[11px] font-semibold transition-colors ${
             fontSize === 'small'
               ? 'bg-desa-gold-500 text-slate-950 shadow-sm'
@@ -45,6 +46,7 @@ export function AccessibilityResizer() {
           type="button"
           onClick={() => changeSize('normal')}
           title="Ukuran Font Standar (A)"
+          aria-label="Ukuran Font Standar (A)"
           className={`px-1.5 py-0.5 rounded text-[11px] font-semibold transition-colors ${
             fontSize === 'normal'
               ? 'bg-desa-gold-500 text-slate-950 shadow-sm'
@@ -57,6 +59,7 @@ export function AccessibilityResizer() {
           type="button"
           onClick={() => changeSize('large')}
           title="Perbesar Ukuran Font (A+)"
+          aria-label="Perbesar Ukuran Font (A+)"
           className={`px-1.5 py-0.5 rounded text-[11px] font-semibold transition-colors ${
             fontSize === 'large'
               ? 'bg-desa-gold-500 text-slate-950 shadow-sm'
