@@ -300,6 +300,218 @@ async function seed() {
     })
   }
 
+  // 3b. SEED PENGUMUMAN
+  console.log('📢 Menyemai Pengumuman Warga...')
+  const existingPengumuman = await payload.find({ collection: 'pengumuman', limit: 1 })
+  if (existingPengumuman.totalDocs === 0) {
+    await payload.create({
+      collection: 'pengumuman',
+      data: {
+        judul: 'Himbauan Waspada Cuaca Ekstrem dan Gotong Royong Saluran Air',
+        slug: 'himbauan-waspada-cuaca-ekstrem-dan-gotong-royong-saluran-air',
+        ringkasan: 'Seluruh warga dihimbau membersihkan drainase lingkungan dan memangkas pohon rawan tumbang.',
+        isi: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                version: 1,
+                children: [
+                  {
+                    type: 'text',
+                    text: 'Sehubungan dengan peringatan dini BMKG terkait potensi hujan deras disertai angin kencang di wilayah Klaten, Pemerintah Desa Bolali menghimbau seluruh RT dan warga untuk melaksanakan kerja bakti pembersihan selokan dan saluran pembuangan air secara serentak demi mencegah luapan air dan genangan [Data Dummy].',
+                  },
+                ],
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        },
+        tanggal: '2026-11-18T07:00:00.000Z',
+        prioritas: 'Mendesak',
+        status: 'terbit',
+      },
+    })
+
+    await payload.create({
+      collection: 'pengumuman',
+      data: {
+        judul: 'Jadwal Penyaluran Bantuan Langsung Tunai (BLT) Dana Desa Tahap IV',
+        slug: 'jadwal-penyaluran-bantuan-langsung-tunai-blt-dana-desa-tahap-iv',
+        ringkasan: 'Penyaluran BLT-DD bagi 65 Keluarga Penerima Manfaat (KPM) di Balai Desa Bolali.',
+        isi: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                version: 1,
+                children: [
+                  {
+                    type: 'text',
+                    text: 'Diberitahukan kepada seluruh Keluarga Penerima Manfaat (KPM) BLT Dana Desa bahwa pengambilan bantuan tunai tahap IV akan dilaksanakan pada hari Jumat, 27 November 2026 bertempat di Pendopo Balai Desa Bolali dengan membawa undangan resmi dan KTP asli [Data Dummy].',
+                  },
+                ],
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        },
+        tanggal: '2026-11-15T09:00:00.000Z',
+        prioritas: 'Penting',
+        status: 'terbit',
+      },
+    })
+
+    await payload.create({
+      collection: 'pengumuman',
+      data: {
+        judul: 'Pelaksanaan Posyandu Integrasi Layanan Primer (ILP) Balita & Lansia',
+        slug: 'pelaksanaan-posyandu-integrasi-layanan-primer-ilp-balita-dan-lansia',
+        ringkasan: 'Pemeriksaan tensi darah, penimbangan berat badan balita, dan pemberian vitamin.',
+        isi: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                version: 1,
+                children: [
+                  {
+                    type: 'text',
+                    text: 'Layanan Posyandu ILP terpadu bulan November akan dilaksanakan serentak di Poskesdes masing-masing dusun mulai pukul 08.30 WIB. Seluruh ibu hamil, orang tua balita, dan lansia diharapkan hadir tepat waktu [Data Dummy].',
+                  },
+                ],
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        },
+        tanggal: '2026-11-12T08:00:00.000Z',
+        prioritas: 'Penting',
+        status: 'terbit',
+      },
+    })
+
+    await payload.create({
+      collection: 'pengumuman',
+      data: {
+        judul: 'Informasi Pemeliharaan Jaringan Listrik PLN Sementara',
+        slug: 'informasi-pemeliharaan-jaringan-listrik-pln-sementara',
+        ringkasan: 'Pemberitahuan pemadaman sementara untuk perabasan dahan pohon dekat kabel tegangan menengah.',
+        isi: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'paragraph',
+                version: 1,
+                children: [
+                  {
+                    type: 'text',
+                    text: 'Berdasarkan surat resmi PLN ULP Klaten, akan dilakukan pemeliharaan jaringan listrik terencana pada hari Selasa, 24 November 2026 pukul 09.00 - 13.00 WIB meliputi sebagian wilayah Dusun Karanganyar dan Dusun Tegalrejo [Data Dummy].',
+                  },
+                ],
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        },
+        tanggal: '2026-11-08T10:00:00.000Z',
+        prioritas: 'Biasa',
+        status: 'terbit',
+      },
+    })
+  }
+
+  // 3c. SEED AGENDA KEGIATAN
+  console.log('📅 Menyemai Agenda Kegiatan...')
+  const existingAgenda = await payload.find({ collection: 'agenda', limit: 1 })
+  if (existingAgenda.totalDocs === 0) {
+    await payload.create({
+      collection: 'agenda',
+      data: {
+        judul: 'Musyawarah Perencanaan Pembangunan Desa (Musrenbangdes) 2027',
+        slug: 'musrenbangdes-bolali-2027',
+        deskripsi: 'Musyawarah tahunan penyusunan rencana kerja pemerintah desa (RKPDes) dan penyerapan usulan prioritas pembangunan dari perwakilan RT, RW, tokoh masyarakat, dan BPD [Data Dummy].',
+        tanggalMulai: '2026-11-28T09:00:00.000Z',
+        tanggalSelesai: '2026-11-28T13:00:00.000Z',
+        lokasi: 'Aula Balai Desa Bolali',
+        penyelenggara: 'Pemerintah Desa Bolali & BPD',
+        status: 'Akan Datang',
+      },
+    })
+
+    await payload.create({
+      collection: 'agenda',
+      data: {
+        judul: 'Bimbingan Teknis Digital Marketing & Pengemasan Produk UMKM',
+        slug: 'bimtek-digital-marketing-umkm-bolali',
+        deskripsi: 'Pelatihan praktis foto produk, manajemen media sosial bisnis, dan onboarding toko online bersama praktisi e-commerce bagi 35 pelaku UMKM desa [Data Dummy].',
+        tanggalMulai: '2026-12-05T08:30:00.000Z',
+        tanggalSelesai: '2026-12-05T15:00:00.000Z',
+        lokasi: 'Gedung Pertemuan Dusun Bolali I',
+        penyelenggara: 'BUMDes Bolali Makmur & Tim Penggerak PKK',
+        status: 'Akan Datang',
+      },
+    })
+
+    await payload.create({
+      collection: 'agenda',
+      data: {
+        judul: 'Pemeriksaan Kesehatan Gratis & Donor Darah Sukarela Warga',
+        slug: 'pemeriksaan-kesehatan-dan-donor-darah-bolali',
+        deskripsi: 'Pemeriksaan kolesterol, gula darah, asam urat serta bakti sosial donor darah bekerja sama dengan PMI Cabang Klaten [Data Dummy].',
+        tanggalMulai: '2026-11-19T08:00:00.000Z',
+        tanggalSelesai: '2026-11-19T12:00:00.000Z',
+        lokasi: 'Poliklinik Kesehatan Desa (PKD) Bolali',
+        penyelenggara: 'Kader Posyandu & PMI Kabupaten Klaten',
+        status: 'Berlangsung',
+      },
+    })
+
+    await payload.create({
+      collection: 'agenda',
+      data: {
+        judul: 'Kerja Bakti Massal Normalisasi Saluran Irigasi Tersier',
+        slug: 'kerja-bakti-saluran-irigasi-tersier',
+        deskripsi: 'Pembersihan sedimentasi lumpur dan gulma pada saluran irigasi utama guna memperlancar pasokan air menjelang musim tanam pertama [Data Dummy].',
+        tanggalMulai: '2026-11-23T06:30:00.000Z',
+        tanggalSelesai: '2026-11-23T10:30:00.000Z',
+        lokasi: 'Kawasan Persawahan Dusun Tegalrejo & Bolali II',
+        penyelenggara: 'Gapoktan Sumber Makmur & Seluruh Pengurus RT',
+        status: 'Akan Datang',
+      },
+    })
+
+    await payload.create({
+      collection: 'agenda',
+      data: {
+        judul: 'Pentas Seni Wayang Kulit Semalam Suntuk Bersih Desa',
+        slug: 'wayang-kulit-bersih-desa-bolali',
+        deskripsi: 'Pagelaran wayang kulit dalam rangka tradisi merti desa dengan lakon Makukuhan mendoakan ketenteraman dan kemakmuran seluruh warga desa [Data Dummy].',
+        tanggalMulai: '2026-10-25T19:30:00.000Z',
+        tanggalSelesai: '2026-10-26T04:00:00.000Z',
+        lokasi: 'Halaman Balai Desa Bolali',
+        penyelenggara: 'Lembaga Adat & Karang Taruna Desa Bolali',
+        status: 'Selesai',
+      },
+    })
+  }
+
   // 4. SEED DOKUMEN TRANSPARANSI
   console.log('📊 Menyemai Dokumen Transparansi APBDes...')
   const existingTrans = await payload.find({ collection: 'dokumen-transparansi', limit: 1 })

@@ -34,6 +34,43 @@ export function formatDateIndonesia(dateStr: string): string {
 }
 
 /**
+ * Format tanggal Indonesia lengkap (misal: "10 November 2026")
+ */
+export function formatDateFullIndonesia(dateStr: string): string {
+  try {
+    const d = new Date(dateStr)
+    return d.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  } catch {
+    return dateStr
+  }
+}
+
+/**
+ * Format tanggal dan waktu Indonesia (misal: "10 November 2026, 08.00 WIB")
+ */
+export function formatDateTimeIndonesia(dateStr: string): string {
+  try {
+    const d = new Date(dateStr)
+    const dateFormatted = d.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+    const timeFormatted = d.toLocaleTimeString('id-ID', {
+      hour: '2-digit',
+      minute: '2-digit',
+    }).replace(':', '.')
+    return `${dateFormatted}, ${timeFormatted} WIB`
+  } catch {
+    return dateStr
+  }
+}
+
+/**
  * Format angka mata uang Rupiah
  */
 export function formatRupiah(amount: number): string {

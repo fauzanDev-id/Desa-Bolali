@@ -178,6 +178,42 @@ export interface RtRwItem {
   urutan: number
 }
 
+export interface PengumumanItem {
+  id: string | number
+  judul: string
+  slug: string
+  ringkasan?: string | null
+  isi?: any
+  tanggal: string
+  lampiran?: any
+  prioritas: 'Biasa' | 'Penting' | 'Mendesak'
+  status: 'draft' | 'terbit'
+}
+
+export interface AgendaItem {
+  id: string | number
+  judul: string
+  slug: string
+  deskripsi?: string | null
+  tanggalMulai: string
+  tanggalSelesai?: string | null
+  lokasi: string
+  penyelenggara?: string | null
+  status: 'Akan Datang' | 'Berlangsung' | 'Selesai'
+}
+
+export interface PaginatedResult<T> {
+  docs: T[]
+  totalDocs: number
+  limit: number
+  totalPages: number
+  page: number
+  hasPrevPage: boolean
+  hasNextPage: boolean
+  prevPage?: number | null
+  nextPage?: number | null
+}
+
 // ======================== DEFAULT FALLBACK DATA ========================
 
 export const defaultWebsiteSettings: WebsiteSettingsData = {
@@ -565,8 +601,9 @@ export const defaultBeritaList: BeritaItem[] = [
     slug: 'desa-bolali-gelar-gerakan-penghijauan-untuk-masa-depan',
     ringkasan:
       'Pemerintah Desa Bolali bersama masyarakat melaksanakan gerakan penghijauan di seluruh wilayah desa.',
+    isi: 'Pemerintah Desa Bolali bersama masyarakat dan pemuda Karang Taruna melaksanakan gerakan penghijauan dengan menanam 1.000 bibit pohon produktif di sepanjang bantaran irigasi dan ruang terbuka hijau desa guna menjaga kelestarian mata air dan lingkungan desa [Data Dummy].',
     gambar: '/images/berita-1.jpg',
-    kategori: 'Lingkungan & Pertanian',
+    kategori: 'Pertanian',
     tanggalTerbit: '2026-11-10T08:00:00.000Z',
     status: 'terbit',
     unggulan: true,
@@ -576,6 +613,7 @@ export const defaultBeritaList: BeritaItem[] = [
     judul: 'Pembangunan Infrastruktur Jalan Desa',
     slug: 'pembangunan-infrastruktur-jalan-desa',
     ringkasan: 'Realisasi pengaspalan dan pelebaran jalan poros desa penghubung antar dusun.',
+    isi: 'Proyek pengaspalan jalan poros desa penghubung Dusun Bolali I dan Dusun Bolali II telah selesai dikerjakan melalui pembiayaan Dana Desa 2026. Akses transportasi warga kini semakin lancar dan mendukung mobilitas ekonomi tani [Data Dummy].',
     gambar: '/images/berita-2.jpg',
     kategori: 'Pembangunan',
     tanggalTerbit: '2026-11-05T09:00:00.000Z',
@@ -586,8 +624,9 @@ export const defaultBeritaList: BeritaItem[] = [
     judul: 'Pelatihan UMKM untuk Warga Desa',
     slug: 'pelatihan-umkm-untuk-warga-desa',
     ringkasan: 'Pelatihan pengemasan dan pemasaran digital bagi pelaku usaha mikro dan industri rumahan.',
+    isi: 'Sebanyak 40 pelaku usaha mikro di Desa Bolali mengikuti pelatihan sertifikasi halal, packaging kreatif, dan pemasaran daring via marketplace demi mendongkrak penjualan produk unggulan desa [Data Dummy].',
     gambar: '/images/berita-3.jpg',
-    kategori: 'Perekonomian',
+    kategori: 'Kegiatan-Warga',
     tanggalTerbit: '2026-11-01T10:00:00.000Z',
     status: 'terbit',
   },
@@ -596,10 +635,156 @@ export const defaultBeritaList: BeritaItem[] = [
     judul: 'Festival Budaya Desa Bolali Sukamaju',
     slug: 'festival-budaya-desa-bolali-sukamaju',
     ringkasan: 'Pentas seni tradisional dan kirab budaya melestarikan warisan leluhur desa.',
+    isi: 'Ribuan warga memadati lapangan desa dalam rangka Festival Budaya Desa Bolali 2026 yang menampilkan pagelaran tari karawitan, kirab gunungan hasil bumi, dan pameran kerajinan tradisional warga [Data Dummy].',
     gambar: '/images/berita-4.jpg',
-    kategori: 'Kebudayaan',
+    kategori: 'Seni-Budaya',
     tanggalTerbit: '2026-10-28T13:30:00.000Z',
     status: 'terbit',
+  },
+  {
+    id: 5,
+    judul: 'Penyuluhan Pertanian Organik dan Pembagian Pupuk Hayati',
+    slug: 'penyuluhan-pertanian-organik-dan-pembagian-pupuk-hayati',
+    ringkasan: 'Dinas Pertanian memberikan penyuluhan budidaya padi ramah lingkungan bagi kelompok tani.',
+    isi: 'Gabungan Kelompok Tani (Gapoktan) Sumber Makmur Desa Bolali menerima bantuan pupuk hayati cair dan edukasi pengendalian hama terpadu tanpa pestisida kimia berlebih [Data Dummy].',
+    gambar: '/images/potensi-pertanian.jpg',
+    kategori: 'Pertanian',
+    tanggalTerbit: '2026-10-20T08:00:00.000Z',
+    status: 'terbit',
+  },
+  {
+    id: 6,
+    judul: 'Pelayanan Administrasi Kependudukan Terpadu di Balai Desa',
+    slug: 'pelayanan-administrasi-kependudukan-terpadu-di-balai-desa',
+    ringkasan: 'Layanan jemput bola perekaman e-KTP dan aktivasi Identitas Kependudukan Digital (IKD).',
+    isi: 'Pemerintah Desa Bolali bekerja sama dengan Disdukcapil memfasilitasi pembuatan akta kelahiran, kartu keluarga baru, dan aktivasi IKD bagi warga yang berhalangan ke kantor kecamatan [Data Dummy].',
+    gambar: '/images/hero-desa.jpg',
+    kategori: 'Pemerintahan',
+    tanggalTerbit: '2026-10-15T09:30:00.000Z',
+    status: 'terbit',
+  },
+  {
+    id: 7,
+    judul: 'Pemeriksaan Kesehatan Berkala dan Imunisasi Balita',
+    slug: 'pemeriksaan-kesehatan-berkala-dan-imunisasi-balita',
+    ringkasan: 'Kader Posyandu Desa Bolali rutin memantau tumbuh kembang anak demi cegah stunting.',
+    isi: 'Program pencegahan stunting terus digalakkan dengan pemberian makanan tambahan (PMT) bergizi, penimbangan berat badan, dan konsultasi gizi balita gratis di tiap pos dusun [Data Dummy].',
+    gambar: '/images/galeri-2.jpg',
+    kategori: 'Pendidikan-Kesehatan',
+    tanggalTerbit: '2026-10-10T08:30:00.000Z',
+    status: 'terbit',
+  },
+  {
+    id: 8,
+    judul: 'BUMDes Bolali Makmur Resmikan Unit Usaha Pengolahan Pangan',
+    slug: 'bumdes-bolali-makmur-resmikan-unit-usaha-pengolahan-pangan',
+    ringkasan: 'Langkah strategis penyerapan panen petani lokal menjadi produk bernilai tambah tinggi.',
+    isi: 'BUMDes Bolali Makmur resmi mengoperasikan rumah produksi pengolahan keripik dan beras kemasan premium lokal sebagai wujud nyata penguatan perekonomian desa mandiri [Data Dummy].',
+    gambar: '/images/potensi-umkm.jpg',
+    kategori: 'Kemasyarakatan',
+    tanggalTerbit: '2026-10-05T14:00:00.000Z',
+    status: 'terbit',
+  },
+]
+
+export const defaultPengumumanList: PengumumanItem[] = [
+  {
+    id: 1,
+    judul: 'Himbauan Waspada Cuaca Ekstrem dan Gotong Royong Saluran Air',
+    slug: 'himbauan-waspada-cuaca-ekstrem-dan-gotong-royong-saluran-air',
+    ringkasan: 'Seluruh warga dihimbau membersihkan drainase lingkungan dan memangkas pohon rawan tumbang.',
+    isi: 'Sehubungan dengan peringatan dini BMKG terkait potensi hujan deras disertai angin kencang di wilayah Klaten, Pemerintah Desa Bolali menghimbau seluruh RT dan warga untuk melaksanakan kerja bakti pembersihan selokan dan saluran pembuangan air secara serentak demi mencegah luapan air dan genangan [Data Dummy].',
+    tanggal: '2026-11-18T07:00:00.000Z',
+    prioritas: 'Mendesak',
+    status: 'terbit',
+  },
+  {
+    id: 2,
+    judul: 'Jadwal Penyaluran Bantuan Langsung Tunai (BLT) Dana Desa Tahap IV',
+    slug: 'jadwal-penyaluran-bantuan-langsung-tunai-blt-dana-desa-tahap-iv',
+    ringkasan: 'Penyaluran BLT-DD bagi 65 Keluarga Penerima Manfaat (KPM) di Balai Desa Bolali.',
+    isi: 'Diberitahukan kepada seluruh Keluarga Penerima Manfaat (KPM) BLT Dana Desa bahwa pengambilan bantuan tunai tahap IV akan dilaksanakan pada hari Jumat, 27 November 2026 bertempat di Pendopo Balai Desa Bolali dengan membawa undangan resmi dan KTP asli [Data Dummy].',
+    tanggal: '2026-11-15T09:00:00.000Z',
+    prioritas: 'Penting',
+    status: 'terbit',
+  },
+  {
+    id: 3,
+    judul: 'Pelaksanaan Posyandu Integrasi Layanan Primer (ILP) Balita & Lansia',
+    slug: 'pelaksanaan-posyandu-integrasi-layanan-primer-ilp-balita-dan-lansia',
+    ringkasan: 'Pemeriksaan tensi darah, penimbangan berat badan balita, dan pemberian vitamin.',
+    isi: 'Layanan Posyandu ILP terpadu bulan November akan dilaksanakan serentak di Poskesdes masing-masing dusun mulai pukul 08.30 WIB. Seluruh ibu hamil, orang tua balita, dan lansia diharapkan hadir tepat waktu [Data Dummy].',
+    tanggal: '2026-11-12T08:00:00.000Z',
+    prioritas: 'Penting',
+    status: 'terbit',
+  },
+  {
+    id: 4,
+    judul: 'Informasi Pemeliharaan Jaringan Listrik PLN Sementara',
+    slug: 'informasi-pemeliharaan-jaringan-listrik-pln-sementara',
+    ringkasan: 'Pemberitahuan pemadaman sementara untuk perabasan dahan pohon dekat kabel tegangan menengah.',
+    isi: 'Berdasarkan surat resmi PLN ULP Klaten, akan dilakukan pemeliharaan jaringan listrik terencana pada hari Selasa, 24 November 2026 pukul 09.00 - 13.00 WIB meliputi sebagian wilayah Dusun Karanganyar dan Dusun Tegalrejo [Data Dummy].',
+    tanggal: '2026-11-08T10:00:00.000Z',
+    prioritas: 'Biasa',
+    status: 'terbit',
+  },
+]
+
+export const defaultAgendaList: AgendaItem[] = [
+  {
+    id: 1,
+    judul: 'Musyawarah Perencanaan Pembangunan Desa (Musrenbangdes) 2027',
+    slug: 'musrenbangdes-bolali-2027',
+    deskripsi: 'Musyawarah tahunan penyusunan rencana kerja pemerintah desa (RKPDes) dan penyerapan usulan prioritas pembangunan dari perwakilan RT, RW, tokoh masyarakat, dan BPD [Data Dummy].',
+    tanggalMulai: '2026-11-28T09:00:00.000Z',
+    tanggalSelesai: '2026-11-28T13:00:00.000Z',
+    lokasi: 'Aula Balai Desa Bolali',
+    penyelenggara: 'Pemerintah Desa Bolali & BPD',
+    status: 'Akan Datang',
+  },
+  {
+    id: 2,
+    judul: 'Bimbingan Teknis Digital Marketing & Pengemasan Produk UMKM',
+    slug: 'bimtek-digital-marketing-umkm-bolali',
+    deskripsi: 'Pelatihan praktis foto produk, manajemen media sosial bisnis, dan onboarding toko online bersama praktisi e-commerce bagi 35 pelaku UMKM desa [Data Dummy].',
+    tanggalMulai: '2026-12-05T08:30:00.000Z',
+    tanggalSelesai: '2026-12-05T15:00:00.000Z',
+    lokasi: 'Gedung Pertemuan Dusun Bolali I',
+    penyelenggara: 'BUMDes Bolali Makmur & Tim Penggerak PKK',
+    status: 'Akan Datang',
+  },
+  {
+    id: 3,
+    judul: 'Pemeriksaan Kesehatan Gratis & Donor Darah Sukarela Warga',
+    slug: 'pemeriksaan-kesehatan-dan-donor-darah-bolali',
+    deskripsi: 'Pemeriksaan kolesterol, gula darah, asam urat serta bakti sosial donor darah bekerja sama dengan PMI Cabang Klaten [Data Dummy].',
+    tanggalMulai: '2026-11-19T08:00:00.000Z',
+    tanggalSelesai: '2026-11-19T12:00:00.000Z',
+    lokasi: 'Poliklinik Kesehatan Desa (PKD) Bolali',
+    penyelenggara: 'Kader Posyandu & PMI Kabupaten Klaten',
+    status: 'Berlangsung',
+  },
+  {
+    id: 4,
+    judul: 'Kerja Bakti Massal Normalisasi Saluran Irigasi Tersier',
+    slug: 'kerja-bakti-saluran-irigasi-tersier',
+    deskripsi: 'Pembersihan sedimentasi lumpur dan gulma pada saluran irigasi utama guna memperlancar pasokan air menjelang musim tanam pertama [Data Dummy].',
+    tanggalMulai: '2026-11-23T06:30:00.000Z',
+    tanggalSelesai: '2026-11-23T10:30:00.000Z',
+    lokasi: 'Kawasan Persawahan Dusun Tegalrejo & Bolali II',
+    penyelenggara: 'Gapoktan Sumber Makmur & Seluruh Pengurus RT',
+    status: 'Akan Datang',
+  },
+  {
+    id: 5,
+    judul: 'Pentas Seni Wayang Kulit Semalam Suntuk Bersih Desa',
+    slug: 'wayang-kulit-bersih-desa-bolali',
+    deskripsi: 'Pagelaran wayang kulit dalam rangka tradisi merti desa dengan lakon Makukuhan mendoakan ketenteraman dan kemakmuran seluruh warga desa [Data Dummy].',
+    tanggalMulai: '2026-10-25T19:30:00.000Z',
+    tanggalSelesai: '2026-10-26T04:00:00.000Z',
+    lokasi: 'Halaman Balai Desa Bolali',
+    penyelenggara: 'Lembaga Adat & Karang Taruna Desa Bolali',
+    status: 'Selesai',
   },
 ]
 
@@ -982,7 +1167,7 @@ export async function getBeritaTerbaru(limit = 4): Promise<BeritaItem[]> {
     })
 
     if (!result.docs || result.docs.length === 0) {
-      return defaultBeritaList
+      return defaultBeritaList.slice(0, limit)
     }
 
     return result.docs.map((doc: any) => ({
@@ -998,8 +1183,359 @@ export async function getBeritaTerbaru(limit = 4): Promise<BeritaItem[]> {
       unggulan: doc.unggulan,
     }))
   } catch (error) {
-    return defaultBeritaList
+    return defaultBeritaList.slice(0, limit)
   }
+}
+
+function getFallbackBeritaPaginated(
+  page: number,
+  limit: number,
+  kategori?: string,
+  search?: string
+): PaginatedResult<BeritaItem> {
+  let list = defaultBeritaList.filter((b) => b.status === 'terbit')
+
+  if (kategori && kategori !== 'Semua') {
+    list = list.filter((b) => b.kategori.toLowerCase() === kategori.toLowerCase())
+  }
+
+  if (search && search.trim() !== '') {
+    const q = search.trim().toLowerCase()
+    list = list.filter((b) => b.judul.toLowerCase().includes(q) || b.ringkasan.toLowerCase().includes(q))
+  }
+
+  const totalDocs = list.length
+  const totalPages = Math.ceil(totalDocs / limit) || 1
+  const startIndex = (page - 1) * limit
+  const docs = list.slice(startIndex, startIndex + limit)
+
+  return {
+    docs,
+    totalDocs,
+    limit,
+    totalPages,
+    page,
+    hasPrevPage: page > 1,
+    hasNextPage: page < totalPages,
+    prevPage: page > 1 ? page - 1 : null,
+    nextPage: page < totalPages ? page + 1 : null,
+  }
+}
+
+export async function getBeritaPaginated(options?: {
+  page?: number
+  limit?: number
+  kategori?: string
+  search?: string
+}): Promise<PaginatedResult<BeritaItem>> {
+  const page = options?.page || 1
+  const limit = options?.limit || 6
+  const kategori = options?.kategori
+  const search = options?.search
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const where: any = {
+      status: { equals: 'terbit' },
+    }
+
+    if (kategori && kategori !== 'Semua') {
+      where.kategori = { equals: kategori }
+    }
+
+    if (search && search.trim() !== '') {
+      where.or = [
+        { judul: { contains: search.trim() } },
+        { ringkasan: { contains: search.trim() } },
+      ]
+    }
+
+    const result = await payload.find({
+      collection: 'berita',
+      where,
+      sort: '-tanggalTerbit',
+      page,
+      limit,
+    })
+
+    if (!result.docs || result.docs.length === 0) {
+      return getFallbackBeritaPaginated(page, limit, kategori, search)
+    }
+
+    return {
+      docs: result.docs.map((doc: any) => ({
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        ringkasan: doc.ringkasan,
+        isi: doc.isi,
+        gambar: doc.gambar,
+        kategori: doc.kategori,
+        tanggalTerbit: doc.tanggalTerbit,
+        status: doc.status,
+        unggulan: doc.unggulan,
+      })),
+      totalDocs: result.totalDocs,
+      limit: result.limit,
+      totalPages: result.totalPages,
+      page: result.page || 1,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevPage: result.prevPage,
+      nextPage: result.nextPage,
+    }
+  } catch (error) {
+    return getFallbackBeritaPaginated(page, limit, kategori, search)
+  }
+}
+
+export async function getBeritaBySlug(slug: string): Promise<BeritaItem | null> {
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'berita',
+      where: {
+        slug: { equals: slug },
+      },
+      limit: 1,
+    })
+
+    if (result.docs && result.docs.length > 0) {
+      const doc = result.docs[0]
+      return {
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        ringkasan: doc.ringkasan,
+        isi: doc.isi,
+        gambar: doc.gambar,
+        kategori: doc.kategori,
+        tanggalTerbit: doc.tanggalTerbit,
+        status: doc.status,
+        unggulan: doc.unggulan,
+      }
+    }
+  } catch (error) {}
+
+  const match = defaultBeritaList.find((b) => b.slug === slug)
+  return match || null
+}
+
+export async function getBeritaTerkait(currentSlug: string, kategori?: string, limit = 3): Promise<BeritaItem[]> {
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const where: any = {
+      status: { equals: 'terbit' },
+      slug: { not_equals: currentSlug },
+    }
+
+    if (kategori) {
+      where.kategori = { equals: kategori }
+    }
+
+    const result = await payload.find({
+      collection: 'berita',
+      where,
+      sort: '-tanggalTerbit',
+      limit,
+    })
+
+    if (result.docs && result.docs.length > 0) {
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        ringkasan: doc.ringkasan,
+        isi: doc.isi,
+        gambar: doc.gambar,
+        kategori: doc.kategori,
+        tanggalTerbit: doc.tanggalTerbit,
+        status: doc.status,
+        unggulan: doc.unggulan,
+      }))
+    }
+  } catch (error) {}
+
+  return defaultBeritaList
+    .filter((b) => b.slug !== currentSlug)
+    .slice(0, limit)
+}
+
+export async function getPengumumanList(options?: {
+  prioritas?: string
+  search?: string
+  limit?: number
+}): Promise<PengumumanItem[]> {
+  const limit = options?.limit || 20
+  const prioritas = options?.prioritas
+  const search = options?.search
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const where: any = {
+      status: { equals: 'terbit' },
+    }
+
+    if (prioritas && prioritas !== 'Semua') {
+      where.prioritas = { equals: prioritas }
+    }
+
+    if (search && search.trim() !== '') {
+      where.or = [
+        { judul: { contains: search.trim() } },
+        { ringkasan: { contains: search.trim() } },
+      ]
+    }
+
+    const result = await payload.find({
+      collection: 'pengumuman',
+      where,
+      sort: '-tanggal',
+      limit,
+    })
+
+    if (!result.docs || result.docs.length === 0) {
+      let list = defaultPengumumanList.filter((p) => p.status === 'terbit')
+      if (prioritas && prioritas !== 'Semua') {
+        list = list.filter((p) => p.prioritas.toLowerCase() === prioritas.toLowerCase())
+      }
+      if (search && search.trim() !== '') {
+        const q = search.trim().toLowerCase()
+        list = list.filter((p) => p.judul.toLowerCase().includes(q) || (p.ringkasan && p.ringkasan.toLowerCase().includes(q)))
+      }
+      return list.slice(0, limit)
+    }
+
+    return result.docs.map((doc: any) => ({
+      id: doc.id,
+      judul: doc.judul,
+      slug: doc.slug,
+      ringkasan: doc.ringkasan,
+      isi: doc.isi,
+      tanggal: doc.tanggal,
+      lampiran: doc.lampiran,
+      prioritas: doc.prioritas,
+      status: doc.status,
+    }))
+  } catch (error) {
+    let list = defaultPengumumanList.filter((p) => p.status === 'terbit')
+    if (prioritas && prioritas !== 'Semua') {
+      list = list.filter((p) => p.prioritas.toLowerCase() === prioritas.toLowerCase())
+    }
+    return list.slice(0, limit)
+  }
+}
+
+export async function getPengumumanBySlug(slug: string): Promise<PengumumanItem | null> {
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'pengumuman',
+      where: {
+        slug: { equals: slug },
+      },
+      limit: 1,
+    })
+
+    if (result.docs && result.docs.length > 0) {
+      const doc = result.docs[0]
+      return {
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        ringkasan: doc.ringkasan,
+        isi: doc.isi,
+        tanggal: doc.tanggal,
+        lampiran: doc.lampiran,
+        prioritas: doc.prioritas,
+        status: doc.status,
+      }
+    }
+  } catch (error) {}
+
+  const match = defaultPengumumanList.find((p) => p.slug === slug)
+  return match || null
+}
+
+export async function getAgendaList(options?: {
+  status?: string
+  limit?: number
+}): Promise<AgendaItem[]> {
+  const limit = options?.limit || 50
+  const status = options?.status
+
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const where: any = {}
+
+    if (status && status !== 'Semua') {
+      where.status = { equals: status }
+    }
+
+    const result = await payload.find({
+      collection: 'agenda',
+      where,
+      sort: 'tanggalMulai',
+      limit,
+    })
+
+    if (!result.docs || result.docs.length === 0) {
+      let list = defaultAgendaList
+      if (status && status !== 'Semua') {
+        list = list.filter((a) => a.status.toLowerCase() === status.toLowerCase())
+      }
+      return list.slice(0, limit)
+    }
+
+    return result.docs.map((doc: any) => ({
+      id: doc.id,
+      judul: doc.judul,
+      slug: doc.slug,
+      deskripsi: doc.deskripsi,
+      tanggalMulai: doc.tanggalMulai,
+      tanggalSelesai: doc.tanggalSelesai,
+      lokasi: doc.lokasi,
+      penyelenggara: doc.penyelenggara,
+      status: doc.status,
+    }))
+  } catch (error) {
+    let list = defaultAgendaList
+    if (status && status !== 'Semua') {
+      list = list.filter((a) => a.status.toLowerCase() === status.toLowerCase())
+    }
+    return list.slice(0, limit)
+  }
+}
+
+export async function getAgendaBySlug(slug: string): Promise<AgendaItem | null> {
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'agenda',
+      where: {
+        slug: { equals: slug },
+      },
+      limit: 1,
+    })
+
+    if (result.docs && result.docs.length > 0) {
+      const doc = result.docs[0]
+      return {
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        deskripsi: doc.deskripsi,
+        tanggalMulai: doc.tanggalMulai,
+        tanggalSelesai: doc.tanggalSelesai,
+        lokasi: doc.lokasi,
+        penyelenggara: doc.penyelenggara,
+        status: doc.status,
+      }
+    }
+  } catch (error) {}
+
+  const match = defaultAgendaList.find((a) => a.slug === slug)
+  return match || null
 }
 
 export async function getDokumenTransparansi(limit = 3): Promise<DokumenTransparansiItem[]> {

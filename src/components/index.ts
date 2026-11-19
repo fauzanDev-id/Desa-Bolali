@@ -21,3 +21,6 @@ export * from './home/TransparansiCard'
 export * from './home/PotensiSection'
 export * from './home/PetaDigitalSection'
 export * from './home/GaleriSection'
+
+// Informasi Components
+export * from './informasi/AgendaView'
