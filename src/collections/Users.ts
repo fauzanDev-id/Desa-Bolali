@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { canManageUsers, isSuperAdminField } from '../access/roles'
+import { canManageUsers, hideForNonSuperAdmin, isSuperAdminField } from '../access/roles'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -11,6 +11,7 @@ export const Users: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'email', 'role', 'createdAt'],
     group: 'Manajemen Sistem',
+    hidden: hideForNonSuperAdmin,
   },
   access: {
     read: canManageUsers,

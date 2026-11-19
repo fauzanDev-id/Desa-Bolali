@@ -67,8 +67,18 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    berita: Berita;
+    pengumuman: Pengumuman;
+    agenda: Agenda;
+    galeri: Galeri;
+    'perangkat-desa': PerangkatDesa;
+    bpd: Bpd;
+    'rt-rw': RtRw;
+    dusun: Dusun;
+    potensi: Potensi;
+    'dokumen-transparansi': DokumenTransparansi;
     media: Media;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,8 +86,18 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    berita: BeritaSelect<false> | BeritaSelect<true>;
+    pengumuman: PengumumanSelect<false> | PengumumanSelect<true>;
+    agenda: AgendaSelect<false> | AgendaSelect<true>;
+    galeri: GaleriSelect<false> | GaleriSelect<true>;
+    'perangkat-desa': PerangkatDesaSelect<false> | PerangkatDesaSelect<true>;
+    bpd: BpdSelect<false> | BpdSelect<true>;
+    'rt-rw': RtRwSelect<false> | RtRwSelect<true>;
+    dusun: DusunSelect<false> | DusunSelect<true>;
+    potensi: PotensiSelect<false> | PotensiSelect<true>;
+    'dokumen-transparansi': DokumenTransparansiSelect<false> | DokumenTransparansiSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +107,22 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'profil-desa': ProfilDesa;
+    'data-kependudukan': DataKependudukan;
+    'sambutan-kepala-desa': SambutanKepalaDesa;
+    'statistik-desa': StatistikDesa;
+    kontak: Kontak;
+    'pengaturan-website': PengaturanWebsite;
+  };
+  globalsSelect: {
+    'profil-desa': ProfilDesaSelect<false> | ProfilDesaSelect<true>;
+    'data-kependudukan': DataKependudukanSelect<false> | DataKependudukanSelect<true>;
+    'sambutan-kepala-desa': SambutanKepalaDesaSelect<false> | SambutanKepalaDesaSelect<true>;
+    'statistik-desa': StatistikDesaSelect<false> | StatistikDesaSelect<true>;
+    kontak: KontakSelect<false> | KontakSelect<true>;
+    'pengaturan-website': PengaturanWebsiteSelect<false> | PengaturanWebsiteSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -119,31 +153,48 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "berita".
  */
-export interface User {
+export interface Berita {
   id: number;
-  name: string;
-  role: 'super-admin' | 'admin-desa' | 'operator';
+  judul: string;
+  /**
+   * Dibuat otomatis dari judul berita jika dikosongkan.
+   */
+  slug: string;
+  /**
+   * Ringkasan 1-2 kalimat untuk kartu pratinjau berita di beranda.
+   */
+  ringkasan: string;
+  isi: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  gambar: number | Media;
+  kategori:
+    | 'Pemerintahan'
+    | 'Pembangunan'
+    | 'Kemasyarakatan'
+    | 'Pertanian'
+    | 'Pendidikan-Kesehatan'
+    | 'Seni-Budaya'
+    | 'Kegiatan-Warga';
+  tanggalTerbit: string;
+  status: 'draft' | 'terbit';
+  unggulan?: boolean | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -193,6 +244,224 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pengumuman".
+ */
+export interface Pengumuman {
+  id: number;
+  judul: string;
+  slug: string;
+  ringkasan?: string | null;
+  isi: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  tanggal: string;
+  lampiran?: (number | null) | Media;
+  prioritas: 'Biasa' | 'Penting' | 'Mendesak';
+  status: 'draft' | 'terbit';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agenda".
+ */
+export interface Agenda {
+  id: number;
+  judul: string;
+  slug: string;
+  deskripsi?: string | null;
+  tanggalMulai: string;
+  tanggalSelesai?: string | null;
+  lokasi: string;
+  penyelenggara?: string | null;
+  status: 'Akan Datang' | 'Berlangsung' | 'Selesai';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galeri".
+ */
+export interface Galeri {
+  id: number;
+  judul: string;
+  slug: string;
+  tipe: 'foto' | 'video';
+  album?: string | null;
+  foto?: (number | null) | Media;
+  videoUrl?: string | null;
+  tanggal: string;
+  keterangan?: string | null;
+  tampilkanDiBeranda?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "perangkat-desa".
+ */
+export interface PerangkatDesa {
+  id: number;
+  nama: string;
+  jabatan: string;
+  kategoriJabatan: 'Kepala-Desa' | 'Sekretariat' | 'Teknis' | 'Kewilayahan';
+  niap?: string | null;
+  foto?: (number | null) | Media;
+  /**
+   * Semakin kecil angka, semakin awal ditampilkan di bagan/daftar.
+   */
+  urutan: number;
+  statusAktif?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bpd".
+ */
+export interface Bpd {
+  id: number;
+  nama: string;
+  jabatan: string;
+  keterangan?: string | null;
+  foto?: (number | null) | Media;
+  urutan: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rt-rw".
+ */
+export interface RtRw {
+  id: number;
+  nama: string;
+  jenis: 'RT' | 'RW';
+  nomor: string;
+  dusun?: (number | null) | Dusun;
+  telepon?: string | null;
+  urutan: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dusun".
+ */
+export interface Dusun {
+  id: number;
+  nama: string;
+  kepalaDusun: string;
+  jumlahRT?: number | null;
+  jumlahRW?: number | null;
+  luasWilayah?: string | null;
+  deskripsi?: string | null;
+  urutan: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "potensi".
+ */
+export interface Potensi {
+  id: number;
+  judul: string;
+  slug: string;
+  kategori: 'BUMDes' | 'Pertanian' | 'UMKM' | 'Wisata' | 'Seni-Budaya';
+  /**
+   * Ringkasan yang ditampilkan pada kartu potensi di halaman beranda.
+   */
+  ringkasan: string;
+  deskripsi?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  gambar: number | Media;
+  kontakPengelola?: string | null;
+  lokasi?: string | null;
+  unggulan?: boolean | null;
+  urutan?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dokumen-transparansi".
+ */
+export interface DokumenTransparansi {
+  id: number;
+  judul: string;
+  kategori: 'APBDes' | 'Realisasi' | 'Laporan Pembangunan' | 'Rencana Kerja';
+  tahun: number;
+  /**
+   * Digunakan untuk diagram persentase donat realisasi APBDes di beranda (misal: 92.3).
+   */
+  persentaseRealisasi?: number | null;
+  nominalAnggaran?: number | null;
+  /**
+   * Unggah berkas dokumen PDF resmi yang dapat diunduh publik.
+   */
+  filePdf: number | Media;
+  keterangan?: string | null;
+  tampilkanDiBeranda?: boolean | null;
+  urutan?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name: string;
+  role: 'super-admin' | 'admin-desa' | 'operator';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -216,12 +485,52 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'berita';
+        value: number | Berita;
+      } | null)
+    | ({
+        relationTo: 'pengumuman';
+        value: number | Pengumuman;
+      } | null)
+    | ({
+        relationTo: 'agenda';
+        value: number | Agenda;
+      } | null)
+    | ({
+        relationTo: 'galeri';
+        value: number | Galeri;
+      } | null)
+    | ({
+        relationTo: 'perangkat-desa';
+        value: number | PerangkatDesa;
+      } | null)
+    | ({
+        relationTo: 'bpd';
+        value: number | Bpd;
+      } | null)
+    | ({
+        relationTo: 'rt-rw';
+        value: number | RtRw;
+      } | null)
+    | ({
+        relationTo: 'dusun';
+        value: number | Dusun;
+      } | null)
+    | ({
+        relationTo: 'potensi';
+        value: number | Potensi;
+      } | null)
+    | ({
+        relationTo: 'dokumen-transparansi';
+        value: number | DokumenTransparansi;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -267,28 +576,161 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "berita_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  role?: T;
+export interface BeritaSelect<T extends boolean = true> {
+  judul?: T;
+  slug?: T;
+  ringkasan?: T;
+  isi?: T;
+  gambar?: T;
+  kategori?: T;
+  tanggalTerbit?: T;
+  status?: T;
+  unggulan?: T;
   updatedAt?: T;
   createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  resetPasswordRequestedAt?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pengumuman_select".
+ */
+export interface PengumumanSelect<T extends boolean = true> {
+  judul?: T;
+  slug?: T;
+  ringkasan?: T;
+  isi?: T;
+  tanggal?: T;
+  lampiran?: T;
+  prioritas?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agenda_select".
+ */
+export interface AgendaSelect<T extends boolean = true> {
+  judul?: T;
+  slug?: T;
+  deskripsi?: T;
+  tanggalMulai?: T;
+  tanggalSelesai?: T;
+  lokasi?: T;
+  penyelenggara?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galeri_select".
+ */
+export interface GaleriSelect<T extends boolean = true> {
+  judul?: T;
+  slug?: T;
+  tipe?: T;
+  album?: T;
+  foto?: T;
+  videoUrl?: T;
+  tanggal?: T;
+  keterangan?: T;
+  tampilkanDiBeranda?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "perangkat-desa_select".
+ */
+export interface PerangkatDesaSelect<T extends boolean = true> {
+  nama?: T;
+  jabatan?: T;
+  kategoriJabatan?: T;
+  niap?: T;
+  foto?: T;
+  urutan?: T;
+  statusAktif?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bpd_select".
+ */
+export interface BpdSelect<T extends boolean = true> {
+  nama?: T;
+  jabatan?: T;
+  keterangan?: T;
+  foto?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rt-rw_select".
+ */
+export interface RtRwSelect<T extends boolean = true> {
+  nama?: T;
+  jenis?: T;
+  nomor?: T;
+  dusun?: T;
+  telepon?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dusun_select".
+ */
+export interface DusunSelect<T extends boolean = true> {
+  nama?: T;
+  kepalaDusun?: T;
+  jumlahRT?: T;
+  jumlahRW?: T;
+  luasWilayah?: T;
+  deskripsi?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "potensi_select".
+ */
+export interface PotensiSelect<T extends boolean = true> {
+  judul?: T;
+  slug?: T;
+  kategori?: T;
+  ringkasan?: T;
+  deskripsi?: T;
+  gambar?: T;
+  kontakPengelola?: T;
+  lokasi?: T;
+  unggulan?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dokumen-transparansi_select".
+ */
+export interface DokumenTransparansiSelect<T extends boolean = true> {
+  judul?: T;
+  kategori?: T;
+  tahun?: T;
+  persentaseRealisasi?: T;
+  nominalAnggaran?: T;
+  filePdf?: T;
+  keterangan?: T;
+  tampilkanDiBeranda?: T;
+  urutan?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -345,6 +787,31 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  resetPasswordRequestedAt?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -382,6 +849,330 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profil-desa".
+ */
+export interface ProfilDesa {
+  id: number;
+  sejarah: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  visi: string;
+  misi: {
+    poin: string;
+    id?: string | null;
+  }[];
+  geografis?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  batasUtara?: string | null;
+  batasSelatan?: string | null;
+  batasTimur?: string | null;
+  batasBarat?: string | null;
+  luasWilayah?: string | null;
+  tipologi?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "data-kependudukan".
+ */
+export interface DataKependudukan {
+  id: number;
+  totalPenduduk: number;
+  jumlahKepalaKeluarga: number;
+  jumlahLakiLaki: number;
+  jumlahPerempuan: number;
+  tahunData: number;
+  kelompokUmur?:
+    | {
+        rentang: string;
+        jumlah: number;
+        id?: string | null;
+      }[]
+    | null;
+  pekerjaan?:
+    | {
+        namaPekerjaan: string;
+        jumlah: number;
+        id?: string | null;
+      }[]
+    | null;
+  pendidikan?:
+    | {
+        jenjang: string;
+        jumlah: number;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sambutan-kepala-desa".
+ */
+export interface SambutanKepalaDesa {
+  id: number;
+  namaKepalaDesa: string;
+  jabatan: string;
+  foto?: (number | null) | Media;
+  kutipanSingkat: string;
+  isiLengkap?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "statistik-desa".
+ */
+export interface StatistikDesa {
+  id: number;
+  jumlahPenduduk: number;
+  jumlahKK: number;
+  luasWilayah: string;
+  jumlahDusun: number;
+  indeksDesaMembangun: 'Sangat-Tertinggal' | 'Tertinggal' | 'Berkembang' | 'Maju' | 'Mandiri';
+  taglineIDM?: string | null;
+  statusDesaDigital?: string | null;
+  taglineDesaDigital?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kontak".
+ */
+export interface Kontak {
+  id: number;
+  alamat: string;
+  kodePos?: string | null;
+  telepon: string;
+  whatsapp?: string | null;
+  email: string;
+  jamOperasional: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  googleMapsEmbedUrl?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pengaturan-website".
+ */
+export interface PengaturanWebsite {
+  id: number;
+  namaWebsite: string;
+  namaInstansi: string;
+  subInstansi: string;
+  tagline: string;
+  deskripsiHero: string;
+  logo?: (number | null) | Media;
+  bannerSlider?:
+    | {
+        gambar: number | Media;
+        judul?: string | null;
+        subjudul?: string | null;
+        teksTombolUtama?: string | null;
+        tautanTombolUtama?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  mediaSosial?: {
+    youtube?: string | null;
+    facebook?: string | null;
+    instagram?: string | null;
+    tiktok?: string | null;
+  };
+  teksFooter?: string | null;
+  copyright: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profil-desa_select".
+ */
+export interface ProfilDesaSelect<T extends boolean = true> {
+  sejarah?: T;
+  visi?: T;
+  misi?:
+    | T
+    | {
+        poin?: T;
+        id?: T;
+      };
+  geografis?: T;
+  batasUtara?: T;
+  batasSelatan?: T;
+  batasTimur?: T;
+  batasBarat?: T;
+  luasWilayah?: T;
+  tipologi?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "data-kependudukan_select".
+ */
+export interface DataKependudukanSelect<T extends boolean = true> {
+  totalPenduduk?: T;
+  jumlahKepalaKeluarga?: T;
+  jumlahLakiLaki?: T;
+  jumlahPerempuan?: T;
+  tahunData?: T;
+  kelompokUmur?:
+    | T
+    | {
+        rentang?: T;
+        jumlah?: T;
+        id?: T;
+      };
+  pekerjaan?:
+    | T
+    | {
+        namaPekerjaan?: T;
+        jumlah?: T;
+        id?: T;
+      };
+  pendidikan?:
+    | T
+    | {
+        jenjang?: T;
+        jumlah?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sambutan-kepala-desa_select".
+ */
+export interface SambutanKepalaDesaSelect<T extends boolean = true> {
+  namaKepalaDesa?: T;
+  jabatan?: T;
+  foto?: T;
+  kutipanSingkat?: T;
+  isiLengkap?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "statistik-desa_select".
+ */
+export interface StatistikDesaSelect<T extends boolean = true> {
+  jumlahPenduduk?: T;
+  jumlahKK?: T;
+  luasWilayah?: T;
+  jumlahDusun?: T;
+  indeksDesaMembangun?: T;
+  taglineIDM?: T;
+  statusDesaDigital?: T;
+  taglineDesaDigital?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kontak_select".
+ */
+export interface KontakSelect<T extends boolean = true> {
+  alamat?: T;
+  kodePos?: T;
+  telepon?: T;
+  whatsapp?: T;
+  email?: T;
+  jamOperasional?: T;
+  latitude?: T;
+  longitude?: T;
+  googleMapsEmbedUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pengaturan-website_select".
+ */
+export interface PengaturanWebsiteSelect<T extends boolean = true> {
+  namaWebsite?: T;
+  namaInstansi?: T;
+  subInstansi?: T;
+  tagline?: T;
+  deskripsiHero?: T;
+  logo?: T;
+  bannerSlider?:
+    | T
+    | {
+        gambar?: T;
+        judul?: T;
+        subjudul?: T;
+        teksTombolUtama?: T;
+        tautanTombolUtama?: T;
+        id?: T;
+      };
+  mediaSosial?:
+    | T
+    | {
+        youtube?: T;
+        facebook?: T;
+        instagram?: T;
+        tiktok?: T;
+      };
+  teksFooter?: T;
+  copyright?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

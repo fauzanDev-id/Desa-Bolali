@@ -6,8 +6,29 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
+// Collections
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Berita } from './collections/Berita'
+import { Pengumuman } from './collections/Pengumuman'
+import { Agenda } from './collections/Agenda'
+import { PerangkatDesa } from './collections/PerangkatDesa'
+import { Bpd } from './collections/Bpd'
+import { RtRw } from './collections/RtRw'
+import { Dusun } from './collections/Dusun'
+import { Potensi } from './collections/Potensi'
+import { DokumenTransparansi } from './collections/DokumenTransparansi'
+import { Galeri } from './collections/Galeri'
+
+// Globals
+import {
+  ProfilDesa,
+  DataKependudukan,
+  SambutanKepalaDesa,
+  StatistikDesa,
+  Kontak,
+  PengaturanWebsite,
+} from './globals'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -26,7 +47,32 @@ export default buildConfig({
     supportedLanguages: { id, en },
     fallbackLanguage: 'id',
   },
-  collections: [Users, Media],
+  collections: [
+    // Informasi & Operasional
+    Berita,
+    Pengumuman,
+    Agenda,
+    Galeri,
+    // Pemerintahan
+    PerangkatDesa,
+    Bpd,
+    RtRw,
+    Dusun,
+    // Potensi & Transparansi
+    Potensi,
+    DokumenTransparansi,
+    // Pustaka & Pengguna
+    Media,
+    Users,
+  ],
+  globals: [
+    ProfilDesa,
+    DataKependudukan,
+    SambutanKepalaDesa,
+    StatistikDesa,
+    Kontak,
+    PengaturanWebsite,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'desa-bolali-secret-key-super-secure-2026',
   typescript: {

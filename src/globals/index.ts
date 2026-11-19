@@ -1,5 +1,6 @@
-/**
- * Folder Globals untuk Singleton Payload CMS (Pengaturan Website, Identitas Kontak, Statistik, Profil Desa)
- * Diimplementasikan pada Tahap 2
- */
-export const globals = []
+export { ProfilDesa } from './ProfilDesa'
+export { DataKependudukan } from './DataKependudukan'
+export { SambutanKepalaDesa } from './SambutanKepalaDesa'
+export { StatistikDesa } from './StatistikDesa'
+export { Kontak } from './Kontak'
+export { PengaturanWebsite } from './PengaturanWebsite'
