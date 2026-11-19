@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { canManageUsers, isSuperAdminField } from '../access/roles'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -8,7 +9,14 @@ export const Users: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'email', 'role'],
+    defaultColumns: ['name', 'email', 'role', 'createdAt'],
+    group: 'Manajemen Sistem',
+  },
+  access: {
+    read: canManageUsers,
+    create: canManageUsers,
+    update: canManageUsers,
+    delete: ({ req: { user } }) => Boolean(user && user.role === 'super-admin'),
   },
   auth: true,
   fields: [
@@ -30,12 +38,23 @@ export const Users: CollectionConfig = {
         { label: 'Operator (Berita, Pengumuman, Agenda, Galeri)', value: 'operator' },
       ],
       access: {
-        // Hanya super-admin yang bisa mengubah role
-        update: ({ req: { user } }) => {
-          return user?.role === 'super-admin'
-        },
+        update: isSuperAdminField,
       },
     },
   ],
+  hooks: {
+    beforeChange: [
+      async ({ operation, data, req }) => {
+        // Otomatis jadikan super-admin jika user pertama kali dibuat di sistem
+        if (operation === 'create') {
+          const count = await req.payload.count({ collection: 'users' })
+          if (count.totalDocs === 0) {
+            data.role = 'super-admin'
+          }
+        }
+        return data
+      },
+    ],
+  },
   versions: false,
 }

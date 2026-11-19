@@ -1,5 +1,7 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { id } from '@payloadcms/translations/languages/id'
+import { en } from '@payloadcms/translations/languages/en'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -19,6 +21,10 @@ export default buildConfig({
     meta: {
       titleSuffix: ' - Portal Admin Desa Bolali',
     },
+  },
+  i18n: {
+    supportedLanguages: { id, en },
+    fallbackLanguage: 'id',
   },
   collections: [Users, Media],
   editor: lexicalEditor(),

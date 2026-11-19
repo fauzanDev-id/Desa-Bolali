@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { anyone, isStaff } from '../access/roles'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -6,13 +7,20 @@ export const Media: CollectionConfig = {
     singular: 'Media',
     plural: 'Pustaka Media',
   },
+  admin: {
+    useAsTitle: 'alt',
+    group: 'Pustaka & Konten',
+  },
   access: {
-    read: () => true,
+    read: anyone,
+    create: isStaff,
+    update: isStaff,
+    delete: isStaff,
   },
   fields: [
     {
       name: 'alt',
-      label: 'Deskripsi Gambar (Alt Text)',
+      label: 'Deskripsi Berkas / Teks Alt (Wajib untuk Aksesibilitas Gambar)',
       type: 'text',
       required: false,
     },
@@ -46,6 +54,6 @@ export const Media: CollectionConfig = {
       },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*', 'application/pdf'],
+    mimeTypes: ['image/*', 'video/*', 'application/pdf'],
   },
 }
