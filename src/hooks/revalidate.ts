@@ -1,15 +1,19 @@
-import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, GlobalAfterChangeHook } from 'payload'
-import { revalidatePath } from 'next/cache'
+import type {
+  CollectionAfterChangeHook,
+  CollectionAfterDeleteHook,
+  GlobalAfterChangeHook,
+} from 'payload'
 
 /**
  * Revalidasi Next.js cache untuk koleksi setelah pembuatan atau pembaruan dokumen
  */
 export const revalidateCollection =
   (path: string): CollectionAfterChangeHook =>
-  ({ doc, req: { payload } }) => {
+  async ({ doc, req: { payload } }) => {
     try {
+      const { revalidatePath } = await import('next/cache')
       revalidatePath(path)
-      revalidatePath('/') // Revalidasi beranda jika ada data terkait yang ditampilkan
+      revalidatePath('/')
       payload.logger.info(`Revalidated path: ${path} and /`)
     } catch (err) {
       payload.logger.warn(`Could not revalidate path ${path}: ${err}`)
@@ -22,8 +26,9 @@ export const revalidateCollection =
  */
 export const revalidateCollectionDelete =
   (path: string): CollectionAfterDeleteHook =>
-  ({ doc, req: { payload } }) => {
+  async ({ doc, req: { payload } }) => {
     try {
+      const { revalidatePath } = await import('next/cache')
       revalidatePath(path)
       revalidatePath('/')
       payload.logger.info(`Revalidated path after delete: ${path} and /`)
@@ -38,8 +43,9 @@ export const revalidateCollectionDelete =
  */
 export const revalidateGlobal =
   (...paths: string[]): GlobalAfterChangeHook =>
-  ({ doc, req: { payload } }) => {
+  async ({ doc, req: { payload } }) => {
     try {
+      const { revalidatePath } = await import('next/cache')
       for (const p of paths) {
         revalidatePath(p)
       }
