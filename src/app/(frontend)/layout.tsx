@@ -1,8 +1,23 @@
 import type { Metadata } from 'next'
 import React from 'react'
+import { Plus_Jakarta_Sans, Dancing_Script } from 'next/font/google'
 import './globals.css'
 import { TopBar, Navbar, Footer } from '@/components'
 import { getContactData, getWebsiteSettings } from '@/lib/cms'
+
+const sans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+})
+
+const script = Dancing_Script({
+  subsets: ['latin'],
+  variable: '--font-script',
+  display: 'swap',
+  weight: ['600', '700'],
+})
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getWebsiteSettings()
@@ -36,8 +51,8 @@ export default async function RootLayout({
   ])
 
   return (
-    <html lang="id">
-      <body className="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased selection:bg-desa-green-900 selection:text-white">
+    <html lang="id" className={`${sans.variable} ${script.variable}`}>
+      <body className="min-h-screen flex flex-col bg-desa-pageBg text-desa-textDark font-sans antialiased selection:bg-desa-primaryGreen selection:text-white">
         {/* Skip to Main Content Link for Keyboard and Screen Reader Accessibility */}
         <a
           href="#main-content"

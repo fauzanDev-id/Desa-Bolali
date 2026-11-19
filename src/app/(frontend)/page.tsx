@@ -50,7 +50,7 @@ export default async function HomePage() {
       <StatsBar statistik={statistik} />
 
       {/* Main Content Grid Sections */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+      <div className="max-w-[1376px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Row 1: Sambutan Kades, Berita Terbaru, Transparansi APBDes */}
         <section aria-label="Informasi Utama Desa" className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
           {/* Card 1: Sambutan Kepala Desa (4 Cols) */}

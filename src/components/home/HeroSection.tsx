@@ -73,14 +73,14 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
       </div>
 
       {/* Main Content Overlay */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 w-full flex flex-col lg:flex-row items-center justify-between gap-10">
+      <div className="relative z-10 max-w-[1376px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 w-full flex flex-col lg:flex-row items-center justify-between gap-10">
         {/* Left Column: Heading, Slogan & CTA Buttons */}
         <div className="max-w-2xl text-white space-y-4 sm:space-y-6">
           <div>
-            <span className="block text-xl sm:text-2xl lg:text-3xl font-serif italic text-desa-gold-400 drop-shadow">
+            <span className="block text-2xl sm:text-3xl lg:text-4xl font-script text-desa-gold drop-shadow">
               Selamat Datang di
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white drop-shadow-md mt-1">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white drop-shadow-md mt-1 font-sans">
               {settings.namaWebsite}
             </h1>
             <p className="text-xl sm:text-2xl font-bold text-white/95 tracking-tight mt-2 font-sans italic">
@@ -120,8 +120,8 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
         {/* Right Column: Floating Badge (Indeks Desa Membangun: Mandiri) */}
         <div className="w-full lg:w-auto flex flex-col items-center lg:items-end justify-center">
           {/* Script Slogan Above Badge */}
-          <p className="text-base sm:text-lg font-serif italic text-white/90 drop-shadow mb-2 text-center lg:text-right">
-            {statistik.taglineIDM}
+          <p className="text-xl sm:text-2xl font-script text-white/95 drop-shadow mb-2 text-center lg:text-right">
+            {statistik.taglineIDM || 'Maju Bersama Untuk Desa Lebih Baik'}
           </p>
 
           {/* White Card: IDM Mandiri */}

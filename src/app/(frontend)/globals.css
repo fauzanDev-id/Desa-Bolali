@@ -2,84 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-primary-950: #041d0a;
-  --color-primary-900: #0b4619;
-  --color-primary-800: #14532d;
-  --color-primary-700: #15803d;
-  --color-primary-100: #dcfce7;
-  --color-primary-50: #f0fdf4;
+@layer base {
+  :root {
+    /* Brand Colors sesuai docs/DESIGN_SPEC.md */
+    --color-desa-darkGreen: #073c24;
+    --color-desa-primaryGreen: #0b4625;
+    --color-desa-greenHover: #0f5930;
+    --color-desa-accentGreen: #15803d;
+    --color-desa-lightGreen: #eaf4ee;
+    --color-desa-gold: #eab308;
+    --color-desa-goldHover: #ca8a04;
+    --color-desa-goldLight: #fef9c3;
+    --color-desa-pageBg: #f2f6f3;
+    --color-desa-surface: #ffffff;
+    --color-desa-textDark: #0f172a;
+    --color-desa-textMuted: #64748b;
+    --color-desa-border: #e2e8f0;
 
-  --color-accent-600: #ca8a04;
-  --color-accent-500: #eab308;
-  --color-accent-400: #facc15;
-  --color-accent-100: #fef9c3;
+    /* Legacy tokens for backward compatibility */
+    --color-primary-950: #041d0a;
+    --color-primary-900: #0b4619;
+    --color-primary-800: #14532d;
+    --color-primary-700: #15803d;
+    --color-primary-100: #dcfce7;
+    --color-primary-50: #f0fdf4;
 
-  --radius-card: 1rem;
-  --radius-card-lg: 1.25rem;
+    --color-accent-600: #ca8a04;
+    --color-accent-500: #eab308;
+    --color-accent-400: #facc15;
+    --color-accent-100: #fef9c3;
 
-  --base-font-size: 16px;
-  --background: #f8fafc;
-  --foreground: #0f172a;
-}
+    --radius-card: 14px;
+    --radius-card-lg: 16px;
 
-html {
-  font-size: var(--base-font-size);
-  scroll-behavior: smooth;
-}
-
-/* Aksesibilitas Font Size Scaling */
-html[data-font-size='small'] {
-  --base-font-size: 14.5px;
-}
-
-html[data-font-size='normal'] {
-  --base-font-size: 16px;
-}
-
-html[data-font-size='large'] {
-  --base-font-size: 18px;
-}
-
-body {
-  color: var(--foreground);
-  background-color: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-/* Dropdown animation */
-@keyframes dropdownFade {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
+    --base-font-size: 16px;
+    --background: #f2f6f3;
+    --foreground: #0f172a;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  html {
+    font-size: var(--base-font-size);
+    scroll-behavior: smooth;
+    background-color: var(--color-desa-pageBg);
+  }
+
+  /* Aksesibilitas Font Size Scaling */
+  html[data-font-size='small'] {
+    --base-font-size: 14.5px;
+  }
+
+  html[data-font-size='normal'] {
+    --base-font-size: 16px;
+  }
+
+  html[data-font-size='large'] {
+    --base-font-size: 18px;
+  }
+
+  body {
+    color: var(--color-desa-textDark);
+    background-color: var(--color-desa-pageBg);
+    font-family: var(--font-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
   }
 }
 
-.animate-dropdown {
-  animation: dropdownFade 0.18s ease-out forwards;
+/* Utilitas font script dekoratif (hanya untuk aksen hero sesuai batasan) */
+.font-script {
+  font-family: var(--font-script), 'Dancing Script', cursive;
 }

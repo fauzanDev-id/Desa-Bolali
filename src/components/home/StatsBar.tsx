@@ -8,7 +8,7 @@ interface StatsBarProps {
 
 export function StatsBar({ statistik }: StatsBarProps) {
   return (
-    <div className="relative -mt-10 sm:-mt-12 lg:-mt-14 z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative -mt-10 sm:-mt-12 lg:-mt-14 z-30 max-w-[1376px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="bg-white rounded-2xl sm:rounded-3xl shadow-float border border-slate-200/90 p-3 sm:p-4 lg:p-5 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
         {/* Left: 4 Statistics Counters Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 flex-1 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
