@@ -1020,6 +1020,20 @@ export interface PengaturanWebsite {
         id?: string | null;
       }[]
     | null;
+  menuNavigasi?:
+    | {
+        label: string;
+        url: string;
+        submenus?:
+          | {
+              label: string;
+              url: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   mediaSosial?: {
     youtube?: string | null;
     facebook?: string | null;
@@ -1158,6 +1172,20 @@ export interface PengaturanWebsiteSelect<T extends boolean = true> {
         subjudul?: T;
         teksTombolUtama?: T;
         tautanTombolUtama?: T;
+        id?: T;
+      };
+  menuNavigasi?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        submenus?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+              id?: T;
+            };
         id?: T;
       };
   mediaSosial?:

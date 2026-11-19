@@ -1,99 +1,123 @@
 import React from 'react'
-import Link from 'next/link'
-import { ShieldCheck, Database, Layers, ArrowRight, ExternalLink } from 'lucide-react'
+import {
+  Breadcrumb,
+  Button,
+  SectionCard,
+  SectionTitle,
+} from '@/components'
+import { ShieldCheck, Sparkles, Layers, Palette, ArrowRight } from 'lucide-react'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col justify-between">
-      {/* Top Notification Bar */}
-      <div className="bg-desa-green-950 text-emerald-100 text-xs py-2 px-4 text-center border-b border-desa-green-900 flex items-center justify-center gap-2">
-        <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>Website Desa Bolali (Kec. Wonosari, Kab. Klaten) — Tahap 1: Inisialisasi Fondasi Selesai</span>
-      </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+      {/* Breadcrumb Demo */}
+      <Breadcrumb
+        items={[
+          { label: 'Sistem Desain & Layout Global' },
+        ]}
+      />
 
-      {/* Hero Container */}
-      <main className="flex-1 max-w-5xl mx-auto px-4 py-12 flex flex-col items-center justify-center text-center">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-desa-green-100 text-desa-green-900 text-xs font-semibold uppercase tracking-wider mb-6 border border-desa-green-200">
-          <ShieldCheck className="w-4 h-4 text-desa-green-700" />
-          Sistem Resmi Desa Bolali
-        </div>
-
-        {/* Title */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-desa-green-900 tracking-tight leading-tight">
-          Selamat Datang di Portal <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-desa-green-800 via-desa-green-700 to-desa-gold-600">
-            Pemerintah Desa Bolali
-          </span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="mt-5 text-lg sm:text-xl text-slate-600 max-w-2xl leading-relaxed">
-          Kecamatan Wonosari, Kabupaten Klaten, Jawa Tengah. Platform terpadu informasi publik, tata kelola pemerintahan, potensi desa, dan transparansi anggaran.
-        </p>
-
-        {/* Action Buttons */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="/admin"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-desa-green-900 hover:bg-desa-green-800 text-white font-medium shadow-md hover:shadow-lg transition-all duration-200"
-          >
-            <span>Masuk Panel Admin CMS</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-
-          <Link
-            href="/admin/login"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-desa-gold-500 hover:bg-desa-gold-600 text-slate-900 font-semibold shadow-sm hover:shadow transition-all duration-200"
-          >
-            <span>Login Petugas Desa</span>
-            <ExternalLink className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {/* Tech Stack Cards */}
-        <div className="mt-14 w-full grid grid-cols-1 sm:grid-cols-3 gap-5 text-left">
-          <div className="p-5 rounded-xl bg-white border border-slate-200/80 shadow-sm hover:border-desa-green-500 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-desa-green-800 flex items-center justify-center font-bold mb-3">
-              <Layers className="w-5 h-5 text-desa-green-700" />
-            </div>
-            <h3 className="font-semibold text-slate-900 text-base">Next.js 15 & Payload CMS 3</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              App Router terintegrasi dengan CMS headless modern, TypeScript murni, dan performa tinggi.
-            </p>
+      {/* Status Banner */}
+      <div className="rounded-2xl bg-gradient-to-r from-desa-green-900 to-desa-green-950 text-white p-6 sm:p-8 shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border border-emerald-800">
+        <div className="space-y-2 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-desa-gold-500/20 text-desa-gold-400 text-xs font-bold uppercase tracking-wider border border-desa-gold-500/30">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Tahap 3 Selesai: Sistem Desain & Layout Global</span>
           </div>
-
-          <div className="p-5 rounded-xl bg-white border border-slate-200/80 shadow-sm hover:border-desa-green-500 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-800 flex items-center justify-center font-bold mb-3">
-              <Database className="w-5 h-5 text-blue-700" />
-            </div>
-            <h3 className="font-semibold text-slate-900 text-base">PostgreSQL Database</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Database relasional tangguh dijalankan melalui Docker container terisolasi pada port 5433.
-            </p>
-          </div>
-
-          <div className="p-5 rounded-xl bg-white border border-slate-200/80 shadow-sm hover:border-desa-gold-500 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-amber-50 text-desa-gold-800 flex items-center justify-center font-bold mb-3">
-              <span className="text-lg">🎨</span>
-            </div>
-            <h3 className="font-semibold text-slate-900 text-base">Desain Identitas Desa</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Tailwind CSS dengan warna utama Hijau Tua dan aksen Emas/Kuning sesuai acuan desain beranda.
-            </p>
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
-        <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p>© 2026 Pemerintah Desa Bolali. Seluruh hak cipta dilindungi.</p>
-          <p className="text-xs text-slate-400">
-            Kec. Wonosari, Kab. Klaten, Jawa Tengah
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            Fondasi Tampilan Website Desa Bolali Telah Siap
+          </h1>
+          <p className="text-sm text-emerald-100/90 leading-relaxed">
+            Header (TopBar kontak, kontrol aksesibilitas A-/A/A+, logo, menu navigasi dropdown dinamis, pencarian, dan menu mobile) serta Footer resmi telah aktif dan terhubung langsung ke data CMS.
           </p>
         </div>
-      </footer>
+
+        <div className="shrink-0">
+          <Button
+            href="/admin"
+            variant="gold"
+            size="md"
+            icon={<ArrowRight className="w-4 h-4" />}
+            iconPosition="right"
+          >
+            Buka Panel CMS
+          </Button>
+        </div>
+      </div>
+
+      {/* Komponen Dasar Pratinjau (Showcase Design System) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Card 1: Palet Warna Identitas */}
+        <SectionCard hoverEffect>
+          <SectionTitle
+            title="Palet Warna"
+            subtitle="Ekstraksi dari mockup beranda"
+            icon={<Palette className="w-4 h-4 text-desa-green-800" />}
+          />
+          <div className="space-y-3 mt-4 text-xs">
+            <div className="flex items-center justify-between p-2 rounded-lg bg-desa-green-900 text-white font-medium">
+              <span>Hijau Tua Utama</span>
+              <span className="font-mono opacity-80">#0B4619</span>
+            </div>
+            <div className="flex items-center justify-between p-2 rounded-lg bg-desa-green-800 text-white font-medium">
+              <span>Hijau Forest Sedang</span>
+              <span className="font-mono opacity-80">#14532D</span>
+            </div>
+            <div className="flex items-center justify-between p-2 rounded-lg bg-desa-gold-500 text-slate-900 font-semibold">
+              <span>Aksen Emas / Kuning</span>
+              <span className="font-mono">#EAB308</span>
+            </div>
+            <div className="flex items-center justify-between p-2 rounded-lg bg-desa-green-50 text-desa-green-900 font-medium border border-desa-green-200">
+              <span>Hijau Permukaan Halus</span>
+              <span className="font-mono">#F0FDF4</span>
+            </div>
+          </div>
+        </SectionCard>
+
+        {/* Card 2: Ragam Komponen Tombol */}
+        <SectionCard hoverEffect>
+          <SectionTitle
+            title="Komponen Tombol"
+            subtitle="Variasi tombol desain sistem"
+            icon={<Layers className="w-4 h-4 text-desa-green-800" />}
+          />
+          <div className="flex flex-wrap gap-2.5 mt-4">
+            <Button variant="primary" size="sm">
+              Primary SM
+            </Button>
+            <Button variant="gold" size="sm">
+              Gold SM
+            </Button>
+            <Button variant="outline" size="sm">
+              Outline
+            </Button>
+            <Button variant="ghost" size="sm">
+              Ghost
+            </Button>
+            <Button variant="primary" size="md" className="w-full">
+              Tombol Primary Penuh
+            </Button>
+          </div>
+        </SectionCard>
+
+        {/* Card 3: Standar Tipografi & Aksesibilitas */}
+        <SectionCard hoverEffect>
+          <SectionTitle
+            title="Aksesibilitas Font"
+            subtitle="Dukungan perbesaran teks warga"
+            icon={<ShieldCheck className="w-4 h-4 text-desa-green-800" />}
+          />
+          <p className="text-xs text-slate-600 leading-relaxed mt-2">
+            Tersedia kontrol ukuran font di Top Bar (A- / A / A+) yang dapat menyimpan preferensi pengguna di peramban secara otomatis untuk kenyamanan membaca seluruh kalangan warga.
+          </p>
+          <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-xs text-slate-700">
+            <p className="font-semibold text-desa-green-900">Uji Coba Ukuran Font:</p>
+            <p className="mt-1 text-slate-500 text-[11px]">
+              Klik tombol A- atau A+ di bagian atas kanan halaman untuk melihat perubahan ukuran teks secara dinamis di seluruh komponen website.
+            </p>
+          </div>
+        </SectionCard>
+      </div>
     </div>
   )
 }

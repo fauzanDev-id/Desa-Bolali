@@ -5,6 +5,7 @@ import { en } from '@payloadcms/translations/languages/en'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import sharp from 'sharp'
 
 // Collections
 import { Users } from './collections/Users'
@@ -73,6 +74,7 @@ export default buildConfig({
     Kontak,
     PengaturanWebsite,
   ],
+  sharp,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'desa-bolali-secret-key-super-secure-2026',
   typescript: {

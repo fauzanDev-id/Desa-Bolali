@@ -109,6 +109,49 @@ export const PengaturanWebsite: GlobalConfig = {
           ],
         },
         {
+          label: 'Menu Navigasi',
+          fields: [
+            {
+              name: 'menuNavigasi',
+              label: 'Daftar Menu Navigasi Utama',
+              type: 'array',
+              fields: [
+                {
+                  name: 'label',
+                  label: 'Label Menu',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'url',
+                  label: 'Tautan / URL',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'submenus',
+                  label: 'Submenu Dropdown (Opsional)',
+                  type: 'array',
+                  fields: [
+                    {
+                      name: 'label',
+                      label: 'Label Submenu',
+                      type: 'text',
+                      required: true,
+                    },
+                    {
+                      name: 'url',
+                      label: 'Tautan Submenu',
+                      type: 'text',
+                      required: true,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Media Sosial',
           fields: [
             {
