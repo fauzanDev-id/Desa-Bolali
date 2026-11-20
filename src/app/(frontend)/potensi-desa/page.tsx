@@ -91,7 +91,7 @@ export default async function PotensiDesaPage({
         badge="Potensi & Kemandirian"
         badgeIcon={<Sparkles className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
         breadcrumbs={[{ label: 'Potensi Desa', href: '/potensi-desa' }]}
-        bgImage="/seed/hero-desa.jpg"
+        bgImage="/seed/hero-1.webp"
       />
 
       {/* 2. Konten Utama: Container 1344px */}

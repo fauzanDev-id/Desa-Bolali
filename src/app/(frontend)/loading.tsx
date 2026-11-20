@@ -6,7 +6,7 @@ export default function Loading() {
       role="status"
       aria-live="polite"
       aria-busy="true"
-      className="min-h-[50vh] flex flex-col items-center justify-center py-20 px-4 bg-desa-bg"
+      className="min-h-[calc(100vh-76px)] flex flex-col items-center justify-center py-20 px-4 bg-desa-bg"
     >
       <div className="relative flex items-center justify-center">
         {/* Outer spinning ring */}

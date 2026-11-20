@@ -24,7 +24,7 @@ function AnimatedCounter({
   const target = parseFloat(numericString)
   const isNumeric = !isNaN(target)
 
-  const [current, setCurrent] = useState<number>(0)
+  const [current, setCurrent] = useState<number>(isNumeric ? target : 0)
   const [hasStarted, setHasStarted] = useState(false)
   const ref = useRef<HTMLSpanElement>(null)
 
@@ -49,6 +49,8 @@ function AnimatedCounter({
           setHasStarted(true)
           observer.unobserve(node)
 
+          // Mulai animasi hitung naik dari 0 saat elemen terlihat
+          setCurrent(0)
           const startTime = performance.now()
           const frame = (now: number) => {
             const elapsed = now - startTime
@@ -80,7 +82,7 @@ function AnimatedCounter({
 
   return (
     <span ref={ref}>
-      {hasStarted ? current.toLocaleString('id-ID') : '0'}
+      {current.toLocaleString('id-ID')}
     </span>
   )
 }

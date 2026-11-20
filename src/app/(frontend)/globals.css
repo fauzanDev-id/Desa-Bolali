@@ -63,6 +63,12 @@
     width: 100%;
   }
 
+  /* Indikator Fokus Aksesibilitas WCAG 2.1 AA */
+  :focus-visible {
+    outline: 2px solid var(--color-desa-primaryGreen);
+    outline-offset: 2px;
+  }
+
   /* Tipografi Fluid Sesuai Hirarki Pemerintahan Desa */
   h1 {
     font-size: clamp(1.75rem, 4vw, 2.5rem);

@@ -104,7 +104,7 @@ export default async function PotensiDetailPage({
           { label: 'Potensi Desa', href: '/potensi-desa' },
           { label: item.judul },
         ]}
-        bgImage="/seed/hero-desa.jpg"
+        bgImage="/seed/hero-1.webp"
       />
 
       {/* 2. Konten Utama: Container 1344px */}

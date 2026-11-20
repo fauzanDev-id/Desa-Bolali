@@ -87,7 +87,7 @@ export default async function BeritaDetailPage({
           { label: 'Berita Desa', href: '/informasi/berita' },
           { label: berita.judul },
         ]}
-        bgImage="/seed/hero-desa.jpg"
+        bgImage="/seed/hero-1.webp"
       />
 
       {/* 2. Konten Artikel: Container 1344px */}

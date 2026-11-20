@@ -27,7 +27,7 @@ export function PageHeader({
   badge,
   badgeIcon,
   breadcrumbs = [],
-  bgImage = '/seed/hero-desa.jpg',
+  bgImage = '/seed/hero-1.webp',
   className = '',
 }: PageHeaderProps) {
   return (

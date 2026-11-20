@@ -291,19 +291,23 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
           </button>
 
           {/* Dot Pagination di Bawah (Aktif Berbentuk Pil Kuning) */}
-          <div className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+          <div className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1">
             {slides.map((_, dotIdx) => (
               <button
                 key={dotIdx}
                 type="button"
                 onClick={() => setCurrentIndex(dotIdx)}
                 aria-label={`Pindah ke banner ${dotIdx + 1}`}
-                className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none ${
-                  currentIndex === dotIdx
-                    ? 'w-7 bg-desa-gold shadow-xs'
-                    : 'w-2.5 bg-white/50 hover:bg-white'
-                }`}
-              />
+                className="min-w-[32px] min-h-[32px] flex items-center justify-center p-1 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-desa-gold"
+              >
+                <span
+                  className={`h-2.5 rounded-full transition-all duration-300 block ${
+                    currentIndex === dotIdx
+                      ? 'w-7 bg-desa-gold shadow-xs'
+                      : 'w-2.5 bg-white/50 hover:bg-white'
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </>

@@ -73,12 +73,14 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
                 </Link>
 
                 <div className="mt-2.5 sm:mt-3 space-y-1">
-                  <Link
-                    href={`/berita/${featured.slug}`}
-                    className="text-sm sm:text-base font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors duration-150 line-clamp-2 leading-snug font-sans block"
-                  >
-                    {featured.judul}
-                  </Link>
+                  <h3 className="text-sm sm:text-base font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors duration-150 line-clamp-2 leading-snug font-sans">
+                    <Link
+                      href={`/berita/${featured.slug}`}
+                      className="block"
+                    >
+                      {featured.judul}
+                    </Link>
+                  </h3>
                   <p className="text-xs text-desa-textMuted line-clamp-2 leading-relaxed">
                     {featured.ringkasan}
                   </p>
@@ -119,9 +121,9 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors duration-150 line-clamp-2 leading-snug font-sans">
+                    <h3 className="text-xs font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors duration-150 line-clamp-2 leading-snug font-sans">
                       {item.judul}
-                    </h4>
+                    </h3>
                     <div className="flex items-center gap-1 text-[10px] text-desa-textMuted mt-1">
                       <Calendar className="w-3 h-3 text-slate-400" strokeWidth={1.75} />
                       <span>{formatDateIndonesia(item.tanggalTerbit)}</span>

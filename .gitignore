@@ -36,3 +36,8 @@ Thumbs.db
 .vscode/
 .idea/
 *.tsbuildinfo
+
+# QA & Test Reports
+lighthouse-*.json
+qa-report.json
+

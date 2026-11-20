@@ -106,7 +106,7 @@ export default async function TransparansiPage({
         badge="Keterbukaan Anggaran"
         badgeIcon={<BarChart3 className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
         breadcrumbs={[{ label: 'Transparansi Desa', href: '/transparansi' }]}
-        bgImage="/seed/hero-desa.jpg"
+        bgImage="/seed/hero-1.webp"
       />
 
       {/* 2. Konten Utama: Container 1344px */}

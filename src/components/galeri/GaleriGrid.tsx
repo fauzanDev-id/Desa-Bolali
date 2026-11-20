@@ -168,14 +168,16 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
       {filteredItems.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5">
           {filteredItems.map((item) => {
-            const imgUrl = getMediaUrl(item.foto, '/seed/galeri-1.jpg')
+            const imgUrl = getMediaUrl(item.foto, '/seed/galeri-1.webp')
             const isVideo = item.tipe === 'video'
 
             return (
-              <div
+              <button
+                type="button"
                 key={item.id}
                 onClick={() => openItem(item)}
-                className="group relative aspect-square rounded-desa-card overflow-hidden bg-slate-100 border border-desa-border shadow-xs cursor-pointer select-none"
+                aria-label={`Buka dokumentasi ${isVideo ? 'video' : 'foto'}: ${item.judul}`}
+                className="group relative aspect-square rounded-desa-card overflow-hidden bg-slate-100 border border-desa-border shadow-xs cursor-pointer select-none text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-desa-primaryGreen focus-visible:ring-offset-2"
               >
                 <Image
                   src={imgUrl}
@@ -214,7 +216,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
                     {item.judul}
                   </span>
                 </div>
-              </div>
+              </button>
             )
           })}
         </div>
@@ -264,7 +266,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <Image
-              src={getMediaUrl(currentLightboxItem.foto, '/seed/galeri-1.jpg')}
+              src={getMediaUrl(currentLightboxItem.foto, '/seed/galeri-1.webp')}
               alt={currentLightboxItem.judul}
               fill
               className="object-contain"

@@ -8,14 +8,14 @@ import { getContactData, getWebsiteSettings } from '@/lib/cms'
 const sans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
-  display: 'swap',
+  display: 'optional',
   weight: ['400', '500', '600', '700', '800'],
 })
 
 const script = Dancing_Script({
   subsets: ['latin'],
   variable: '--font-script',
-  display: 'swap',
+  display: 'optional',
   weight: ['600', '700'],
 })
 
@@ -66,7 +66,7 @@ export default async function RootLayout({
         <Navbar settings={settings} contact={contact} />
 
         {/* Main Content Area */}
-        <main id="main-content" className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1 min-h-[calc(100vh-76px)]">{children}</main>
 
         {/* Footer */}
         <Footer contact={contact} settings={settings} />

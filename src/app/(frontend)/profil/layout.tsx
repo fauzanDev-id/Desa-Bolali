@@ -50,7 +50,7 @@ export default function ProfilLayout({
         badge="Profil Resmi Desa"
         badgeIcon={<Landmark className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
         breadcrumbs={[{ label: 'Profil Desa', href: '/profil/sejarah' }]}
-        bgImage="/seed/hero-desa.jpg"
+        bgImage="/seed/hero-1.webp"
       />
 
       {/* 2. Konten Utama: Container 1344px dengan Sidebar Submenu 280px (Desktop) / Dropdown (Mobile) */}
@@ -66,9 +66,9 @@ export default function ProfilLayout({
           />
 
           {/* Child Page Content */}
-          <main className="flex-1 w-full min-w-0">
+          <div className="flex-1 w-full min-w-0">
             {children}
-          </main>
+          </div>
         </div>
       </div>
     </div>

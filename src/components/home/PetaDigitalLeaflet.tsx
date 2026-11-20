@@ -82,7 +82,7 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
     const centerIcon = L.divIcon({
       className: 'custom-center-pin',
       html: `
-        <div style="position: relative; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -100%);">
+        <div role="img" aria-label="Pusat Desa Bolali" style="position: relative; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -100%);">
           <div style="background-color: #ffffff; color: #073c24; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 9999px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); border: 1px solid #cbd5e1; white-space: nowrap; margin-bottom: 2px;">
             Desa Bolali
           </div>
@@ -92,7 +92,11 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
       iconSize: [0, 0],
     })
 
-    L.marker([centerLat, centerLng], { icon: centerIcon })
+    L.marker([centerLat, centerLng], {
+      icon: centerIcon,
+      title: 'Pusat Desa Bolali',
+      alt: 'Pusat Desa Bolali',
+    })
       .bindPopup('<b style="color: #073c24;">Pusat Desa Bolali</b><br/>Kec. Wonosari, Kab. Klaten')
       .addTo(map)
 
@@ -112,12 +116,16 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
       const customIcon = L.divIcon({
         className: 'custom-poi-marker',
         html: `
-          <div style="width: 14px; height: 14px; background-color: ${color}; border: 2px solid #ffffff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.3); transform: translate(-50%, -50%); cursor: pointer;"></div>
+          <div role="img" aria-label="${loc.name}" style="width: 14px; height: 14px; background-color: ${color}; border: 2px solid #ffffff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.3); transform: translate(-50%, -50%); cursor: pointer;"></div>
         `,
         iconSize: [0, 0],
       })
 
-      const marker = L.marker([loc.lat, loc.lng], { icon: customIcon })
+      const marker = L.marker([loc.lat, loc.lng], {
+        icon: customIcon,
+        title: loc.name,
+        alt: loc.name,
+      })
         .bindPopup(`<b>${loc.name}</b><br/><span style="font-size:11px;color:#64748b;">Kategori: ${catConfig?.label}</span>`)
 
       if (groups[loc.kategori]) {
