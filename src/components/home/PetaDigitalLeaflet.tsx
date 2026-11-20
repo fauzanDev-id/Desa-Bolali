@@ -72,10 +72,10 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
       scrollWheelZoom: false,
     })
 
-    // Basemap OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
+    // Basemap Citra Satelit Aerial Sesuai Tampilan Mockup
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '&copy; Esri, Maxar, Earthstar Geographics',
+      maxZoom: 18,
     }).addTo(map)
 
     // Marker Pusat Desa Bolali (Pin Merah Menonjol)
@@ -181,17 +181,14 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
                   : 'bg-transparent text-slate-400 opacity-60 hover:opacity-90'
               }`}
             >
-              <div className="flex items-center gap-2 min-w-0">
+              <div className="flex items-center gap-2.5 min-w-0">
                 <span
-                  className={`w-3 h-3 rounded-full shrink-0 transition-transform ${cat.bgClass} ${
-                    isActive ? 'scale-100 shadow-xs' : 'scale-75'
+                  className={`w-2.5 h-2.5 rounded-full shrink-0 transition-transform ${cat.bgClass} ${
+                    isActive ? 'scale-100 shadow-xs' : 'scale-75 opacity-40'
                   }`}
                 />
                 <span className="truncate text-xs">{cat.label}</span>
               </div>
-              <span className="text-[10px] text-slate-400 ml-1">
-                {isActive ? 'Aktif' : 'Nonaktif'}
-              </span>
             </button>
           )
         })}

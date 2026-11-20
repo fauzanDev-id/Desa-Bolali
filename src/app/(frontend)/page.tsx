@@ -37,7 +37,7 @@ export default async function HomePage() {
     getSambutanKades(),
     getBeritaTerbaru(4),
     getDokumenTransparansi(3),
-    getPotensiUnggulan(4),
+    getPotensiUnggulan(6),
     getGaleriTerbaru(6),
   ])
 

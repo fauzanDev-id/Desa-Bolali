@@ -1,9 +1,5 @@
 // UI Primitives
-export * from './ui/Button'
-export * from './ui/SectionCard'
-export * from './ui/SectionTitle'
-export * from './ui/Breadcrumb'
-export * from './ui/RichText'
+export * from './ui'
 
 // Global Layout Components
 export * from './layout/TopBar'

@@ -13,20 +13,25 @@ export interface BreadcrumbProps {
   className?: string
 }
 
+/**
+ * Komponen Breadcrumb Sesuai Aturan:
+ * - Ikon Lucide 16px dengan stroke 1.75
+ * - Ukuran teks konsisten, semantic nav & ol
+ */
 export function Breadcrumb({ items, className }: BreadcrumbProps) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className={clsx('flex items-center text-xs sm:text-sm text-slate-500 py-3', className)}
+      className={clsx('flex items-center text-xs text-desa-textMuted py-3 select-none', className)}
     >
       <ol className="flex items-center flex-wrap gap-1.5 sm:gap-2">
-        {/* Home */}
+        {/* Beranda */}
         <li className="inline-flex items-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-slate-500 hover:text-desa-green-900 transition-colors"
+            className="inline-flex items-center gap-1 text-desa-textMuted hover:text-desa-darkGreen transition-colors"
           >
-            <Home className="w-4 h-4 text-desa-green-800" />
+            <Home className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />
             <span>Beranda</span>
           </Link>
         </li>
@@ -37,18 +42,18 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
 
           return (
             <li key={index} className="inline-flex items-center gap-1.5 sm:gap-2">
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" strokeWidth={1.75} />
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="text-slate-500 hover:text-desa-green-900 transition-colors"
+                  className="text-desa-textMuted hover:text-desa-darkGreen transition-colors"
                 >
                   {item.label}
                 </Link>
               ) : (
                 <span
                   className={clsx(
-                    isLast ? 'font-semibold text-desa-green-950' : 'text-slate-600'
+                    isLast ? 'font-bold text-desa-textDark' : 'text-desa-textMuted'
                   )}
                   aria-current={isLast ? 'page' : undefined}
                 >

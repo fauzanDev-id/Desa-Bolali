@@ -27,28 +27,27 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
           linkHref="/transparansi"
         />
 
-        {/* Donut Chart Realisasi APBDes Sesuai Mockup */}
-        <div className="flex items-center gap-4 p-3 bg-desa-lightGreen/50 rounded-xl border border-emerald-100/80 mt-3">
-          {/* Donut Chart Ringan SVG (Hijau Tua + Segmen Kuning) */}
-          <div className="relative w-20 h-20 shrink-0 flex items-center justify-center">
-            <svg className="w-20 h-20 -rotate-90 transform" viewBox="0 0 100 100">
-              {/* Lingkaran Dasar / Sisa (Aksen Kuning Emas) */}
+        {/* Donut Chart Realisasi APBDes Sesuai Mockup (Chart di Kiri, Keterangan & Tombol di Kanan, Tengah Donut Bersih) */}
+        <div className="flex items-center justify-between gap-5 py-2 mt-2">
+          {/* Donut Chart Ringan SVG (Hijau Terang + Segmen Lime/Kuning, Lingkaran Tengah Kosong) */}
+          <div className="relative w-24 h-24 shrink-0 flex items-center justify-center">
+            <svg className="w-24 h-24 -rotate-90 transform" viewBox="0 0 100 100">
+              {/* Segmen Dasar / Kuning-Lime */}
               <circle
                 cx="50"
                 cy="50"
                 r="38"
                 stroke="#EAB308"
-                strokeWidth="10"
+                strokeWidth="11"
                 fill="transparent"
-                opacity="0.35"
               />
-              {/* Segmen Hijau Tua Realisasi */}
+              {/* Segmen Hijau Realisasi Utama */}
               <circle
                 cx="50"
                 cy="50"
                 r="38"
-                stroke="#0B4625"
-                strokeWidth="10"
+                stroke="#10B981"
+                strokeWidth="11"
                 strokeDasharray={circumference}
                 strokeDashoffset={strokeDashoffset}
                 strokeLinecap="round"
@@ -56,48 +55,43 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
                 className="transition-all duration-1000 ease-out"
               />
             </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-[11px] font-black text-desa-darkGreen">
-                {String(percentage).replace('.', ',')}%
-              </span>
-            </div>
           </div>
 
-          {/* Keterangan & Persen Besar di Kanan */}
+          {/* Keterangan & Persen Besar di Kanan Sesuai Mockup */}
           <div className="flex-1 min-w-0">
-            <div className="text-xs font-semibold text-slate-700 leading-tight">
+            <div className="text-xs font-bold text-slate-800 leading-tight">
               Realisasi APBDes
             </div>
-            <div className="text-xs font-bold text-desa-textDark">
+            <div className="text-xs font-bold text-slate-800 leading-tight">
               Tahun {primaryDoc?.tahun || 2026}
             </div>
-            <div className="text-xl sm:text-2xl font-black text-desa-primaryGreen tracking-tight mt-0.5">
+            <div className="text-3xl font-black text-desa-darkGreen tracking-tight mt-0.5">
               {String(percentage).replace('.', ',')}%
             </div>
-            <div className="mt-1.5">
+            <div className="mt-2">
               <Link
                 href="/transparansi"
-                className="inline-flex items-center gap-1 text-[11px] font-bold text-white bg-desa-primaryGreen hover:bg-desa-greenHover px-3 py-1 rounded-full transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-desa-darkGreen hover:bg-desa-greenHover px-4 py-1.5 rounded-full transition-colors shadow-xs"
               >
                 <span>Lihat Laporan</span>
-                <ArrowRight className="w-3 h-3" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
         </div>
 
         {/* 3 Baris Dokumen Unduhan (Ikon, Nama, "Download ↓") */}
-        <div className="mt-3.5 space-y-2">
+        <div className="mt-4 space-y-1.5">
           {dokumenList.slice(0, 3).map((item) => {
             const pdfUrl = getMediaUrl(item.filePdf, '/docs/apbdes-2026.pdf')
 
             return (
               <div
                 key={item.id}
-                className="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-desa-lightGreen/60 border border-desa-border transition-colors group"
+                className="flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-b-0 group"
               >
-                <div className="flex items-center gap-2 min-w-0 pr-2">
-                  <FileText className="w-4 h-4 text-desa-accentGreen shrink-0" />
+                <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                  <FileText className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span className="text-xs font-semibold text-desa-textDark truncate group-hover:text-desa-darkGreen font-sans">
                     {item.judul}
                   </span>
@@ -107,10 +101,10 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
                   href={pdfUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-desa-accentGreen hover:text-desa-darkGreen px-2 py-0.5 rounded transition-colors shrink-0"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition-colors shrink-0"
                 >
                   <span>Download</span>
-                  <Download className="w-3 h-3" />
+                  <Download className="w-3.5 h-3.5" />
                 </a>
               </div>
             )

@@ -101,9 +101,9 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
           sizes="100vw"
           className="object-cover object-center transform transition-transform duration-1000 ease-out"
         />
-        {/* Overlay Gelap Tipis Netral untuk Keterbacaan Teks Sesuai WCAG AA (Bukan Gradien Berwarna-warni) */}
-        <div className="absolute inset-0 bg-black/45" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
+        {/* Overlay Tipis Netral agar Keindahan Alam Desa Terlihat Terang Seperti Mockup */}
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/15 to-transparent" />
       </div>
 
       {/* Main Content Overlay */}
@@ -153,7 +153,7 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
         {/* Sisi Kanan: Script Putih Dua Baris & Kartu IDM Mandiri */}
         <div className="w-full lg:w-auto flex flex-col items-center lg:items-end justify-center">
           {/* Script Putih Miring Dua Baris Sesuai Mockup */}
-          <p className="text-2xl sm:text-3xl font-script text-white drop-shadow-md mb-3 text-center lg:text-right leading-tight max-w-xs">
+          <p className="text-2xl sm:text-3xl lg:text-[32px] font-script text-white drop-shadow-md mb-4 text-center lg:text-right leading-tight -rotate-3 max-w-xs select-none">
             Maju Bersama<br />
             Untuk Desa Lebih Baik
           </p>

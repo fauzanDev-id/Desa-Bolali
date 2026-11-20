@@ -12,7 +12,32 @@ interface PotensiSectionProps {
 }
 
 export function PotensiSection({ potensiList }: PotensiSectionProps) {
-  const displayItems = potensiList.slice(0, 4)
+  // Urutan 4 kategori unggulan persis sesuai mockup: Pertanian, UMKM, Wisata Alam, Budaya
+  const categoryOrder: Record<string, number> = {
+    Pertanian: 1,
+    UMKM: 2,
+    'Wisata Alam': 3,
+    Wisata: 3,
+    'Seni & Budaya': 4,
+    Budaya: 4,
+    BUMDes: 5,
+  }
+
+  const sortedItems = [...potensiList]
+    .sort((a, b) => {
+      const orderA = categoryOrder[a.kategori || ''] || 99
+      const orderB = categoryOrder[b.kategori || ''] || 99
+      return orderA - orderB
+    })
+    .slice(0, 4)
+
+  const getCleanLabel = (item: PotensiItem) => {
+    if (item.kategori === 'Pertanian') return 'Pertanian'
+    if (item.kategori === 'UMKM') return 'UMKM'
+    if (item.kategori === 'Wisata Alam' || item.kategori === 'Wisata') return 'Wisata Alam'
+    if (item.kategori === 'Seni & Budaya' || item.kategori === 'Budaya') return 'Budaya'
+    return item.judul
+  }
 
   return (
     <SectionCard className="h-full flex flex-col justify-between rounded-desa-card border border-desa-border shadow-desa-sm bg-white p-5">
@@ -26,7 +51,7 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
 
         {/* 4 Ubin Foto Rounded (Grid 2x2) Sesuai Mockup */}
         <div className="grid grid-cols-2 gap-3 mt-3">
-          {displayItems.map((item, idx) => {
+          {sortedItems.map((item, idx) => {
             const defaultImg =
               idx === 0
                 ? '/seed/potensi-pertanian.jpg'
@@ -56,7 +81,7 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
                 {/* Label di Sudut Kiri Bawah Sesuai Mockup */}
                 <div className="absolute bottom-2 left-2.5 right-2 text-left">
                   <span className="text-xs sm:text-sm font-bold text-white tracking-tight drop-shadow-sm group-hover:text-desa-gold transition-colors font-sans">
-                    {item.judul}
+                    {getCleanLabel(item)}
                   </span>
                 </div>
               </Link>

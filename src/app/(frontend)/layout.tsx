@@ -63,7 +63,7 @@ export default async function RootLayout({
 
         {/* Header: TopBar + Navbar */}
         <TopBar contact={contact} settings={settings} />
-        <Navbar settings={settings} />
+        <Navbar settings={settings} contact={contact} />
 
         {/* Main Content Area */}
         <main id="main-content" className="flex-1">{children}</main>
