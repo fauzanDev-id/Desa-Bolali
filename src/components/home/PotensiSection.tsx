@@ -7,6 +7,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { PotensiItem } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
+import { getBlurDataUrl } from '@/lib/blur'
 
 interface PotensiSectionProps {
   potensiList: PotensiItem[]
@@ -15,7 +16,7 @@ interface PotensiSectionProps {
 export function PotensiSection({ potensiList }: PotensiSectionProps) {
   if (!potensiList || potensiList.length === 0) {
     return (
-      <Card className="h-full flex flex-col justify-between">
+      <Card className="h-full flex flex-col justify-between card-hover-lift">
         <SectionHeader
           title="Potensi Unggulan Desa"
           icon={<Sparkles className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
@@ -59,7 +60,7 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
   }
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card className="h-full flex flex-col justify-between card-hover-lift">
       <div>
         <SectionHeader
           title="Potensi Unggulan Desa"
@@ -73,33 +74,36 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
           {sortedItems.map((item, idx) => {
             const defaultImg =
               idx === 0
-                ? '/seed/potensi-pertanian.jpg'
+                ? '/seed/potensi-pertanian.webp'
                 : idx === 1
-                ? '/seed/potensi-umkm.jpg'
+                ? '/seed/potensi-umkm.webp'
                 : idx === 2
-                ? '/seed/potensi-wisata.jpg'
-                : '/seed/potensi-budaya.jpg'
+                ? '/seed/potensi-wisata.webp'
+                : '/seed/potensi-budaya.webp'
             const imgUrl = getMediaUrl(item.gambar, defaultImg)
+            const blur = getBlurDataUrl(imgUrl)
 
             return (
               <Link
                 key={item.id}
                 href={`/potensi-desa#${item.slug}`}
-                className="group relative aspect-[4/3] rounded-desa-card overflow-hidden shadow-xs bg-slate-100 border border-desa-border block"
+                className="group relative aspect-[4/3] rounded-desa-card zoom-img-container shadow-xs bg-slate-100 border border-desa-border block"
               >
                 <Image
                   src={imgUrl}
                   alt={item.judul}
                   fill
+                  placeholder={blur ? 'blur' : 'empty'}
+                  blurDataURL={blur}
                   sizes="(max-width: 768px) 50vw, 220px"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover zoom-img-target"
                 />
-                {/* Gradient Overlay Gelap di Bawah agar Teks Label Kontras */}
+                {/* Gradient Overlay Gelap Bawah */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                {/* Label di Sudut Kiri Bawah Sesuai Mockup */}
-                <div className="absolute bottom-2 left-2.5 right-2 text-left">
-                  <span className="text-xs sm:text-sm font-bold text-white tracking-tight drop-shadow-sm group-hover:text-desa-gold transition-colors font-sans">
+                {/* Label di Sudut Kiri Bawah */}
+                <div className="absolute bottom-2 left-2.5 right-2.5">
+                  <span className="text-xs sm:text-sm font-bold text-white tracking-wide font-sans drop-shadow-sm group-hover:text-desa-gold transition-colors duration-150 truncate block">
                     {getCleanLabel(item)}
                   </span>
                 </div>

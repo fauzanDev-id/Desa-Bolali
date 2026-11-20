@@ -7,6 +7,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { SambutanKadesData } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
+import { getBlurDataUrl } from '@/lib/blur'
 
 interface SambutanCardProps {
   sambutan: SambutanKadesData
@@ -15,7 +16,7 @@ interface SambutanCardProps {
 export function SambutanCard({ sambutan }: SambutanCardProps) {
   if (!sambutan || !sambutan.namaKepalaDesa) {
     return (
-      <Card className="h-full flex flex-col justify-between">
+      <Card className="h-full flex flex-col justify-between card-hover-lift">
         <SectionHeader
           title="Sambutan Kepala Desa"
           icon={<Sprout className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
@@ -28,12 +29,12 @@ export function SambutanCard({ sambutan }: SambutanCardProps) {
     )
   }
 
-  const photoUrl = getMediaUrl(sambutan.foto, '/seed/kades.jpg')
-  // Bersihkan label [Data Dummy] jika ada agar tampilan resmi dan bersih sesuai mockup
+  const photoUrl = getMediaUrl(sambutan.foto, '/seed/kades-placeholder.webp')
+  const blurUrl = getBlurDataUrl(photoUrl)
   const cleanKadesName = (sambutan.namaKepalaDesa || 'H. Ahmad Santoso').replace(/\s*\[Data Dummy\]/gi, '')
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card className="h-full flex flex-col justify-between card-hover-lift group">
       <div>
         <SectionHeader
           title="Sambutan Kepala Desa"
@@ -42,14 +43,16 @@ export function SambutanCard({ sambutan }: SambutanCardProps) {
 
         {/* Tata Letak Responsif: Mobile Foto di Atas, Tablet/Desktop Foto di Sisi Kiri */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mt-2">
-          {/* Pas Foto Resmi Kepala Desa (Potret PDU Putih dengan Garuda & Latar Merah Putih) */}
-          <div className="relative w-32 h-40 sm:w-28 sm:h-36 md:w-32 md:h-40 rounded-desa-card overflow-hidden shadow-xs shrink-0 border border-slate-200 bg-red-600">
+          {/* Pas Foto Resmi Kepala Desa */}
+          <div className="relative w-32 h-40 sm:w-28 sm:h-36 md:w-32 md:h-40 rounded-desa-card overflow-hidden shadow-xs shrink-0 border border-slate-200 bg-slate-100 zoom-img-container">
             <Image
               src={photoUrl}
               alt={cleanKadesName}
               fill
+              placeholder={blurUrl ? 'blur' : 'empty'}
+              blurDataURL={blurUrl}
               sizes="(max-width: 640px) 128px, 140px"
-              className="object-cover object-top"
+              className="object-cover object-top zoom-img-target"
             />
           </div>
 
@@ -75,11 +78,11 @@ export function SambutanCard({ sambutan }: SambutanCardProps) {
         </div>
       </div>
 
-      {/* Tombol Hijau Selengkapnya Sesuai Mockup (Bentuk Pil Hijau Tua) */}
+      {/* Tombol Hijau Selengkapnya Sesuai Mockup */}
       <div className="mt-4 pt-3 flex justify-end">
         <Link
           href="/profil/sejarah#sambutan-kades"
-          className="inline-flex items-center gap-1.5 px-4 py-2 sm:py-1.5 rounded-full bg-desa-darkGreen hover:bg-desa-greenHover text-white text-xs font-semibold shadow-desa-sm transition-all group focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen min-h-[44px] sm:min-h-[36px]"
+          className="inline-flex items-center gap-1.5 px-4 py-2 sm:py-1.5 rounded-full bg-desa-darkGreen hover:bg-desa-greenHover text-white text-xs font-semibold shadow-desa-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen min-h-[44px] sm:min-h-[36px]"
         >
           <span>Selengkapnya</span>
           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5" strokeWidth={1.75} />

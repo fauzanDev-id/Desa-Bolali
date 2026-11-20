@@ -237,11 +237,32 @@ export const defaultWebsiteSettings: WebsiteSettingsData = {
     'Bersama membangun desa dengan pelayanan terbaik, informasi yang transparan dan inovasi untuk masa depan.',
   bannerSlider: [
     {
-      gambar: '/images/hero-desa.jpg',
+      gambar: '/seed/hero-1.webp',
       judul: 'Selamat Datang di Desa Bolali',
       subjudul: '“Desa Maju, Mandiri, Sejahtera”',
       teksTombolUtama: 'Jelajahi Desa',
       tautanTombolUtama: '#potensi',
+    },
+    {
+      gambar: '/seed/hero-2.webp',
+      judul: 'Harmoni Alam & Pertanian Bolali',
+      subjudul: '“Lumbung Pangan Berkelanjutan”',
+      teksTombolUtama: 'Potensi Pertanian',
+      tautanTombolUtama: '/potensi-desa',
+    },
+    {
+      gambar: '/seed/hero-3.webp',
+      judul: 'Kemandirian & Gotong Royong Warga',
+      subjudul: '“Guyub Rukun Membangun Desa”',
+      teksTombolUtama: 'Profil Desa',
+      tautanTombolUtama: '/profil/sejarah',
+    },
+    {
+      gambar: '/seed/hero-4.webp',
+      judul: 'Inovasi Menuju Desa Digital',
+      subjudul: '“Transparan, Partisipatif, dan Inovatif”',
+      teksTombolUtama: 'Layanan Mandiri',
+      tautanTombolUtama: '/kontak',
     },
   ],
   menuNavigasi: [

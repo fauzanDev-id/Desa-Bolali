@@ -5,7 +5,7 @@
 /**
  * Mengambil URL file/gambar dari objek Media Payload CMS atau string URL statis
  */
-export function getMediaUrl(media: any, fallback = '/images/hero-desa.jpg'): string {
+export function getMediaUrl(media: any, fallback = '/seed/hero-1.webp'): string {
   if (!media) return fallback
   if (typeof media === 'string') return media
   if (typeof media === 'object') {

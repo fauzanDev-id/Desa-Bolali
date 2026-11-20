@@ -127,22 +127,20 @@ export function Navbar({ settings, contact }: NavbarProps) {
             href="/"
             className="flex items-center gap-2.5 sm:gap-3 min-w-0 group py-1 select-none focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen rounded-desa-sm"
           >
-            {settings.logo && typeof settings.logo === 'object' && settings.logo.url ? (
-              <div className="relative w-9 h-10 sm:w-11 sm:h-12 shrink-0">
-                <Image
-                  src={settings.logo.url}
-                  alt={settings.namaWebsite || 'Logo Desa Bolali'}
-                  fill
-                  sizes="(max-width: 640px) 36px, 48px"
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            ) : (
-              <div className="w-9 h-10 sm:w-11 sm:h-12 rounded-desa-sm bg-desa-darkGreen text-desa-gold p-1 flex items-center justify-center shrink-0 shadow-desa-sm border border-desa-gold/50">
-                <Shield className="w-5 h-5 sm:w-7 sm:h-7 text-desa-gold fill-desa-gold/20" strokeWidth={1.75} />
-              </div>
-            )}
+            <div className="relative w-9 h-10 sm:w-11 sm:h-12 shrink-0">
+              <Image
+                src={
+                  settings.logo && typeof settings.logo === 'object' && settings.logo.url
+                    ? settings.logo.url
+                    : '/seed/logo-desa-placeholder.svg'
+                }
+                alt={settings.namaWebsite || 'Logo Desa Bolali'}
+                fill
+                sizes="(max-width: 640px) 36px, 48px"
+                className="object-contain"
+                priority
+              />
+            </div>
 
             <div className="flex flex-col min-w-0">
               <span className="text-lg sm:text-2xl font-black text-desa-darkGreen tracking-tight leading-none group-hover:text-desa-greenHover transition-colors font-sans truncate">
@@ -193,11 +191,11 @@ export function Navbar({ settings, contact }: NavbarProps) {
                       />
                     </button>
 
-                    {/* Dropdown Card */}
+                    {/* Dropdown Card: Fade + Turun 4px, 150ms */}
                     {isDropdownOpen && (
                       <div
                         onMouseLeave={() => setOpenDropdown(null)}
-                        className="absolute left-0 mt-1 w-56 rounded-desa-card bg-desa-surface shadow-desa-dropdown border border-desa-border p-1.5 z-50 animate-in fade-in zoom-in-95 duration-150"
+                        className="absolute left-0 mt-1 w-56 rounded-desa-card bg-desa-surface shadow-desa-dropdown border border-desa-border p-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150 ease-out motion-reduce:animate-none"
                       >
                         {item.submenus!.map((sub, sIndex) => {
                           const isSubActive = pathname === sub.url

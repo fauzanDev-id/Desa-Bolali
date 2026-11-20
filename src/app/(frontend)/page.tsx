@@ -9,6 +9,7 @@ import {
   PetaDigitalSection,
   GaleriSection,
 } from '@/components'
+import { ScrollReveal } from '@/components/ui/ScrollReveal'
 import {
   getWebsiteSettings,
   getContactData,
@@ -54,55 +55,75 @@ export default async function HomePage() {
         {/* ========================================================
             BARIS 1: SAMBUTAN KADES, BERITA TERBARU, TRANSPARANSI APBDes
             - >=1280 (xl): 3 kolom sejajar (rasio 3 : 5 : 3.4, gap 16px)
-            - 1024-1279 (lg): Sambutan + Transparansi berdampingan (col 1 & 2), Berita di bawah lebar penuh (col-span-2)
-            - 768-1023 (md): 2 kolom atau 1 kolom penuh
-            - <768: 1 kolom penuh vertikal
+            - 1024-1279 (lg): Sambutan + Transparansi berdampingan, Berita di bawah
+            - 768-1023 (md): 2 kolom / 1 kolom
+            - <768: 1 kolom bertumpuk
+            - Scroll Reveal: Fade-in + Naik 16px, 400ms, stagger 60ms
            ======================================================== */}
         <section
           aria-label="Informasi Utama Desa"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-[3fr_5fr_3.4fr] gap-4 items-stretch"
         >
           {/* Card 1: Sambutan Kepala Desa */}
-          <div className="order-1 lg:order-1 xl:order-1 md:col-span-1 lg:col-span-1 flex flex-col">
+          <ScrollReveal
+            staggerIndex={1}
+            className="order-1 lg:order-1 xl:order-1 md:col-span-1 lg:col-span-1 flex flex-col h-full"
+          >
             <SambutanCard sambutan={sambutan} />
-          </div>
+          </ScrollReveal>
 
-          {/* Card 2: Berita Terbaru (di 1024-1279 berada di bawah lebar penuh col-span-2) */}
-          <div className="order-2 lg:order-3 xl:order-2 md:col-span-2 lg:col-span-2 xl:col-span-1 flex flex-col">
+          {/* Card 2: Berita Terbaru */}
+          <ScrollReveal
+            staggerIndex={2}
+            className="order-2 lg:order-3 xl:order-2 md:col-span-2 lg:col-span-2 xl:col-span-1 flex flex-col h-full"
+          >
             <BeritaSection beritaList={beritaList} />
-          </div>
+          </ScrollReveal>
 
-          {/* Card 3: Transparansi Desa (di 1024-1279 berdampingan dengan Sambutan) */}
-          <div className="order-3 lg:order-2 xl:order-3 md:col-span-1 lg:col-span-1 flex flex-col">
+          {/* Card 3: Transparansi Desa */}
+          <ScrollReveal
+            staggerIndex={3}
+            className="order-3 lg:order-2 xl:order-3 md:col-span-1 lg:col-span-1 flex flex-col h-full"
+          >
             <TransparansiCard dokumenList={dokumenList} />
-          </div>
+          </ScrollReveal>
         </section>
 
         {/* ========================================================
             BARIS 2: POTENSI UNGGULAN, PETA DIGITAL DESA, GALERI DESA
             - >=1280 (xl): 3 kolom sejajar (rasio 3 : 5 : 3.4, gap 16px)
-            - 1024-1279 (lg): Potensi + Peta berdampingan (col 1 & 2), Galeri di bawah lebar penuh (col-span-2)
-            - 768-1023 (md): 2 kolom atau 1 kolom penuh
-            - <768: 1 kolom penuh vertikal
+            - 1024-1279 (lg): Potensi + Peta berdampingan, Galeri di bawah
+            - 768-1023 (md): 2 kolom / 1 kolom
+            - <768: 1 kolom bertumpuk
+            - Scroll Reveal: Fade-in + Naik 16px, 400ms, stagger 60ms
            ======================================================== */}
         <section
           aria-label="Potensi dan Dokumentasi Desa"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-[3fr_5fr_3.4fr] gap-4 items-stretch"
         >
           {/* Card 4: Potensi Unggulan */}
-          <div className="order-1 lg:order-1 xl:order-1 md:col-span-1 lg:col-span-1 flex flex-col">
+          <ScrollReveal
+            staggerIndex={1}
+            className="order-1 lg:order-1 xl:order-1 md:col-span-1 lg:col-span-1 flex flex-col h-full"
+          >
             <PotensiSection potensiList={potensiList} />
-          </div>
+          </ScrollReveal>
 
           {/* Card 5: Peta Digital Desa */}
-          <div className="order-2 lg:order-2 xl:order-2 md:col-span-1 lg:col-span-1 xl:col-span-1 flex flex-col">
+          <ScrollReveal
+            staggerIndex={2}
+            className="order-2 lg:order-2 xl:order-2 md:col-span-1 lg:col-span-1 xl:col-span-1 flex flex-col h-full"
+          >
             <PetaDigitalSection contact={contact} />
-          </div>
+          </ScrollReveal>
 
-          {/* Card 6: Galeri Desa (di 1024-1279 berada di bawah lebar penuh col-span-2) */}
-          <div className="order-3 lg:order-3 xl:order-3 md:col-span-2 lg:col-span-2 xl:col-span-1 flex flex-col">
+          {/* Card 6: Galeri Desa */}
+          <ScrollReveal
+            staggerIndex={3}
+            className="order-3 lg:order-3 xl:order-3 md:col-span-2 lg:col-span-2 xl:col-span-1 flex flex-col h-full"
+          >
             <GaleriSection galeriList={galeriList} />
-          </div>
+          </ScrollReveal>
         </section>
       </div>
     </div>

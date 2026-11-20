@@ -27,25 +27,15 @@ export function Footer({ contact, settings }: FooterProps) {
 
   return (
     <footer className="relative bg-desa-darkGreen text-emerald-100 overflow-hidden border-t-2 border-desa-gold select-none">
-      {/* Hiasan Siluet Kontur Bukit & Daun Tradisional di Sudut Kanan Bawah (Halus, Opasitas Rendah) */}
-      <div className="absolute right-0 bottom-0 pointer-events-none opacity-10 overflow-hidden">
-        <svg
-          width="480"
-          height="200"
-          viewBox="0 0 480 200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+      {/* Hiasan Motif Siluet Daun / Pegunungan Sederhana Satu Warna Rendah Opasitas Sesuai Spesifikasi */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden text-emerald-300">
+        <Image
+          src="/seed/motif-footer.svg"
+          alt=""
+          fill
+          className="object-cover object-bottom"
           aria-hidden="true"
-        >
-          <path
-            d="M0 200C140 160 260 200 380 140C430 115 465 75 480 45V200H0Z"
-            fill="#EAB308"
-          />
-          <path
-            d="M90 200C190 170 290 190 390 120C440 90 470 50 480 20V200H90Z"
-            fill="#22C55E"
-          />
-        </svg>
+        />
       </div>
 
       <div className="relative max-w-[1344px] mx-auto px-4 md:px-6 lg:px-8 pt-8 pb-6">
@@ -53,21 +43,19 @@ export function Footer({ contact, settings }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pb-6 border-b border-white/15 items-center">
           {/* Kolom Kiri: Identitas Desa & Tagline (5 Kolom) */}
           <div className="md:col-span-5 flex items-center gap-3.5">
-            {settings.logo && typeof settings.logo === 'object' && settings.logo.url ? (
-              <div className="relative w-11 h-13 shrink-0">
-                <Image
-                  src={settings.logo.url}
-                  alt={settings.namaInstansi || 'Logo Desa Bolali'}
-                  fill
-                  sizes="52px"
-                  className="object-contain"
-                />
-              </div>
-            ) : (
-              <div className="w-11 h-13 rounded-desa-sm bg-black/30 text-desa-gold p-2 flex items-center justify-center shrink-0 border border-desa-gold/50 shadow-desa-sm">
-                <Shield className="w-7 h-7 text-desa-gold fill-desa-gold/20" strokeWidth={1.75} />
-              </div>
-            )}
+            <div className="relative w-11 h-13 shrink-0">
+              <Image
+                src={
+                  settings.logo && typeof settings.logo === 'object' && settings.logo.url
+                    ? settings.logo.url
+                    : '/seed/logo-desa-placeholder.svg'
+                }
+                alt={settings.namaInstansi || 'Logo Desa Bolali'}
+                fill
+                sizes="52px"
+                className="object-contain"
+              />
+            </div>
 
             <div>
               <h3 className="text-lg font-black text-white tracking-tight font-sans">

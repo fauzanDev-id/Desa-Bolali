@@ -61,7 +61,10 @@ async function seed() {
   const mediaMap: Record<string, any> = {}
 
   async function uploadMediaFile(filename: string, altText: string) {
-    const filePath = path.resolve('public', 'images', filename)
+    let filePath = path.resolve('public', 'seed', filename)
+    if (!fs.existsSync(filePath)) {
+      filePath = path.resolve('public', 'images', filename)
+    }
     if (!fs.existsSync(filePath)) {
       return null
     }
@@ -100,7 +103,10 @@ async function seed() {
   }
 
   async function uploadDocFile(filename: string, altText: string) {
-    const filePath = path.resolve('public', 'docs', filename)
+    let filePath = path.resolve('public', 'seed', 'docs', filename)
+    if (!fs.existsSync(filePath)) {
+      filePath = path.resolve('public', 'docs', filename)
+    }
     if (!fs.existsSync(filePath)) {
       return null
     }
@@ -138,20 +144,29 @@ async function seed() {
   }
 
   console.log('📸 Mengunggah pustaka media awal...')
-  const heroMedia = await uploadMediaFile('hero-desa.jpg', 'Pemandangan Alam Desa Bolali')
-  const kadesMedia = await uploadMediaFile('kades.jpg', 'Foto Resmi Kepala Desa Bolali')
-  const berita1Media = await uploadMediaFile('berita-1.jpg', 'Gerakan Penghijauan Desa')
-  const berita2Media = await uploadMediaFile('berita-2.jpg', 'Pembangunan Jalan Desa')
-  const berita3Media = await uploadMediaFile('berita-3.jpg', 'Pelatihan UMKM Desa')
-  const berita4Media = await uploadMediaFile('berita-4.jpg', 'Festival Budaya Desa')
-  const potPertanian = await uploadMediaFile('potensi-pertanian.jpg', 'Potensi Pertanian Padi')
-  const potUmkm = await uploadMediaFile('potensi-umkm.jpg', 'Sentra Industri UMKM Gerabah')
-  const potWisata = await uploadMediaFile('potensi-wisata.jpg', 'Wisata Alam Desa')
-  const potBudaya = await uploadMediaFile('potensi-budaya.jpg', 'Seni Tradisi Budaya')
-  const gal1 = await uploadMediaFile('galeri-1.jpg', 'Wisata Embung Desa')
-  const gal2 = await uploadMediaFile('galeri-2.jpg', 'Produksi Kerajinan Warga')
-  const gal3 = await uploadMediaFile('galeri-3.jpg', 'Kirab Budaya Nusantara')
-  const gal4 = await uploadMediaFile('galeri-4.jpg', 'Kerja Bakti Pembangunan')
+  const hero1Media = (await uploadMediaFile('hero-1.webp', 'Pemandangan Alam Desa Bolali 1')) || (await uploadMediaFile('hero-desa.jpg', 'Pemandangan Alam Desa Bolali'))
+  const hero2Media = await uploadMediaFile('hero-2.webp', 'Harmoni Alam Pertanian Bolali')
+  const hero3Media = await uploadMediaFile('hero-3.webp', 'Perkampungan Asri Desa Bolali')
+  const hero4Media = await uploadMediaFile('hero-4.webp', 'Panorama Lembah Fajar Bolali')
+  const kadesMedia = (await uploadMediaFile('kades-placeholder.webp', 'Foto Resmi Kepala Desa Bolali [GANTI DENGAN ASLI]')) || (await uploadMediaFile('kades.jpg', 'Foto Resmi Kepala Desa Bolali'))
+  const logoMedia = await uploadMediaFile('logo-desa-placeholder.svg', 'Lambang Daerah Desa Bolali [GANTI DENGAN ASLI]')
+
+  const berita1Media = (await uploadMediaFile('berita-1.webp', 'Gerakan Penghijauan Desa')) || (await uploadMediaFile('berita-1.jpg', 'Gerakan Penghijauan Desa'))
+  const berita2Media = (await uploadMediaFile('berita-2.webp', 'Pembangunan Jalan Desa')) || (await uploadMediaFile('berita-2.jpg', 'Pembangunan Jalan Desa'))
+  const berita3Media = (await uploadMediaFile('berita-3.webp', 'Pelatihan UMKM Desa')) || (await uploadMediaFile('berita-3.jpg', 'Pelatihan UMKM Desa'))
+  const berita4Media = (await uploadMediaFile('berita-4.webp', 'Festival Budaya Desa')) || (await uploadMediaFile('berita-4.jpg', 'Festival Budaya Desa'))
+
+  const potPertanian = (await uploadMediaFile('potensi-pertanian.webp', 'Potensi Pertanian Padi')) || (await uploadMediaFile('potensi-pertanian.jpg', 'Potensi Pertanian Padi'))
+  const potUmkm = (await uploadMediaFile('potensi-umkm.webp', 'Sentra Industri UMKM Gerabah')) || (await uploadMediaFile('potensi-umkm.jpg', 'Sentra Industri UMKM Gerabah'))
+  const potWisata = (await uploadMediaFile('potensi-wisata.webp', 'Wisata Alam Umbul Desa')) || (await uploadMediaFile('potensi-wisata.jpg', 'Wisata Alam Desa'))
+  const potBudaya = (await uploadMediaFile('potensi-budaya.webp', 'Seni Tradisi Tari Budaya')) || (await uploadMediaFile('potensi-budaya.jpg', 'Seni Tradisi Budaya'))
+
+  const gal1 = (await uploadMediaFile('galeri-1.webp', 'Pendopo Balai Desa Bolali')) || (await uploadMediaFile('galeri-1.jpg', 'Wisata Embung Desa'))
+  const gal2 = (await uploadMediaFile('galeri-2.webp', 'Wisata Embung Desa')) || (await uploadMediaFile('galeri-2.jpg', 'Produksi Kerajinan Warga'))
+  const gal3 = (await uploadMediaFile('galeri-3.webp', 'Kerja Bakti Pembangunan')) || (await uploadMediaFile('galeri-3.jpg', 'Kirab Budaya Nusantara'))
+  const gal4 = (await uploadMediaFile('galeri-4.webp', 'Produksi Kerajinan Warga')) || (await uploadMediaFile('galeri-4.jpg', 'Kerja Bakti Pembangunan'))
+  const gal5 = await uploadMediaFile('galeri-5.webp', 'Kirab Gunungan Budaya')
+  const gal6 = await uploadMediaFile('galeri-6.webp', 'Panorama Senja Persawahan')
 
   const docApbdes = await uploadDocFile('apbdes-2026.pdf', 'Dokumen APBDes Tahun 2026')
   const docRealisasi = await uploadDocFile('laporan-realisasi.pdf', 'Laporan Realisasi APBDes')
@@ -988,13 +1003,35 @@ async function seed() {
       tagline: 'Desa Maju, Mandiri, Sejahtera',
       deskripsiHero:
         'Bersama membangun desa dengan pelayanan terbaik, informasi yang transparan dan inovasi untuk masa depan.',
+      logo: logoMedia ? logoMedia.id : undefined,
       bannerSlider: [
         {
-          gambar: heroMedia ? heroMedia.id : undefined,
+          gambar: hero1Media ? hero1Media.id : undefined,
           judul: 'Selamat Datang di Desa Bolali',
           subjudul: '“Desa Maju, Mandiri, Sejahtera”',
           teksTombolUtama: 'Jelajahi Desa',
           tautanTombolUtama: '#potensi',
+        },
+        {
+          gambar: hero2Media ? hero2Media.id : undefined,
+          judul: 'Harmoni Alam & Pertanian Bolali',
+          subjudul: '“Lumbung Pangan Berkelanjutan”',
+          teksTombolUtama: 'Potensi Pertanian',
+          tautanTombolUtama: '/potensi-desa',
+        },
+        {
+          gambar: hero3Media ? hero3Media.id : undefined,
+          judul: 'Kemandirian & Gotong Royong Warga',
+          subjudul: '“Guyub Rukun Membangun Desa”',
+          teksTombolUtama: 'Profil Desa',
+          tautanTombolUtama: '/profil/sejarah',
+        },
+        {
+          gambar: hero4Media ? hero4Media.id : undefined,
+          judul: 'Inovasi Menuju Desa Digital',
+          subjudul: '“Transparan, Partisipatif, dan Inovatif”',
+          teksTombolUtama: 'Layanan Mandiri',
+          tautanTombolUtama: '/kontak',
         },
       ],
       mediaSosial: {

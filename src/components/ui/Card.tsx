@@ -14,14 +14,13 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * - Border: 1px border-desa-border
  * - Background: desa-surface (putih bersih)
  */
-export function Card({
-  children,
-  className,
-  hoverEffect = false,
-  ...props
-}: CardProps) {
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(function Card(
+  { children, className, hoverEffect = false, ...props },
+  ref
+) {
   return (
     <div
+      ref={ref}
       className={clsx(
         'bg-desa-surface rounded-desa-card border border-desa-border shadow-desa-sm p-4 sm:p-5 md:p-6 transition-shadow duration-150',
         hoverEffect && 'hover:shadow-desa-hover',
@@ -32,4 +31,4 @@ export function Card({
       {children}
     </div>
   )
-}
+})

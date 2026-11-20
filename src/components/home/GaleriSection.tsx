@@ -9,6 +9,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { GaleriItem } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
+import { getBlurDataUrl } from '@/lib/blur'
 
 interface GaleriSectionProps {
   galeriList: GaleriItem[]
@@ -20,7 +21,7 @@ export function GaleriSection({ galeriList }: GaleriSectionProps) {
 
   if (items.length === 0) {
     return (
-      <Card className="h-full flex flex-col justify-between">
+      <Card className="h-full flex flex-col justify-between card-hover-lift">
         <SectionHeader
           title="Galeri Desa"
           icon={<Images className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
@@ -50,7 +51,7 @@ export function GaleriSection({ galeriList }: GaleriSectionProps) {
   const visibleItems = items.slice(startIndex, startIndex + visibleCount)
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card className="h-full flex flex-col justify-between card-hover-lift">
       <div>
         <SectionHeader
           title="Galeri Desa"
@@ -59,23 +60,26 @@ export function GaleriSection({ galeriList }: GaleriSectionProps) {
           linkHref="/galeri"
         />
 
-        {/* 1. Tampilan Mobile (<768px): Carousel Horizontal Swipe Sesuai Spesifikasi */}
-        <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-3 mt-3 pb-2 scrollbar-none -mx-1 px-1">
+        {/* 1. Tampilan Mobile (<768px): Carousel Horizontal Swipe dengan Snap */}
+        <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-3 mt-3 pb-2 scrollbar-none -mx-1 px-1 touch-pan-x scroll-smooth">
           {items.map((item, idx) => {
-            const imgUrl = getMediaUrl(item.foto, `/seed/galeri-${(idx % 4) + 1}.jpg`)
+            const imgUrl = getMediaUrl(item.foto, `/seed/galeri-${(idx % 6) + 1}.webp`)
+            const blur = getBlurDataUrl(imgUrl)
 
             return (
               <Link
                 key={item.id}
                 href={`/galeri#${item.slug}`}
-                className="group relative w-[170px] shrink-0 snap-center aspect-square rounded-desa-card overflow-hidden shadow-xs bg-slate-100 border border-desa-border block"
+                className="group relative w-[170px] shrink-0 snap-center aspect-square rounded-desa-card zoom-img-container shadow-xs bg-slate-100 border border-desa-border block"
               >
                 <Image
                   src={imgUrl}
                   alt={item.judul}
                   fill
+                  placeholder={blur ? 'blur' : 'empty'}
+                  blurDataURL={blur}
                   sizes="170px"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover zoom-img-target"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-85" />
                 <div className="absolute bottom-2 left-2 right-2 text-center">
@@ -92,27 +96,27 @@ export function GaleriSection({ galeriList }: GaleriSectionProps) {
         <div className="hidden md:block relative mt-3">
           <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
             {visibleItems.map((item, idx) => {
-              const imgUrl = getMediaUrl(item.foto, `/seed/galeri-${((startIndex + idx) % 4) + 1}.jpg`)
+              const imgUrl = getMediaUrl(item.foto, `/seed/galeri-${((startIndex + idx) % 6) + 1}.webp`)
+              const blur = getBlurDataUrl(imgUrl)
 
               return (
                 <Link
                   key={item.id}
                   href={`/galeri#${item.slug}`}
-                  className="group relative aspect-square rounded-desa-card overflow-hidden shadow-xs bg-slate-100 border border-desa-border block"
+                  className="group relative aspect-square rounded-desa-card zoom-img-container shadow-xs bg-slate-100 border border-desa-border block"
                 >
                   <Image
                     src={imgUrl}
                     alt={item.judul}
                     fill
-                    sizes="120px"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    placeholder={blur ? 'blur' : 'empty'}
+                    blurDataURL={blur}
+                    sizes="(max-width: 1024px) 33vw, 150px"
+                    className="object-cover zoom-img-target"
                   />
-                  {/* Gradient Overlay Gelap Bawah */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-85 group-hover:opacity-100 transition-opacity" />
-
-                  {/* Label di Bawah Foto Sesuai Mockup */}
-                  <div className="absolute bottom-1.5 left-1.5 right-1.5 text-center">
-                    <span className="text-[11px] font-bold text-white tracking-tight line-clamp-1 drop-shadow-sm font-sans">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-85" />
+                  <div className="absolute bottom-2 left-2 right-2 text-center">
+                    <span className="text-xs font-bold text-white tracking-tight line-clamp-1 drop-shadow-sm font-sans">
                       {item.judul}
                     </span>
                   </div>
@@ -121,28 +125,28 @@ export function GaleriSection({ galeriList }: GaleriSectionProps) {
             })}
           </div>
 
-          {/* Panah Carousel Kiri */}
-          {startIndex > 0 && (
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Foto Galeri Sebelumnya"
-              className="absolute -left-3.5 top-1/2 -translate-y-1/2 min-w-[32px] min-h-[32px] w-8 h-8 rounded-full bg-white shadow-desa-sm border border-desa-border text-desa-textDark hover:text-desa-primaryGreen flex items-center justify-center transition-colors z-10 focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen"
-            >
-              <ChevronLeft className="w-4 h-4" strokeWidth={1.75} />
-            </button>
-          )}
-
-          {/* Panah Carousel Kanan */}
-          {startIndex < maxStart && (
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Foto Galeri Selanjutnya"
-              className="absolute -right-3.5 top-1/2 -translate-y-1/2 min-w-[32px] min-h-[32px] w-8 h-8 rounded-full bg-white shadow-desa-sm border border-desa-border text-desa-textDark hover:text-desa-primaryGreen flex items-center justify-center transition-colors z-10 focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen"
-            >
-              <ChevronRight className="w-4 h-4" strokeWidth={1.75} />
-            </button>
+          {/* Tombol Panah Navigasi Carousel Kiri/Kanan */}
+          {items.length > visibleCount && (
+            <>
+              <button
+                type="button"
+                onClick={handlePrev}
+                disabled={startIndex === 0}
+                aria-label="Foto Sebelumnya"
+                className="absolute -left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/95 border border-desa-border shadow-desa-sm flex items-center justify-center text-desa-darkGreen hover:bg-desa-lightGreen transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed z-10 focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen"
+              >
+                <ChevronLeft className="w-4 h-4" strokeWidth={1.75} />
+              </button>
+              <button
+                type="button"
+                onClick={handleNext}
+                disabled={startIndex >= maxStart}
+                aria-label="Foto Selanjutnya"
+                className="absolute -right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/95 border border-desa-border shadow-desa-sm flex items-center justify-center text-desa-darkGreen hover:bg-desa-lightGreen transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed z-10 focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen"
+              >
+                <ChevronRight className="w-4 h-4" strokeWidth={1.75} />
+              </button>
+            </>
           )}
         </div>
       </div>

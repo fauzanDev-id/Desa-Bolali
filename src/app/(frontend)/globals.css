@@ -26,7 +26,7 @@
 
     /* Bayangan resmi 2 level: halus & hover */
     --shadow-desa-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
-    --shadow-desa-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    --shadow-desa-hover: 0 6px 12px -2px rgba(0, 0, 0, 0.08), 0 3px 6px -2px rgba(0, 0, 0, 0.04);
 
     --base-font-size: 16px;
     --background: #f2f6f3;
@@ -87,6 +87,84 @@
   /* Prose Bacaan Standar: Maksimal 70 karakter per baris untuk kenyamanan mata */
   .prose-reading {
     max-width: 70ch;
+  }
+}
+
+/* ========================================================
+   SISTEM ANIMASI RESMI DESA BOLALI
+   - Halus, profesional, fungsional (CLS = 0)
+   - Hormati prefers-reduced-motion
+   ======================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 1. Scroll Reveal: Fade-in + Naik 16px, 400ms */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .scroll-reveal.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* 2. Kartu: Hover naik 2px + bayangan sedikit lebih tegas */
+  .card-hover-lift {
+    transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-desa-hover);
+  }
+
+  /* 3. Gambar: Zoom 1.04 dalam 300ms dengan overflow tersembunyi */
+  .zoom-img-container {
+    overflow: hidden;
+  }
+  .zoom-img-target {
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  .group:hover .zoom-img-target,
+  .zoom-img-container:hover .zoom-img-target {
+    transform: scale(1.04);
+  }
+
+  /* 4. Dropdown Menu: Fade + Turun 4px, 150ms */
+  .dropdown-anim {
+    transition: opacity 150ms ease-out, transform 150ms ease-out;
+  }
+}
+
+/* ========================================================
+   KEPATUHAN PREFERS-REDUCED-MOTION
+   Matikan semua transisi, animasi dan zoom jika diaktifkan pengguna
+   ======================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+  }
+
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .card-hover-lift:hover {
+    transform: none !important;
+  }
+
+  .zoom-img-target {
+    transform: none !important;
+    transition: none !important;
   }
 }
 

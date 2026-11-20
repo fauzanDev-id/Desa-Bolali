@@ -2,10 +2,12 @@
 
 import React from 'react'
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
 import { Map } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import type { ContactData } from '@/lib/cms'
+import { getBlurDataUrl } from '@/lib/blur'
 
 const CATEGORIES_FALLBACK = [
   { key: 'fasilitas', label: 'Fasilitas Umum', bgClass: 'bg-blue-500' },
@@ -15,28 +17,33 @@ const CATEGORIES_FALLBACK = [
   { key: 'publik', label: 'Area Publik', bgClass: 'bg-cyan-500' },
 ]
 
+const mapBlur = getBlurDataUrl('/seed/peta-desa.webp')
+
 const PetaDigitalLeaflet = dynamic(() => import('./PetaDigitalLeaflet'), {
   ssr: false,
   loading: () => (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 mt-3">
-      {/* Pratinjau Citra Satelit Realistis Menyerupai Mockup Saat Memuat Leaflet */}
-      <div className="md:col-span-8 relative h-[280px] md:h-auto md:aspect-[4/3] w-full rounded-desa-card overflow-hidden border border-desa-border shadow-xs bg-[#1a2d1d] flex items-center justify-center">
-        {/* Pola Satelit Halus & Kontur */}
-        <div className="absolute inset-0 bg-[radial-gradient(#2d4a2d_1px,transparent_1px)] [background-size:16px_16px] opacity-40" />
-        
-        {/* Pin Pusat Desa Bolali */}
-        <div className="relative z-10 flex flex-col items-center">
-          <div className="bg-white text-desa-darkGreen font-extrabold text-[11px] px-2 py-0.5 rounded-full shadow-md border border-slate-300 mb-1 whitespace-nowrap">
-            Desa Bolali
-          </div>
-          <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-md animate-pulse" />
-        </div>
+      {/* Fallback Gambar Citra Satelit WebP Berkualitas Tinggi Sebelum Leaflet Selesai Dimuat */}
+      <div className="md:col-span-8 relative h-[280px] md:h-auto md:aspect-[4/3] w-full rounded-desa-card overflow-hidden border border-desa-border shadow-xs bg-slate-900">
+        <Image
+          src="/seed/peta-desa.webp"
+          alt="Peta Satelit Wilayah Desa Bolali"
+          fill
+          placeholder={mapBlur ? 'blur' : 'empty'}
+          blurDataURL={mapBlur}
+          sizes="(max-width: 768px) 100vw, 400px"
+          className="object-cover"
+        />
 
-        {/* Titik-Titik POI Terserak Sesuai Mockup */}
-        <div className="absolute top-1/4 left-1/4 w-2.5 h-2.5 bg-blue-500 rounded-full border border-white" />
-        <div className="absolute top-1/3 right-1/4 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-white" />
-        <div className="absolute bottom-1/3 left-1/3 w-2.5 h-2.5 bg-amber-500 rounded-full border border-white" />
-        <div className="absolute bottom-1/4 right-1/3 w-2.5 h-2.5 bg-yellow-500 rounded-full border border-white" />
+        {/* Pin Pusat Desa Bolali */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="flex flex-col items-center">
+            <div className="bg-white text-desa-darkGreen font-extrabold text-[11px] px-2 py-0.5 rounded-full shadow-md border border-slate-300 mb-1 whitespace-nowrap">
+              Desa Bolali
+            </div>
+            <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-md animate-pulse" />
+          </div>
+        </div>
       </div>
 
       {/* Legenda Kategori Sesuai Mockup */}
@@ -69,7 +76,7 @@ export function PetaDigitalSection({ contact }: PetaDigitalSectionProps) {
   const lng = contact.longitude ?? 110.7432
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card className="h-full flex flex-col justify-between card-hover-lift">
       <div>
         <SectionHeader
           title="Peta Digital Desa"

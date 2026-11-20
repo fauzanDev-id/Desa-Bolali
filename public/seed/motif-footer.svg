@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 280" fill="none" preserveAspectRatio="none">
+  <!-- Siluet Pegunungan & Daun Sederhana Satu Warna Rendah Opasitas -->
+  <g fill="currentColor" fill-opacity="0.08">
+    <!-- Kontur Pegunungan Belakang -->
+    <path d="M0 160 Q 180 80 360 140 T 720 100 T 1080 130 T 1440 90 L 1440 280 L 0 280 Z" />
+    <!-- Kontur Pegunungan Depan -->
+    <path d="M0 190 Q 220 130 480 180 T 960 140 T 1440 170 L 1440 280 L 0 280 Z" fill-opacity="0.12" />
+  </g>
+  <g fill="currentColor" fill-opacity="0.05">
+    <!-- Stilasi Siluet Daun & Padi Halus di Tepi Kanan -->
+    <path d="M1250 240 C 1270 200, 1310 180, 1340 190 C 1310 210, 1290 230, 1280 250 Z" />
+    <path d="M1280 250 C 1310 210, 1350 195, 1380 210 C 1350 225, 1320 245, 1300 260 Z" />
+    <path d="M1300 260 C 1335 220, 1385 210, 1420 230 C 1380 245, 1345 260, 1320 270 Z" />
+    <!-- Stilasi Siluet Daun & Padi Halus di Tepi Kiri -->
+    <path d="M190 240 C 170 200, 130 180, 100 190 C 130 210, 150 230, 160 250 Z" />
+    <path d="M160 250 C 130 210, 90 195, 60 210 C 90 225, 120 245, 140 260 Z" />
+    <path d="M140 260 C 105 220, 55 210, 20 230 C 60 245, 95 260, 120 270 Z" />
+  </g>
+</svg>
