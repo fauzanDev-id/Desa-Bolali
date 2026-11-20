@@ -67,7 +67,6 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
   const handleTouchEnd = () => {
     if (touchStartXRef.current !== null && touchEndXRef.current !== null) {
       const diff = touchStartXRef.current - touchEndXRef.current
-      // Minimal swipe distance 50px
       if (diff > 50) {
         nextSlide()
       } else if (diff < -50) {
@@ -89,7 +88,7 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="relative w-full min-h-[500px] sm:min-h-[560px] lg:min-h-[620px] flex items-center bg-desa-darkGreen overflow-hidden select-none"
+      className="relative w-full min-h-[460px] md:min-h-[380px] lg:min-h-[340px] xl:min-h-[320px] flex items-center bg-desa-darkGreen overflow-hidden select-none"
     >
       {/* Background Image Slider */}
       <div className="absolute inset-0 z-0">
@@ -101,82 +100,81 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
           sizes="100vw"
           className="object-cover object-center transform transition-transform duration-1000 ease-out"
         />
-        {/* Overlay Tipis Netral agar Keindahan Alam Desa Terlihat Terang Seperti Mockup */}
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/15 to-transparent" />
+        {/* Overlay Gelap Tipis Seragam untuk Kontras WCAG AA (Bukan Gradien Warna-Warni) */}
+        <div className="absolute inset-0 bg-black/35" />
       </div>
 
-      {/* Main Content Overlay */}
-      <div className="relative z-10 max-w-[1376px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full flex flex-col lg:flex-row items-center justify-between gap-10">
-        {/* Sisi Kiri: Teks & Tombol Aksi */}
-        <div className="max-w-2xl text-white space-y-4 sm:space-y-6 text-center lg:text-left">
+      {/* Main Content Overlay: Container 1344px */}
+      <div className="relative z-10 max-w-[1344px] mx-auto px-4 md:px-6 lg:px-8 py-9 sm:py-11 md:py-12 xl:py-9 pb-16 sm:pb-16 xl:pb-16 w-full flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6 lg:gap-10">
+        {/* Sisi Kiri: Teks & Tombol Aksi (Rata Kiri di Semua Ukuran Layar Sesuai Spesifikasi) */}
+        <div className="max-w-2xl text-white space-y-2.5 sm:space-y-3.5 text-left">
           <div>
-            <span className="block text-2xl sm:text-3xl lg:text-4xl font-script text-desa-gold drop-shadow-sm">
+            <span className="block text-2xl sm:text-3xl lg:text-3xl font-script text-desa-gold drop-shadow-sm select-none">
               Selamat Datang di
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white drop-shadow-md mt-1 font-sans">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black tracking-tight text-white drop-shadow-md mt-0.5 font-sans">
               {settings.namaWebsite || 'Desa Bolali'}
             </h1>
-            <p className="text-xl sm:text-2xl font-bold text-white/95 tracking-tight mt-2 font-sans italic">
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-white/95 tracking-tight mt-1 font-sans italic">
               {currentSlide?.subjudul || settings.tagline || '“Desa Maju, Mandiri, Sejahtera”'}
             </p>
           </div>
 
-          <p className="text-sm sm:text-base text-white/90 leading-relaxed max-w-xl drop-shadow-sm font-sans mx-auto lg:mx-0">
+          <p className="text-sm sm:text-base text-white/90 leading-relaxed max-w-xl drop-shadow-sm font-sans">
             {settings.deskripsiHero ||
-              'Bersama membangun desa dengan pelayanan terbaik, keterbukaan informasi yang transparan dan inovasi untuk masa depan.'}
+              'Bersama membangun desa dengan pelayanan terbaik, informasi yang transparan dan inovasi untuk masa depan.'}
           </p>
 
-          {/* Dua Tombol Sesuai Gambar: Kuning Solid & Outline Putih */}
-          <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
+          {/* Tombol Aksi: Di Mobile (<768px) Tersusun Penuh Lebar (Full-Width), Desktop Sejajar */}
+          <div className="pt-1.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 w-full sm:w-auto">
             <Button
               href={currentSlide?.tautanTombolUtama || '#potensi'}
               variant="gold"
-              size="lg"
-              icon={<ArrowRight className="w-5 h-5" />}
+              size="md"
+              icon={<ArrowRight className="w-5 h-5" strokeWidth={1.75} />}
               iconPosition="right"
-              className="bg-desa-gold hover:bg-desa-goldHover text-desa-darkGreen font-bold rounded-full px-6 shadow-md"
+              className="w-full sm:w-auto justify-center min-h-[44px]"
             >
               {currentSlide?.teksTombolUtama || 'Jelajahi Desa'}
             </Button>
 
             <Link
               href="/profil/sejarah"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-white/90 text-white font-semibold text-base hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white transition-all backdrop-blur-xs"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-white/80 text-white font-semibold text-sm hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white transition-all backdrop-blur-xs w-full sm:w-auto min-h-[44px]"
             >
-              <Play className="w-4 h-4 fill-white" />
+              <Play className="w-4 h-4 fill-white" strokeWidth={1.75} />
               <span>Profil Desa</span>
             </Link>
           </div>
         </div>
 
-        {/* Sisi Kanan: Script Putih Dua Baris & Kartu IDM Mandiri */}
-        <div className="w-full lg:w-auto flex flex-col items-center lg:items-end justify-center">
+        {/* Sisi Kanan: Script Putih & Kartu IDM Mandiri (Pindah di Bawah Teks di Mobile) */}
+        <div className="w-full lg:w-auto flex flex-col items-start lg:items-end justify-center mt-2 lg:mt-0">
           {/* Script Putih Miring Dua Baris Sesuai Mockup */}
-          <p className="text-2xl sm:text-3xl lg:text-[32px] font-script text-white drop-shadow-md mb-4 text-center lg:text-right leading-tight -rotate-3 max-w-xs select-none">
+          <p className="hidden sm:block text-2xl lg:text-[28px] font-script text-white drop-shadow-md mb-3 text-left lg:text-right leading-tight -rotate-3 max-w-xs select-none">
             Maju Bersama<br />
             Untuk Desa Lebih Baik
           </p>
 
-          {/* Kartu Putih Rounded: Indeks Desa Membangun / Mandiri */}
-          <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-desa-dropdown border border-white/80 flex items-center gap-4 sm:gap-5 max-w-sm w-full">
+          {/* Kartu Putih Rounded: Indeks Desa Membangun / Mandiri (Responsif Aman di 360px) */}
+          <div className="bg-white rounded-desa-card p-2.5 sm:p-4 shadow-desa-dropdown border border-white/80 flex items-center gap-2.5 sm:gap-4 max-w-sm w-full">
             {/* Bar Hijau Icon */}
-            <div className="w-12 h-12 rounded-xl bg-desa-lightGreen flex items-center justify-center text-desa-accentGreen shrink-0 border border-emerald-200">
-              <BarChart3 className="w-6 h-6 text-desa-accentGreen" />
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-desa-sm bg-desa-lightGreen flex items-center justify-center text-desa-accentGreen shrink-0 border border-emerald-200">
+              <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-desa-accentGreen" strokeWidth={1.75} />
             </div>
 
             <div className="flex-1 min-w-0">
-              <div className="text-[11px] font-semibold text-desa-textMuted uppercase tracking-wider">
+              <div className="text-[10px] font-semibold text-desa-textMuted uppercase tracking-wider truncate">
                 Indeks Desa Membangun
               </div>
-              <div className="text-xl sm:text-2xl font-black text-desa-textDark tracking-tight leading-tight">
+              <div className="text-lg sm:text-2xl font-black text-desa-textDark tracking-tight leading-tight truncate">
                 {statistik.indeksDesaMembangun || 'Mandiri'}
               </div>
             </div>
 
             {/* Lencana Bintang Emas */}
-            <div className="w-10 h-10 rounded-full bg-desa-goldLight flex items-center justify-center text-desa-gold shrink-0 border border-desa-gold/40">
-              <Award className="w-6 h-6 fill-desa-gold text-desa-gold" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-desa-goldLight flex items-center justify-center text-desa-gold shrink-0 border border-desa-gold/40">
+              <Award className="w-4 h-4 sm:w-5 sm:h-5 fill-desa-gold text-desa-gold" strokeWidth={1.75} />
             </div>
           </div>
         </div>
@@ -189,21 +187,21 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
             type="button"
             onClick={prevSlide}
             aria-label="Slide Banner Sebelumnya"
-            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/60 bg-black/25 hover:bg-black/50 text-white flex items-center justify-center backdrop-blur-xs transition-colors z-20 focus:outline-none focus:ring-2 focus:ring-white"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-white/60 bg-black/25 hover:bg-black/50 text-white flex items-center justify-center backdrop-blur-xs transition-colors z-20 focus:outline-none focus:ring-2 focus:ring-white"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-6 h-6" strokeWidth={1.75} />
           </button>
           <button
             type="button"
             onClick={nextSlide}
             aria-label="Slide Banner Selanjutnya"
-            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/60 bg-black/25 hover:bg-black/50 text-white flex items-center justify-center backdrop-blur-xs transition-colors z-20 focus:outline-none focus:ring-2 focus:ring-white"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-white/60 bg-black/25 hover:bg-black/50 text-white flex items-center justify-center backdrop-blur-xs transition-colors z-20 focus:outline-none focus:ring-2 focus:ring-white"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-6 h-6" strokeWidth={1.75} />
           </button>
 
           {/* Dot Pagination di Bawah (Aktif Berbentuk Pil Kuning) */}
-          <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+          <div className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
             {slides.map((_, dotIdx) => (
               <button
                 key={dotIdx}
@@ -212,7 +210,7 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
                 aria-label={`Pindah ke banner ${dotIdx + 1}`}
                 className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none ${
                   currentIndex === dotIdx
-                    ? 'w-8 bg-desa-gold shadow-sm'
+                    ? 'w-7 bg-desa-gold shadow-xs'
                     : 'w-2.5 bg-white/50 hover:bg-white'
                 }`}
               />

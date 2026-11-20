@@ -6,7 +6,8 @@ import { clsx } from 'clsx'
 export interface PaginationProps {
   currentPage: number
   totalPages: number
-  baseUrl: string
+  baseUrl?: string
+  getPageUrl?: (page: number) => string
   className?: string
 }
 
@@ -19,12 +20,16 @@ export interface PaginationProps {
 export function Pagination({
   currentPage,
   totalPages,
-  baseUrl,
+  baseUrl = '',
+  getPageUrl,
   className,
 }: PaginationProps) {
   if (totalPages <= 1) return null
 
-  const getPageUrl = (page: number) => {
+  const resolveUrl = (page: number) => {
+    if (getPageUrl) {
+      return getPageUrl(page)
+    }
     return page === 1 ? baseUrl : `${baseUrl}?page=${page}`
   }
 
@@ -48,7 +53,7 @@ export function Pagination({
       {/* Tombol Sebelumnya */}
       {currentPage > 1 ? (
         <Link
-          href={getPageUrl(currentPage - 1)}
+          href={resolveUrl(currentPage - 1)}
           aria-label="Halaman Sebelumnya"
           className="min-w-[44px] min-h-[44px] px-3 py-2 rounded-full border border-desa-border bg-white text-desa-textDark hover:bg-desa-lightGreen hover:text-desa-darkGreen flex items-center justify-center text-xs font-semibold transition-colors shadow-desa-sm"
         >
@@ -77,7 +82,7 @@ export function Pagination({
               <span className="w-8 text-center text-slate-400 text-xs">...</span>
             )}
             <Link
-              href={getPageUrl(p)}
+              href={resolveUrl(p)}
               aria-label={`Halaman ${p}`}
               aria-current={isCurrent ? 'page' : undefined}
               className={clsx(
@@ -96,7 +101,7 @@ export function Pagination({
       {/* Tombol Selanjutnya */}
       {currentPage < totalPages ? (
         <Link
-          href={getPageUrl(currentPage + 1)}
+          href={resolveUrl(currentPage + 1)}
           aria-label="Halaman Selanjutnya"
           className="min-w-[44px] min-h-[44px] px-3 py-2 rounded-full border border-desa-border bg-white text-desa-textDark hover:bg-desa-lightGreen hover:text-desa-darkGreen flex items-center justify-center text-xs font-semibold transition-colors shadow-desa-sm"
         >

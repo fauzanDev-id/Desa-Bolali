@@ -2,8 +2,8 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { getGaleriList, getGaleriAlbums } from '@/lib/cms'
 import { GaleriGrid } from '@/components/galeri/GaleriGrid'
-import { Breadcrumb } from '@/components'
-import { Image as ImageIcon } from 'lucide-react'
+import { PageHeader } from '@/components'
+import { Images } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Galeri Foto & Video Kegiatan | Pemerintah Desa Bolali',
@@ -15,14 +15,6 @@ export const metadata: Metadata = {
     siteName: 'Desa Bolali',
     locale: 'id_ID',
     type: 'website',
-    images: [
-      {
-        url: '/images/galeri-1.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Galeri Desa Bolali',
-      },
-    ],
   },
 }
 
@@ -35,35 +27,19 @@ export default async function GaleriPage() {
   ])
 
   return (
-    <div className="min-h-screen bg-slate-50/70 pb-16">
-      {/* Page Header Banner */}
-      <section className="relative bg-gradient-to-r from-desa-green-950 via-desa-green-900 to-desa-green-800 text-white overflow-hidden py-10 sm:py-14 border-b border-desa-gold-500/30">
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-desa-gold-500/10 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 -mb-24 w-80 h-80 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none" />
+    <div className="min-h-screen bg-desa-pageBg pb-16">
+      {/* 1. PageHeader Banner Pendek Sesuai Template Standar */}
+      <PageHeader
+        title="Galeri Dokumentasi Foto & Video"
+        subtitle="Dokumentasi visual peristiwa bersejarah, kerja bakti, festival seni, dan panorama alam Desa Bolali"
+        badge="Dokumentasi Resmi Desa"
+        badgeIcon={<Images className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        breadcrumbs={[{ label: 'Galeri Desa', href: '/galeri' }]}
+        bgImage="/seed/hero-desa.jpg"
+      />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-desa-gold-300 text-xs font-semibold backdrop-blur-sm border border-white/10 mb-3">
-              <ImageIcon className="w-3.5 h-3.5 text-desa-gold-400" />
-              <span>Dokumentasi Resmi Desa</span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white">
-              Galeri Dokumentasi Foto & Video
-            </h1>
-            <p className="mt-2 text-sm sm:text-base text-emerald-100/90 max-w-2xl leading-relaxed">
-              Koleksi rekaman visual peristiwa bersejarah, kerja bakti, pentas kebudayaan, serta perkembangan pembangunan di seluruh pelosok Desa Bolali.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
-        <Breadcrumb
-          items={[{ label: 'Galeri Desa', href: '/galeri' }]}
-          className="mb-6"
-        />
-
+      {/* 2. Konten Utama: Container 1344px */}
+      <div className="max-w-[1344px] mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-10">
         <GaleriGrid initialItems={items} albums={albums} />
       </div>
     </div>

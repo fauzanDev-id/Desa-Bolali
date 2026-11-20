@@ -37,6 +37,7 @@
     font-size: var(--base-font-size);
     scroll-behavior: smooth;
     background-color: var(--color-desa-pageBg);
+    overflow-x: hidden;
   }
 
   /* Aksesibilitas Font Size Scaling */
@@ -58,56 +59,47 @@
     font-family: var(--font-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);
-    line-height: 1.6;
+    overflow-x: hidden;
+    width: 100%;
   }
 
-  /* Tipografi Fluid dengan clamp() untuk Headings Sesuai Aturan */
+  /* Tipografi Fluid Sesuai Hirarki Pemerintahan Desa */
   h1 {
-    font-size: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
     line-height: 1.15;
-    letter-spacing: -0.025em;
-  }
-
-  h2 {
-    font-size: clamp(1.375rem, 1.15rem + 1vw, 1.875rem);
-    line-height: 1.25;
+    font-weight: 800;
     letter-spacing: -0.02em;
   }
 
-  h3 {
-    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
-    line-height: 1.3;
+  h2 {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    line-height: 1.25;
+    font-weight: 700;
     letter-spacing: -0.015em;
   }
 
-  /* Custom scrollbar halus */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  h3 {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.35;
+    font-weight: 700;
   }
 
-  ::-webkit-scrollbar-track {
-    background: #f1f5f9;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+  /* Prose Bacaan Standar: Maksimal 70 karakter per baris untuk kenyamanan mata */
+  .prose-reading {
+    max-width: 70ch;
   }
 }
 
-/* Utilitas font script dekoratif (hanya untuk 2 teks aksen hero) */
-.font-script {
-  font-family: var(--font-script), 'Dancing Script', cursive;
+/* Utilitas khusus leaflet & scrollbar */
+.leaflet-container {
+  font-family: inherit;
+  z-index: 10;
 }
 
-/* Panjang baris teks bacaan maksimal 70 karakter untuk kenyamanan membaca */
-.prose-reading,
-.text-reading {
-  max-width: 70ch;
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

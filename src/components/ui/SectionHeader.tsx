@@ -15,8 +15,8 @@ export interface SectionHeaderProps {
 /**
  * Header Seksi Konten Standar Sesuai Pola Mockup
  * - Judul tebal bernuansa institusi desa
- * - Ikon Lucide 16px atau 20px ber-stroke 1.75
- * - Aksi teks "Lihat Semua →" dengan panah 16px
+ * - Ikon Lucide 16px/18px ber-stroke 1.75 langsung di samping judul (tanpa box kotak berlebih)
+ * - Aksi teks "Lihat Semua →" dengan panah 14px
  */
 export function SectionHeader({
   title,
@@ -29,14 +29,14 @@ export function SectionHeader({
   return (
     <div
       className={clsx(
-        'flex items-center justify-between gap-3 mb-3.5 select-none',
+        'flex items-center justify-between gap-2 mb-3.5 select-none',
         className
       )}
     >
-      {/* Judul & Ikon */}
-      <div className="flex items-center gap-2.5 min-w-0">
+      {/* Judul & Ikon (Sesuai Mockup: Ikon langsung berdampingan dengan Judul) */}
+      <div className="flex items-center gap-2 min-w-0 flex-1">
         {icon && (
-          <div className="w-7 h-7 rounded-desa-sm bg-desa-lightGreen text-desa-accentGreen flex items-center justify-center shrink-0 border border-emerald-200/80">
+          <div className="shrink-0 flex items-center justify-center text-desa-accentGreen">
             {React.isValidElement(icon)
               ? React.cloneElement(icon as React.ReactElement<{ className?: string; strokeWidth?: number }>, {
                   className: clsx(
@@ -49,7 +49,7 @@ export function SectionHeader({
           </div>
         )}
         <div className="min-w-0">
-          <h2 className="text-base sm:text-lg font-bold text-desa-textDark tracking-tight leading-snug font-sans truncate">
+          <h2 className="text-sm sm:text-base font-bold text-desa-textDark tracking-tight leading-snug font-sans">
             {title}
           </h2>
           {subtitle && (
@@ -58,14 +58,17 @@ export function SectionHeader({
         </div>
       </div>
 
-      {/* Aksi "Lihat Semua" / "Lihat Detail" */}
+      {/* Tautan "Lihat Semua →" / "Lihat Detail →" Sesuai Mockup */}
       {linkText && linkHref && (
         <Link
           href={linkHref}
-          className="group inline-flex items-center gap-1 text-xs font-semibold text-desa-darkGreen hover:text-desa-greenHover transition-colors shrink-0 py-1"
+          className="group inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-desa-primaryGreen hover:text-desa-darkGreen transition-colors shrink-0 py-1"
         >
           <span>{linkText}</span>
-          <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" strokeWidth={1.75} />
+          <ArrowRight
+            className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5"
+            strokeWidth={1.75}
+          />
         </Link>
       )}
     </div>

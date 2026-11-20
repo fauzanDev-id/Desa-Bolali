@@ -1,8 +1,8 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { getProfilDesa } from '@/lib/cms'
-import { RichText } from '@/components'
-import { BookOpen, Calendar, MapPin, Sparkles, CheckCircle2 } from 'lucide-react'
+import { Card, SectionHeader, Prose, RichText } from '@/components'
+import { BookOpen, Calendar, Sparkles, Compass, CheckCircle2 } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Sejarah Desa | Profil Desa Bolali',
@@ -14,109 +14,122 @@ export const revalidate = 60
 export default async function SejarahPage() {
   const profil = await getProfilDesa()
 
+  const faktaSejarah = [
+    { label: 'Nama Wilayah', nilai: 'Desa Bolali' },
+    { label: 'Kecamatan / Kabupaten', nilai: 'Wonosari / Klaten, Jawa Tengah' },
+    { label: 'Asal-Usul Nama', nilai: 'Tradisi lisan leluhur pembuka lahan persawahan Wonosari' },
+    { label: 'Pembagian Awal', nilai: '4 Pedukuhan Adat (Bolali I, Bolali II, Tegalrejo, Karanganyar)' },
+    { label: 'Status Kemandirian', nilai: 'Desa Mandiri (Indeks Desa Membangun / IDM)' },
+    { label: 'Tipologi Wilayah', nilai: 'Desa Agraris Dataran Rendah Beririgasi Teknis' },
+  ]
+
   const eraMilestones = [
     {
       tahun: 'Masa Lampau',
       judul: 'Era Perintisan & Pembukaan Lahan',
       deskripsi:
-        'Para sesepuh dan perintis desa membuka lahan persawahan subur di dataran Wonosari dengan sistem irigasi gotong royong [Data Dummy].',
+        'Para sesepuh dan perintis desa membuka lahan persawahan subur di dataran Wonosari dengan sistem irigasi gotong royong.',
     },
     {
       tahun: 'Era Pembagian Wilayah',
       judul: 'Pembentukan 4 Pedukuhan Adat',
       deskripsi:
-        'Kekompakan warga melahirkan 4 wilayah pedukuhan yang guyub rukun: Dusun Bolali I, Dusun Bolali II, Dusun Tegalrejo, dan Dusun Karanganyar [Data Dummy].',
+        'Kekompakan warga melahirkan 4 wilayah pedukuhan yang guyub rukun: Dusun Bolali I, Dusun Bolali II, Dusun Tegalrejo, dan Dusun Karanganyar.',
     },
     {
       tahun: 'Era Reformasi',
       judul: 'Penguatan Kelembagaan Desa',
       deskripsi:
-        'Penyusunan tata kelola desa berbasis musyawarah mufakat bersama BPD dan penguatan ketahanan pangan lokal [Data Dummy].',
+        'Penyusunan tata kelola desa berbasis musyawarah mufakat bersama BPD dan penguatan ketahanan pangan lokal.',
     },
     {
       tahun: 'Era Sekarang (2026)',
       judul: 'Transformasi Desa Mandiri & Digital',
       deskripsi:
-        'Pencapaian status Desa Mandiri (IDM), keterbukaan APBDes digital, pemberdayaan BUMDes, serta pelayanan warga terpadu [Data Dummy].',
+        'Pencapaian status Desa Mandiri (IDM), keterbukaan APBDes digital, pemberdayaan BUMDes, serta pelayanan warga terpadu.',
     },
   ]
 
   return (
-    <div className="space-y-8">
-      {/* Main Historical Article Card */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-6 sm:p-8">
-        <div className="flex items-center gap-2.5 text-xs font-semibold text-desa-green-800 uppercase tracking-wider mb-2">
-          <BookOpen className="w-4 h-4 text-desa-gold-500" />
-          <span>Riwayat & Asal-Usul</span>
-          <span className="text-[10px] text-slate-400 font-normal">[Data Dummy]</span>
+    <div className="space-y-6 sm:space-y-8">
+      {/* 1. Riwayat Utama dengan Komponen Prose */}
+      <Card className="p-5 sm:p-7">
+        <SectionHeader
+          title="Riwayat & Asal-Usul Desa"
+          icon={<BookOpen className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+        />
+
+        <Prose className="mt-4">
+          <p className="text-base sm:text-lg font-medium text-slate-800 leading-relaxed italic border-l-4 border-desa-primaryGreen pl-4 py-1 bg-desa-lightGreen/50 rounded-r-desa-sm">
+            “Desa Bolali adalah desa agraris yang menjunjung tinggi kebersamaan, gotong royong, dan keterbukaan informasi publik menuju masyarakat yang mandiri dan sejahtera.”
+          </p>
+
+          <h3 className="text-lg font-bold text-desa-textDark mt-6 mb-2">
+            Asal-Usul Nama dan Awal Peradaban
+          </h3>
+          <p>
+            Menurut cerita tutur yang diwariskan secara turun-temurun oleh para sesepuh, nama Desa Bolali berakar dari semangat keteguhan hati para pendahulu dalam mengolah lahan pertanian subur di lembah Sungai Dengkeng dan dataran Klaten bagian timur.
+          </p>
+          <p>
+            Dengan kearifan lokal sistem pranata mangsa dan pengelolaan air tradisional, masyarakat bergotong royong membangun bendungan desa kecil serta saluran irigasi yang menghidupi ratusan hektar sawah produktif.
+          </p>
+        </Prose>
+      </Card>
+
+      {/* 2. Info Ringkas: Tabel Dua Kolom Sesuai Spesifikasi */}
+      <Card className="p-5 sm:p-7">
+        <SectionHeader
+          title="Fakta Ringkas Sejarah & Wilayah"
+          icon={<Compass className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+        />
+
+        <div className="overflow-x-auto mt-4">
+          <table className="w-full border-collapse border border-desa-border rounded-desa-sm text-xs sm:text-sm">
+            <tbody className="divide-y divide-desa-border">
+              {faktaSejarah.map((item, idx) => (
+                <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/70'}>
+                  <td className="py-3 px-4 font-bold text-desa-textDark w-1/3 sm:w-1/4 border-r border-desa-border">
+                    {item.label}
+                  </td>
+                  <td className="py-3 px-4 text-slate-700 font-medium">
+                    {item.nilai}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+      </Card>
 
-        <h2 className="text-xl sm:text-2xl font-bold text-desa-green-950 mb-6 pb-4 border-b border-slate-100">
-          Riwayat Singkat Berdirinya Desa Bolali
-        </h2>
+      {/* 3. Linimasa Perkembangan Desa */}
+      <Card className="p-5 sm:p-7">
+        <SectionHeader
+          title="Linimasa Perkembangan Desa Bolali"
+          icon={<Sparkles className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+        />
 
-        {/* Content Body */}
-        <div className="prose prose-slate max-w-none">
-          <RichText content={profil.sejarah} />
-        </div>
-      </div>
-
-      {/* Historical Milestones Timeline */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-6 sm:p-8">
-        <div className="flex items-center gap-2.5 text-xs font-semibold text-desa-green-800 uppercase tracking-wider mb-2">
-          <Sparkles className="w-4 h-4 text-desa-gold-500" />
-          <span>Tonggak Sejarah Desa</span>
-        </div>
-        <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-6">
-          Linimasa Perkembangan Desa Bolali
-        </h3>
-
-        <div className="relative pl-6 sm:pl-8 border-l-2 border-desa-green-800/30 space-y-6 sm:space-y-8">
+        <div className="relative pl-6 sm:pl-8 border-l-2 border-emerald-200 space-y-6 sm:space-y-8 mt-6">
           {eraMilestones.map((item, idx) => (
             <div key={idx} className="relative group">
               {/* Dot Marker */}
-              <div className="absolute -left-[31px] sm:-left-[39px] top-1 w-4 h-4 rounded-full bg-white border-4 border-desa-green-800 shadow-sm group-hover:scale-125 transition-transform" />
+              <div className="absolute -left-[31px] sm:-left-[39px] top-1 w-4 h-4 rounded-full bg-white border-4 border-desa-primaryGreen shadow-xs" />
 
-              <div className="bg-slate-50/80 rounded-xl p-4 border border-slate-200/70 hover:border-desa-green-300 transition-colors">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-desa-green-100/80 text-desa-green-900 text-xs font-bold mb-1.5">
-                  <Calendar className="w-3 h-3 text-desa-green-800" />
+              <div className="bg-slate-50/90 rounded-desa-card p-4 sm:p-5 border border-desa-border hover:border-emerald-300 transition-colors">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-desa-lightGreen text-desa-darkGreen text-xs font-bold mb-1.5 border border-emerald-200">
+                  <Calendar className="w-3 h-3 text-desa-accentGreen" strokeWidth={1.75} />
                   <span>{item.tahun}</span>
                 </div>
-                <h4 className="text-sm sm:text-base font-bold text-slate-900">
+                <h4 className="text-sm sm:text-base font-bold text-desa-textDark font-sans">
                   {item.judul}
                 </h4>
-                <p className="mt-1 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <p className="mt-1 text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
                   {item.deskripsi}
                 </p>
               </div>
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Nilai-Nilai Leluhur */}
-      <div className="bg-gradient-to-br from-desa-green-900 to-desa-green-950 text-white rounded-2xl p-6 sm:p-8 shadow-card border border-desa-green-800">
-        <h3 className="text-base sm:text-lg font-bold text-desa-gold-400 mb-2">
-          Filosofi & Nilai Luhur Desa Bolali
-        </h3>
-        <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed mb-4">
-          Hingga hari ini, semangat kebersamaan dan keterbukaan tetap diwariskan dari generasi ke generasi, menjadi pondasi utama aparatur dan masyarakat dalam mewujudkan kemandirian desa [Data Dummy].
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-white/10 text-xs">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-desa-gold-400 shrink-0" />
-            <span>Gotong Royong Guyub Rukun</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-desa-gold-400 shrink-0" />
-            <span>Keterbukaan & Kejujuran</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-desa-gold-400 shrink-0" />
-            <span>Pelayanan Tulus Bagi Warga</span>
-          </div>
-        </div>
-      </div>
+      </Card>
     </div>
   )
 }

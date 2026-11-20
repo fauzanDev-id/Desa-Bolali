@@ -121,34 +121,34 @@ export function Navbar({ settings, contact }: NavbarProps) {
   return (
     <header className="sticky top-0 z-50 bg-desa-surface border-b border-desa-border shadow-desa-sm transition-all duration-200">
       <div className="max-w-[1344px] mx-auto px-4 md:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[76px] gap-3 lg:gap-6">
+        <div className="flex items-center justify-between h-[70px] sm:h-[76px] gap-2 sm:gap-4 lg:gap-6">
           {/* Sisi Kiri: Logo Resmi & Identitas Desa */}
           <Link
             href="/"
-            className="flex items-center gap-3 shrink-0 group py-1 select-none focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen rounded-desa-sm"
+            className="flex items-center gap-2.5 sm:gap-3 min-w-0 group py-1 select-none focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen rounded-desa-sm"
           >
             {settings.logo && typeof settings.logo === 'object' && settings.logo.url ? (
-              <div className="relative w-11 h-12 shrink-0">
+              <div className="relative w-9 h-10 sm:w-11 sm:h-12 shrink-0">
                 <Image
                   src={settings.logo.url}
                   alt={settings.namaWebsite || 'Logo Desa Bolali'}
                   fill
-                  sizes="48px"
+                  sizes="(max-width: 640px) 36px, 48px"
                   className="object-contain"
                   priority
                 />
               </div>
             ) : (
-              <div className="w-11 h-12 rounded-desa-sm bg-desa-darkGreen text-desa-gold p-1.5 flex items-center justify-center shrink-0 shadow-desa-sm border border-desa-gold/50">
-                <Shield className="w-7 h-7 text-desa-gold fill-desa-gold/20" strokeWidth={1.75} />
+              <div className="w-9 h-10 sm:w-11 sm:h-12 rounded-desa-sm bg-desa-darkGreen text-desa-gold p-1 flex items-center justify-center shrink-0 shadow-desa-sm border border-desa-gold/50">
+                <Shield className="w-5 h-5 sm:w-7 sm:h-7 text-desa-gold fill-desa-gold/20" strokeWidth={1.75} />
               </div>
             )}
 
-            <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-black text-desa-darkGreen tracking-tight leading-none group-hover:text-desa-greenHover transition-colors font-sans">
+            <div className="flex flex-col min-w-0">
+              <span className="text-lg sm:text-2xl font-black text-desa-darkGreen tracking-tight leading-none group-hover:text-desa-greenHover transition-colors font-sans truncate">
                 {settings.namaWebsite || 'Desa Bolali'}
               </span>
-              <span className="text-[11px] sm:text-xs text-desa-textMuted font-medium tracking-tight mt-1 truncate max-w-[200px] sm:max-w-[340px]">
+              <span className="text-[10px] sm:text-xs text-desa-textMuted font-medium tracking-tight mt-1 truncate max-w-[170px] xs:max-w-[210px] sm:max-w-[340px]">
                 {settings.subInstansi || 'Kecamatan Wonosari • Kabupaten Klaten • Jawa Tengah'}
               </span>
             </div>

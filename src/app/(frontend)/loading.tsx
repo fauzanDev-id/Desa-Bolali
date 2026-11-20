@@ -6,26 +6,26 @@ export default function Loading() {
       role="status"
       aria-live="polite"
       aria-busy="true"
-      className="min-h-[50vh] flex flex-col items-center justify-center py-20 px-4"
+      className="min-h-[50vh] flex flex-col items-center justify-center py-20 px-4 bg-desa-bg"
     >
       <div className="relative flex items-center justify-center">
         {/* Outer spinning ring */}
-        <div className="w-16 h-16 rounded-full border-4 border-emerald-100 border-t-desa-darkGreen animate-spin" />
+        <div className="w-14 h-14 rounded-full border-4 border-desa-primaryGreen/20 border-t-desa-primaryGreen animate-spin" />
 
         {/* Inner pulsing dot */}
-        <div className="absolute w-4 h-4 rounded-full bg-amber-500 animate-pulse" />
+        <div className="absolute w-3.5 h-3.5 rounded-full bg-desa-gold animate-pulse" />
       </div>
 
-      <div className="mt-6 text-center">
-        <h3 className="text-base font-semibold text-gray-800">
+      <div className="mt-5 text-center">
+        <h3 className="text-sm font-bold text-desa-darkGreen tracking-tight">
           Memuat Informasi Desa...
         </h3>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-desa-textMuted mt-1">
           Website Resmi Pemerintah Desa Bolali
         </p>
       </div>
 
-      <span className="sr-only">Sedang memuat konten halaman...</span>
+      <span className="sr-only">Sedang memuat data halaman...</span>
     </div>
   )
 }

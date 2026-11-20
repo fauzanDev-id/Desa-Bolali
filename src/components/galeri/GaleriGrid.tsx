@@ -4,16 +4,15 @@ import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import type { GaleriItem } from '@/lib/cms'
 import { getMediaUrl, formatDateIndonesia } from '@/lib/utils'
+import { Card, SectionHeader, EmptyState } from '@/components'
 import {
-  Image as ImageIcon,
+  Images,
   Play,
   X,
   ChevronLeft,
   ChevronRight,
   Calendar,
-  Sparkles,
   Maximize2,
-  Tag,
 } from 'lucide-react'
 
 interface GaleriGridProps {
@@ -47,7 +46,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
     setLightboxIndex((prev) => (prev !== null ? (prev - 1 + filteredItems.length) % filteredItems.length : null))
   }, [lightboxIndex, filteredItems.length])
 
-  // Keyboard navigation for lightbox
+  // Navigasi Keyboard Lightbox (Escape, Panah Kiri, Panah Kanan) Sesuai Spesifikasi
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (lightboxIndex !== null) {
@@ -77,8 +76,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
   // Helper untuk mengekstrak YouTube Embed URL
   const getYouTubeEmbedUrl = (url?: string | null) => {
     if (!url) return 'https://www.youtube.com/embed/dQw4w9WgXcQ'
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
-    const match = url.match(regExp)
+    const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/)
     return match && match[2].length === 11
       ? `https://www.youtube.com/embed/${match[2]}?autoplay=1`
       : url
@@ -86,259 +84,243 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* Filter and Tab Controller */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-desa-green-800 uppercase tracking-wider mb-1">
-              <ImageIcon className="w-4 h-4 text-desa-gold-500" />
-              <span>Dokumentasi Visual</span>
-              <span className="text-[10px] text-slate-400 font-normal">[Data Dummy]</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-desa-green-950">
-              Galeri Kegiatan & Potensi Desa
-            </h2>
-          </div>
+      {/* 1. Kontrol Filter Tipe (Foto/Video) & Album */}
+      <Card className="p-5 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-desa-border">
+          <SectionHeader
+            title="Arsip Dokumentasi & Publikasi Visual"
+            subtitle="Pilih kategori media dan album dokumentasi"
+            icon={<Images className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+            className="mb-0"
+          />
 
-          {/* Type Switcher Pills */}
-          <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 self-start md:self-auto border border-slate-200/60">
+          {/* Tab Tipe: Semua / Foto / Video */}
+          <div className="inline-flex items-center p-1 rounded-full bg-slate-100 border border-slate-200">
             <button
               type="button"
               onClick={() => setSelectedTipe('semua')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all min-h-[36px] ${
                 selectedTipe === 'semua'
-                  ? 'bg-white text-desa-green-900 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-desa-darkGreen text-white shadow-2xs'
+                  : 'text-slate-700 hover:text-desa-darkGreen'
               }`}
             >
-              Semua Media ({initialItems.length})
+              Semua Media
             </button>
             <button
               type="button"
               onClick={() => setSelectedTipe('foto')}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all min-h-[36px] ${
                 selectedTipe === 'foto'
-                  ? 'bg-white text-desa-green-900 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-desa-darkGreen text-white shadow-2xs'
+                  : 'text-slate-700 hover:text-desa-darkGreen'
               }`}
             >
-              <ImageIcon className="w-3.5 h-3.5" />
-              <span>Foto</span>
+              Foto
             </button>
             <button
               type="button"
               onClick={() => setSelectedTipe('video')}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all min-h-[36px] ${
                 selectedTipe === 'video'
-                  ? 'bg-white text-desa-green-900 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-desa-darkGreen text-white shadow-2xs'
+                  : 'text-slate-700 hover:text-desa-darkGreen'
               }`}
             >
-              <Play className="w-3.5 h-3.5" />
-              <span>Video</span>
+              Video
             </button>
           </div>
         </div>
 
-        {/* Album Filter Pills */}
-        <div className="pt-4 flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
-          <span className="text-xs font-semibold text-slate-400 shrink-0 mr-1 flex items-center gap-1">
-            <Tag className="w-3.5 h-3.5" />
-            <span>Album:</span>
-          </span>
-          {['Semua', ...albums].map((alb) => {
-            const isActive = selectedAlbum === alb
-            return (
+        {/* Tab Album Dokumentasi */}
+        {albums.length > 0 && (
+          <div className="flex items-center gap-2 overflow-x-auto pt-4 scrollbar-none">
+            <button
+              type="button"
+              onClick={() => setSelectedAlbum('Semua')}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all min-h-[36px] ${
+                selectedAlbum === 'Semua'
+                  ? 'bg-desa-darkGreen text-white font-bold shadow-2xs'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+              }`}
+            >
+              Semua Album
+            </button>
+            {albums.map((alb) => (
               <button
                 key={alb}
                 type="button"
                 onClick={() => setSelectedAlbum(alb)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-                  isActive
-                    ? 'bg-desa-green-900 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all min-h-[36px] ${
+                  selectedAlbum === alb
+                    ? 'bg-desa-darkGreen text-white font-bold shadow-2xs'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
                 }`}
               >
-                {alb === 'Semua' ? 'Semua Album' : alb}
+                {alb}
               </button>
-            )
-          })}
-        </div>
-      </div>
+            ))}
+          </div>
+        )}
+      </Card>
 
-      {/* Media Grid */}
+      {/* 2. GRID MASONRY / RAPI GALERI Sesuai Spesifikasi */}
       {filteredItems.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5">
           {filteredItems.map((item) => {
-            const imgUrl = getMediaUrl(item.foto, '/images/hero-desa.jpg')
+            const imgUrl = getMediaUrl(item.foto, '/seed/galeri-1.jpg')
             const isVideo = item.tipe === 'video'
 
             return (
               <div
                 key={item.id}
                 onClick={() => openItem(item)}
-                className="bg-white rounded-2xl border border-slate-200/90 shadow-card overflow-hidden cursor-pointer group hover:border-desa-green-300 hover:shadow-card-hover transition-all flex flex-col"
+                className="group relative aspect-square rounded-desa-card overflow-hidden bg-slate-100 border border-desa-border shadow-xs cursor-pointer select-none"
               >
-                {/* Thumbnail Area */}
-                <div className="relative aspect-[16/10] w-full bg-slate-900 overflow-hidden">
-                  <Image
-                    src={imgUrl}
-                    alt={item.judul}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300 opacity-90 group-hover:opacity-100"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
+                <Image
+                  src={imgUrl}
+                  alt={item.judul}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
 
-                  {/* Album Badge */}
-                  {item.album && (
-                    <div className="absolute top-3 left-3">
-                      <span className="inline-block px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm text-white text-[11px] font-bold shadow-sm border border-white/10">
-                        {item.album}
-                      </span>
-                    </div>
-                  )}
+                {/* Overlay Gelap Bawah */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-85 group-hover:opacity-100 transition-opacity" />
 
-                  {/* Play Button Overlay (For Video) or Zoom Overlay (For Photo) */}
+                {/* Ikon Play jika Video */}
+                {isVideo ? (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    {isVideo ? (
-                      <div className="w-12 h-12 rounded-full bg-rose-600/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-rose-600 transition-all border-2 border-white">
-                        <Play className="w-5 h-5 fill-white ml-0.5" />
-                      </div>
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-black/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm border border-white/20">
-                        <Maximize2 className="w-5 h-5" />
-                      </div>
-                    )}
+                    <div className="w-11 h-11 rounded-full bg-desa-gold text-desa-darkGreen flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                      <Play className="w-5 h-5 fill-current translate-x-0.5" strokeWidth={1.75} />
+                    </div>
                   </div>
-
-                  <div className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-medium backdrop-blur-sm">
-                    <Calendar className="w-3 h-3 text-desa-gold-400" />
-                    <span>{formatDateIndonesia(item.tanggal)}</span>
+                ) : (
+                  <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center backdrop-blur-xs">
+                      <Maximize2 className="w-4 h-4" strokeWidth={1.75} />
+                    </div>
                   </div>
-                </div>
+                )}
 
-                {/* Info Text */}
-                <div className="p-4 flex-1 flex flex-col justify-between">
-                  <h3 className="font-bold text-sm sm:text-base text-slate-900 group-hover:text-desa-green-800 transition-colors line-clamp-2 leading-snug">
-                    {item.judul}
-                  </h3>
-                  {item.keterangan && (
-                    <p className="mt-1 text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                      {item.keterangan}
-                    </p>
+                {/* Keterangan di Bawah Foto */}
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 text-left">
+                  {item.album && (
+                    <span className="text-[10px] text-desa-gold font-bold uppercase tracking-wider block mb-0.5">
+                      {item.album}
+                    </span>
                   )}
+                  <span className="text-xs sm:text-sm font-bold text-white tracking-tight line-clamp-1 drop-shadow-xs font-sans">
+                    {item.judul}
+                  </span>
                 </div>
               </div>
             )
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-12 text-center">
-          <ImageIcon className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">Tidak ada dokumentasi ditemukan</h3>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-sm mx-auto">
-            Silakan pilih filter tipe media lain atau pilih semua album.
-          </p>
-        </div>
+        <Card className="p-8">
+          <EmptyState
+            title="Tidak Ada Dokumentasi"
+            description="Tidak ada item galeri yang sesuai dengan kategori atau album yang dipilih."
+          />
+        </Card>
       )}
 
-      {/* LIGHTBOX MODAL (FOR PHOTOS) */}
+      {/* 3. LIGHTBOX DENGAN NAVIGASI KEYBOARD Sesuai Spesifikasi */}
       {currentLightboxItem && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-          {/* Close Button */}
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200"
+          onClick={() => setLightboxIndex(null)}
+        >
+          {/* Tombol Tutup */}
           <button
             type="button"
             onClick={() => setLightboxIndex(null)}
-            className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            title="Tutup (Esc)"
+            aria-label="Tutup Tampilan Penuh (Esc)"
+            className="absolute top-4 right-4 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-50"
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6" strokeWidth={1.75} />
           </button>
 
-          {/* Navigation Prev/Next */}
+          {/* Tombol Navigasi Kiri */}
           <button
             type="button"
-            onClick={prevLightbox}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            title="Foto Sebelumnya"
+            onClick={(e) => {
+              e.stopPropagation()
+              prevLightbox()
+            }}
+            aria-label="Foto Sebelumnya (Panah Kiri)"
+            className="absolute left-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-50"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-6 h-6" strokeWidth={1.75} />
           </button>
 
+          {/* Gambar di Tengah */}
+          <div
+            className="relative max-w-4xl max-h-[85vh] w-full h-[70vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={getMediaUrl(currentLightboxItem.foto, '/seed/galeri-1.jpg')}
+              alt={currentLightboxItem.judul}
+              fill
+              className="object-contain"
+              sizes="100vw"
+            />
+          </div>
+
+          {/* Tombol Navigasi Kanan */}
           <button
             type="button"
-            onClick={nextLightbox}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            title="Foto Selanjutnya"
+            onClick={(e) => {
+              e.stopPropagation()
+              nextLightbox()
+            }}
+            aria-label="Foto Selanjutnya (Panah Kanan)"
+            className="absolute right-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-50"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-6 h-6" strokeWidth={1.75} />
           </button>
 
-          {/* Image & Caption Box */}
-          <div className="max-w-4xl w-full flex flex-col items-center">
-            <div className="relative w-full max-h-[75vh] aspect-[16/10] rounded-xl overflow-hidden shadow-2xl bg-black">
-              <Image
-                src={getMediaUrl(currentLightboxItem.foto, '/images/hero-desa.jpg')}
-                alt={currentLightboxItem.judul}
-                fill
-                className="object-contain"
-                sizes="(max-width: 1024px) 100vw, 1000px"
-              />
-            </div>
-
-            <div className="mt-4 text-center text-white max-w-2xl px-4">
-              <div className="flex items-center justify-center gap-3 text-xs text-desa-gold-400 font-bold mb-1">
-                {currentLightboxItem.album && <span>Album: {currentLightboxItem.album}</span>}
-                <span>•</span>
-                <span>{formatDateIndonesia(currentLightboxItem.tanggal)}</span>
-              </div>
-              <h4 className="text-base sm:text-lg font-bold">{currentLightboxItem.judul}</h4>
-              {currentLightboxItem.keterangan && (
-                <p className="text-xs sm:text-sm text-slate-300 mt-1">
-                  {currentLightboxItem.keterangan}
-                </p>
-              )}
-            </div>
+          {/* Keterangan Bawah */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-white px-4">
+            <h4 className="text-sm sm:text-base font-bold font-sans">{currentLightboxItem.judul}</h4>
+            <p className="text-xs text-white/70 mt-0.5">{currentLightboxItem.album} • Tekan [Esc] untuk menutup</p>
           </div>
         </div>
       )}
 
-      {/* VIDEO MODAL (FOR YOUTUBE VIDEOS) */}
+      {/* 4. MODAL PEMUTAR VIDEO Sesuai Spesifikasi */}
       {activeVideo && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200"
+          onClick={() => setActiveVideo(null)}
+        >
           <button
             type="button"
             onClick={() => setActiveVideo(null)}
-            className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            title="Tutup Video (Esc)"
+            aria-label="Tutup Video (Esc)"
+            className="absolute top-4 right-4 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-50"
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6" strokeWidth={1.75} />
           </button>
 
-          <div className="max-w-4xl w-full bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-            <div className="relative aspect-video w-full bg-black">
-              <iframe
-                src={getYouTubeEmbedUrl(activeVideo.videoUrl)}
-                title={activeVideo.judul}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full border-0"
-              />
-            </div>
-            <div className="p-4 sm:p-5 text-white">
-              <div className="flex items-center gap-2 text-xs text-rose-400 font-bold mb-1">
-                <Play className="w-3.5 h-3.5 fill-rose-400" />
-                <span>Dokumentasi Video Desa</span>
-                <span>•</span>
-                <span>{formatDateIndonesia(activeVideo.tanggal)}</span>
-              </div>
-              <h3 className="font-bold text-base sm:text-lg">{activeVideo.judul}</h3>
-              {activeVideo.keterangan && (
-                <p className="text-xs sm:text-sm text-slate-300 mt-1">
-                  {activeVideo.keterangan}
-                </p>
-              )}
-            </div>
+          <div
+            className="relative w-full max-w-4xl aspect-[16/9] rounded-desa-card overflow-hidden bg-black shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src={getYouTubeEmbedUrl(activeVideo.videoUrl)}
+              title={activeVideo.judul}
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
       )}

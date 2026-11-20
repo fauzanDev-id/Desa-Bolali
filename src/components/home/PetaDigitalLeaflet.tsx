@@ -78,7 +78,7 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
       maxZoom: 18,
     }).addTo(map)
 
-    // Marker Pusat Desa Bolali (Pin Merah Menonjol)
+    // Marker Pusat Desa Bolali (Pin Merah Menonjol dengan Label Putih Sesuai Mockup)
     const centerIcon = L.divIcon({
       className: 'custom-center-pin',
       html: `
@@ -154,44 +154,50 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 mt-3">
-      {/* Kontainer Peta Leaflet (Sisi Kiri, 8 Kolom) */}
-      <div className="sm:col-span-8 relative aspect-[4/3] w-full rounded-xl overflow-hidden border border-desa-border shadow-xs bg-slate-100 z-10">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 mt-3">
+      {/* Kontainer Peta Leaflet
+          - Mobile (<768px): Tinggi tetap 280px sesuai spesifikasi
+          - Desktop (>=768px): Kolom 8 dengan rasio aspect-[4/3] */}
+      <div className="md:col-span-8 relative h-[280px] md:h-auto md:aspect-[4/3] w-full rounded-desa-card overflow-hidden border border-desa-border shadow-xs bg-slate-100 z-10">
         <div ref={mapContainerRef} className="w-full h-full" />
       </div>
 
-      {/* Legenda Interaktif (Sisi Kanan, 4 Kolom) */}
-      <div className="sm:col-span-4 flex flex-col justify-center space-y-2 text-xs p-1 sm:p-0">
-        <span className="text-[11px] font-bold text-desa-textMuted uppercase tracking-wider mb-1">
+      {/* Legenda Interaktif
+          - Mobile (<768px): Terletak di bawah peta dengan tombol tap >=44px
+          - Desktop (>=768px): 4 kolom vertikal di samping kanan peta */}
+      <div className="md:col-span-4 flex flex-col justify-center space-y-1.5 text-xs p-1 md:p-0">
+        <span className="text-[11px] font-bold text-desa-textMuted uppercase tracking-wider mb-1 hidden md:block">
           Legenda Titik Lokasi:
         </span>
 
-        {CATEGORIES.map((cat) => {
-          const isActive = activeCategories[cat.key]
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-col gap-1.5">
+          {CATEGORIES.map((cat) => {
+            const isActive = activeCategories[cat.key]
 
-          return (
-            <button
-              key={cat.key}
-              type="button"
-              onClick={() => toggleCategory(cat.key)}
-              aria-label={`Sembunyikan/Tampilkan kategori ${cat.label}`}
-              className={`flex items-center justify-between w-full p-1.5 rounded-lg text-left transition-all ${
-                isActive
-                  ? 'bg-slate-50 hover:bg-slate-100/80 text-desa-textDark font-semibold'
-                  : 'bg-transparent text-slate-400 opacity-60 hover:opacity-90'
-              }`}
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span
-                  className={`w-2.5 h-2.5 rounded-full shrink-0 transition-transform ${cat.bgClass} ${
-                    isActive ? 'scale-100 shadow-xs' : 'scale-75 opacity-40'
-                  }`}
-                />
-                <span className="truncate text-xs">{cat.label}</span>
-              </div>
-            </button>
-          )
-        })}
+            return (
+              <button
+                key={cat.key}
+                type="button"
+                onClick={() => toggleCategory(cat.key)}
+                aria-label={`Sembunyikan/Tampilkan kategori ${cat.label}`}
+                className={`flex items-center justify-between w-full px-2.5 py-2 md:py-1.5 rounded-desa-sm text-left transition-all min-h-[44px] md:min-h-0 border ${
+                  isActive
+                    ? 'bg-slate-50 border-slate-200 text-desa-textDark font-semibold shadow-2xs'
+                    : 'bg-transparent border-transparent text-slate-400 opacity-60 hover:opacity-90'
+                }`}
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span
+                    className={`w-2.5 h-2.5 rounded-full shrink-0 transition-transform ${cat.bgClass} ${
+                      isActive ? 'scale-100 shadow-xs' : 'scale-75 opacity-40'
+                    }`}
+                  />
+                  <span className="truncate text-xs font-sans">{cat.label}</span>
+                </div>
+              </button>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

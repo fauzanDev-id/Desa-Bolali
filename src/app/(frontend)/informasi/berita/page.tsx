@@ -4,7 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getBeritaPaginated } from '@/lib/cms'
 import { getMediaUrl, formatDateIndonesia } from '@/lib/utils'
-import { Newspaper, Calendar, ArrowRight, Search, ChevronLeft, ChevronRight, Tag, Sparkles } from 'lucide-react'
+import { Card, SectionHeader, Pagination, EmptyState } from '@/components'
+import { Newspaper, Calendar, ArrowRight, Search, Tag } from 'lucide-react'
 
 export async function generateMetadata({
   searchParams,
@@ -27,20 +28,6 @@ export async function generateMetadata({
       siteName: 'Desa Bolali',
       locale: 'id_ID',
       type: 'website',
-      images: [
-        {
-          url: '/images/hero-desa.jpg',
-          width: 1200,
-          height: 630,
-          alt: 'Berita Desa Bolali',
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${titleKategori} | Desa Bolali`,
-      description: `Kabar terkini dan liputan pembangunan Desa Bolali, Klaten.`,
-      images: ['/images/hero-desa.jpg'],
     },
   }
 }
@@ -55,7 +42,6 @@ const daftarKategori = [
   { label: 'Kemasyarakatan', value: 'Kemasyarakatan' },
   { label: 'Pendidikan & Kesehatan', value: 'Pendidikan-Kesehatan' },
   { label: 'Seni & Budaya', value: 'Seni-Budaya' },
-  { label: 'Kegiatan Warga', value: 'Kegiatan-Warga' },
 ]
 
 export default async function BeritaListPage({
@@ -94,214 +80,145 @@ export default async function BeritaListPage({
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* Header Info Bar & Filter */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+      {/* 1. Filter Kategori & Kotak Pencarian */}
+      <Card className="p-5 sm:p-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-desa-border">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-desa-green-800 uppercase tracking-wider mb-1">
-              <Newspaper className="w-4 h-4 text-desa-gold-500" />
-              <span>Publikasi & Kabar Desa</span>
-              <span className="text-[10px] text-slate-400 font-normal">[Data Dummy]</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-desa-green-950">
-              Daftar Berita Desa Bolali
-            </h2>
+            <SectionHeader
+              title="Kabar & Publikasi Berita Desa"
+              subtitle="Informasi resmi pembangunan, pelayanan publik, dan kegiatan warga"
+              icon={<Newspaper className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+              className="mb-0"
+            />
           </div>
 
-          {/* Search Input Form */}
-          <form method="GET" action="/informasi/berita" className="flex items-center gap-2 max-w-sm w-full">
+          {/* Form Pencarian Berita */}
+          <form method="GET" action="/informasi/berita" className="relative w-full md:w-72">
             {currentKategori !== 'Semua' && (
               <input type="hidden" name="kategori" value={currentKategori} />
             )}
-            <div className="relative flex-1">
-              <input
-                type="text"
-                name="q"
-                defaultValue={currentSearch}
-                placeholder="Cari judul berita..."
-                className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-desa-green-800 focus:bg-white transition-all"
-              />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-            </div>
+            <input
+              type="text"
+              name="q"
+              defaultValue={currentSearch}
+              placeholder="Cari judul berita..."
+              className="w-full pl-3.5 pr-9 py-2 text-xs sm:text-sm rounded-desa-pill bg-slate-50 border border-desa-border focus:bg-white focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen focus:border-transparent transition-all placeholder:text-desa-textMuted"
+            />
             <button
               type="submit"
-              className="px-4 py-2 rounded-xl bg-desa-green-900 text-white text-xs sm:text-sm font-semibold hover:bg-desa-green-950 transition-colors shrink-0 shadow-sm"
+              aria-label="Cari Berita"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-desa-textMuted hover:text-desa-darkGreen transition-colors"
             >
-              Cari
+              <Search className="w-4 h-4" strokeWidth={1.75} />
             </button>
           </form>
         </div>
 
-        {/* Category Pills Filter */}
-        <div className="pt-4">
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
-            <span className="text-xs font-semibold text-slate-400 flex items-center gap-1 shrink-0 mr-1">
-              <Tag className="w-3.5 h-3.5" />
-              <span>Kategori:</span>
-            </span>
-            {daftarKategori.map((kat) => {
-              const isActive = currentKategori === kat.value
-
-              return (
-                <Link
-                  key={kat.value}
-                  href={getKategoriUrl(kat.value)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-                    isActive
-                      ? 'bg-desa-green-900 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
-                  }`}
-                >
-                  {kat.label}
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* News Grid */}
-      {result.docs.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {result.docs.map((berita) => {
-            const imgUrl = getMediaUrl(berita.gambar, '/images/berita-1.jpg')
+        {/* Tab Filter Kategori Berita */}
+        <div className="flex items-center gap-2 overflow-x-auto pt-4 scrollbar-none">
+          {daftarKategori.map((kat) => {
+            const isActive = currentKategori === kat.value
 
             return (
-              <article
-                key={berita.id}
-                className="bg-white rounded-2xl border border-slate-200/90 shadow-card overflow-hidden hover:border-desa-green-300 hover:shadow-card-hover transition-all flex flex-col group"
+              <Link
+                key={kat.value}
+                href={getKategoriUrl(kat.value)}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all min-h-[36px] ${
+                  isActive
+                    ? 'bg-desa-darkGreen text-white shadow-2xs font-bold'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200/70 border border-slate-200'
+                }`}
               >
-                {/* Thumbnail Image */}
-                <Link
-                  href={`/berita/${berita.slug}`}
-                  className="relative aspect-[16/10] w-full bg-slate-100 overflow-hidden block"
-                >
-                  <Image
-                    src={imgUrl}
-                    alt={berita.judul}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 768px) 100vw, 500px"
-                  />
+                <span>{kat.label}</span>
+              </Link>
+            )
+          })}
+        </div>
+      </Card>
 
-                  {/* Category & Date Overlay */}
-                  <div className="absolute top-3 left-3">
-                    <span className="inline-block px-2.5 py-1 rounded-md bg-desa-green-900/90 text-white text-[11px] font-bold backdrop-blur-sm shadow-sm border border-white/10">
-                      {berita.kategori}
-                    </span>
-                  </div>
+      {/* 2. Grid Kartu Berita */}
+      {result.docs && result.docs.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {result.docs.map((berita) => {
+            const imgUrl = getMediaUrl(berita.gambar, '/seed/berita-1.jpg')
 
-                  <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/70 text-white text-[11px] font-medium backdrop-blur-sm">
-                    <Calendar className="w-3 h-3 text-desa-gold-400" />
-                    <span>{formatDateIndonesia(berita.tanggalTerbit)}</span>
-                  </div>
-                </Link>
+            return (
+              <Card
+                key={berita.id}
+                className="overflow-hidden p-0 flex flex-col justify-between hover:border-emerald-300 transition-all group"
+              >
+                <div>
+                  {/* Foto Utama Berita aspect-[16/10] */}
+                  <Link
+                    href={`/berita/${berita.slug}`}
+                    className="block relative aspect-[16/10] w-full overflow-hidden bg-slate-100 border-b border-desa-border"
+                  >
+                    <Image
+                      src={imgUrl}
+                      alt={berita.judul}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    {/* Badge Kategori */}
+                    <div className="absolute top-2.5 left-2.5">
+                      <span className="inline-block px-2.5 py-0.5 rounded-desa-sm bg-desa-darkGreen/90 text-white text-[10px] font-bold shadow-xs backdrop-blur-xs font-sans">
+                        {berita.kategori}
+                      </span>
+                    </div>
+                  </Link>
 
-                {/* Article Content */}
-                <div className="p-5 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-desa-green-800 transition-colors line-clamp-2 leading-snug">
-                      <Link href={`/berita/${berita.slug}`}>
-                        {berita.judul}
-                      </Link>
-                    </h3>
+                  {/* Konten Teks Berita */}
+                  <div className="p-4 sm:p-5 space-y-2">
+                    <div className="flex items-center gap-1.5 text-[11px] text-desa-textMuted font-medium font-sans">
+                      <Calendar className="w-3.5 h-3.5 text-desa-accentGreen shrink-0" strokeWidth={1.75} />
+                      <span>{formatDateIndonesia(berita.tanggalTerbit)}</span>
+                    </div>
 
-                    <p className="mt-2 text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed">
+                    <Link
+                      href={`/berita/${berita.slug}`}
+                      className="text-sm sm:text-base font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors line-clamp-2 leading-snug font-sans block"
+                    >
+                      {berita.judul}
+                    </Link>
+
+                    <p className="text-xs text-desa-textMuted line-clamp-2 leading-relaxed font-sans">
                       {berita.ringkasan}
                     </p>
                   </div>
-
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <span className="text-[11px] text-slate-400">Pemerintah Desa Bolali</span>
-                    <Link
-                      href={`/berita/${berita.slug}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-desa-green-800 hover:text-desa-green-950 group-hover:translate-x-0.5 transition-all"
-                    >
-                      <span>Baca Lengkap</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
                 </div>
-              </article>
+
+                {/* Tautan Baca Selengkapnya */}
+                <div className="px-4 sm:px-5 pb-4 pt-1">
+                  <Link
+                    href={`/berita/${berita.slug}`}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-desa-primaryGreen hover:text-desa-darkGreen transition-colors font-sans py-1"
+                  >
+                    <span>Baca Selengkapnya</span>
+                    <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  </Link>
+                </div>
+              </Card>
             )
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-12 text-center">
-          <Newspaper className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">Tidak ada berita yang ditemukan</h3>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-sm mx-auto">
-            {currentSearch
-              ? `Tidak ditemukan berita dengan kata kunci "${currentSearch}".`
-              : 'Belum ada berita yang diterbitkan untuk kategori yang dipilih.'}
-          </p>
-          <Link
-            href="/informasi/berita"
-            className="inline-block mt-4 px-4 py-2 rounded-xl bg-desa-green-900 text-white text-xs font-semibold hover:bg-desa-green-950 transition-colors"
-          >
-            Lihat Semua Berita
-          </Link>
-        </div>
+        <Card className="p-8">
+          <EmptyState
+            title="Tidak Ada Berita Ditemukan"
+            description="Tidak ada artikel berita yang cocok dengan kata kunci atau kategori yang Anda pilih."
+          />
+        </Card>
       )}
 
-      {/* Pagination Controls */}
+      {/* 3. Paginasi Halaman Sesuai Standar Komponen */}
       {result.totalPages > 1 && (
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-4 flex items-center justify-between">
-          <div className="text-xs text-slate-500 font-medium">
-            Halaman <strong className="text-slate-800">{result.page}</strong> dari <strong className="text-slate-800">{result.totalPages}</strong> (Total {result.totalDocs} berita)
-          </div>
-
-          <div className="flex items-center gap-2">
-            {result.hasPrevPage && result.prevPage ? (
-              <Link
-                href={getPageUrl(result.prevPage)}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-                <span>Sebelumnya</span>
-              </Link>
-            ) : (
-              <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-100 text-xs font-semibold text-slate-300 cursor-not-allowed">
-                <ChevronLeft className="w-3.5 h-3.5" />
-                <span>Sebelumnya</span>
-              </span>
-            )}
-
-            {/* Page Number Pills */}
-            <div className="hidden sm:flex items-center gap-1">
-              {Array.from({ length: result.totalPages }, (_, i) => i + 1).map((p) => {
-                const isCurrent = p === result.page
-                return (
-                  <Link
-                    key={p}
-                    href={getPageUrl(p)}
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold transition-all ${
-                      isCurrent
-                        ? 'bg-desa-green-900 text-white shadow-sm'
-                        : 'text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    {p}
-                  </Link>
-                )
-              })}
-            </div>
-
-            {result.hasNextPage && result.nextPage ? (
-              <Link
-                href={getPageUrl(result.nextPage)}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-              >
-                <span>Selanjutnya</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </Link>
-            ) : (
-              <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-100 text-xs font-semibold text-slate-300 cursor-not-allowed">
-                <span>Selanjutnya</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </span>
-            )}
-          </div>
+        <div className="pt-2 flex justify-center">
+          <Pagination
+            currentPage={result.page}
+            totalPages={result.totalPages}
+            getPageUrl={getPageUrl}
+          />
         </div>
       )}
     </div>

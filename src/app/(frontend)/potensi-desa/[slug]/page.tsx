@@ -5,17 +5,17 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPotensiBySlug, getPotensiList } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
-import { Breadcrumb, RichText } from '@/components'
+import { PageHeader, Card, Prose } from '@/components'
 import {
   Sparkles,
   MapPin,
   Phone,
   ArrowLeft,
-  Share2,
   ArrowRight,
   MessageCircle,
   Building2,
   CheckCircle2,
+  Images,
 } from 'lucide-react'
 
 export async function generateMetadata({
@@ -33,7 +33,7 @@ export async function generateMetadata({
     }
   }
 
-  const imageUrl = getMediaUrl(item.gambar, '/images/hero-desa.jpg')
+  const imageUrl = getMediaUrl(item.gambar, '/seed/potensi-pertanian.jpg')
 
   return {
     title: `${item.judul} | Potensi Unggulan Desa Bolali`,
@@ -54,12 +54,6 @@ export async function generateMetadata({
         },
       ],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: item.judul,
-      description: item.ringkasan,
-      images: [imageUrl],
-    },
   }
 }
 
@@ -71,191 +65,160 @@ export default async function PotensiDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const potensi = await getPotensiBySlug(slug)
+  const item = await getPotensiBySlug(slug)
 
-  if (!potensi) {
+  if (!item) {
     notFound()
   }
 
   const allPotensi = await getPotensiList()
-  const relatedPotensi = allPotensi.filter((p) => p.slug !== slug).slice(0, 3)
-  const imgUrl = getMediaUrl(potensi.gambar, '/images/hero-desa.jpg')
+  const otherPotensi = allPotensi.filter((p) => p.slug !== slug).slice(0, 3)
+
+  const defaultImg =
+    item.kategori === 'Pertanian'
+      ? '/seed/potensi-pertanian.jpg'
+      : item.kategori === 'UMKM'
+      ? '/seed/potensi-umkm.jpg'
+      : item.kategori === 'Wisata' || item.kategori === 'Wisata Alam'
+      ? '/seed/potensi-wisata.jpg'
+      : '/seed/potensi-budaya.jpg'
+  const imgUrl = getMediaUrl(item.gambar, defaultImg)
+
+  // Contoh galeri foto terkait untuk detail potensi
+  const galeriTerkait = [
+    imgUrl,
+    '/seed/galeri-1.jpg',
+    '/seed/galeri-2.jpg',
+    '/seed/galeri-3.jpg',
+  ]
 
   return (
-    <div className="min-h-screen bg-slate-50/70 pb-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8">
-        <Breadcrumb
-          items={[
-            { label: 'Potensi Desa', href: '/potensi-desa' },
-            { label: potensi.judul },
-          ]}
-          className="mb-4"
-        />
+    <div className="min-h-screen bg-desa-pageBg pb-16">
+      {/* 1. PageHeader Banner Pendek Sesuai Template Standar */}
+      <PageHeader
+        title={item.judul}
+        subtitle={`Sektor ${item.kategori} Unggulan Desa Bolali`}
+        badge="Potensi Desa"
+        badgeIcon={<Sparkles className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        breadcrumbs={[
+          { label: 'Potensi Desa', href: '/potensi-desa' },
+          { label: item.judul },
+        ]}
+        bgImage="/seed/hero-desa.jpg"
+      />
 
-        {/* Back Link */}
-        <Link
-          href="/potensi-desa"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-desa-green-800 hover:text-desa-green-950 transition-colors mb-4"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Kembali ke Semua Potensi</span>
-        </Link>
+      {/* 2. Konten Utama: Container 1344px */}
+      <div className="max-w-[1344px] mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-10">
+        <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+          {/* Tautan Kembali */}
+          <Link
+            href="/potensi-desa"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-desa-darkGreen hover:text-desa-greenHover transition-colors py-1"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.75} />
+            <span>Kembali ke Daftar Potensi Desa</span>
+          </Link>
 
-        {/* Main Article Card */}
-        <article className="bg-white rounded-2xl border border-slate-200/90 shadow-card overflow-hidden">
-          {/* Header Metadata */}
-          <div className="p-6 sm:p-8 md:p-10 pb-4 border-b border-slate-100">
-            <div className="flex flex-wrap items-center gap-2 mb-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-desa-green-50 text-desa-green-900 text-xs font-bold border border-desa-green-100">
-                <Sparkles className="w-3.5 h-3.5 text-desa-gold-500" />
-                <span>Kategori: {potensi.kategori}</span>
+          {/* Kartu Detail Potensi */}
+          <Card className="p-6 sm:p-8 md:p-10">
+            <div className="pb-5 border-b border-desa-border space-y-3">
+              <span className="inline-block px-3 py-1 rounded-full bg-desa-lightGreen text-desa-darkGreen text-xs font-bold border border-emerald-200">
+                Kategori {item.kategori}
               </span>
-              <span className="text-[11px] text-slate-400">[Data Dummy]</span>
+
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-desa-textDark tracking-tight font-sans">
+                {item.judul}
+              </h1>
+
+              {item.lokasi && (
+                <div className="flex items-center gap-1.5 text-xs text-desa-textMuted font-sans">
+                  <MapPin className="w-4 h-4 text-desa-accentGreen shrink-0" strokeWidth={1.75} />
+                  <span>{item.lokasi}</span>
+                </div>
+              )}
             </div>
 
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-              {potensi.judul}
-            </h1>
+            {/* Foto Utama */}
+            <div className="relative aspect-[16/10] w-full rounded-desa-card overflow-hidden my-6 bg-slate-100 border border-desa-border shadow-xs">
+              <Image
+                src={imgUrl}
+                alt={item.judul}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 896px"
+              />
+            </div>
 
-            {potensi.lokasi && (
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-600 mt-3 pt-3 border-t border-slate-100">
-                <MapPin className="w-4 h-4 text-desa-gold-600 shrink-0" />
-                <span>Lokasi: <strong>{potensi.lokasi}</strong></span>
+            {/* Deskripsi dalam Prose */}
+            <Prose className="mt-6">
+              {item.ringkasan && (
+                <p className="text-base sm:text-lg font-semibold text-slate-800 leading-relaxed italic border-l-4 border-desa-primaryGreen pl-4 py-1 bg-desa-lightGreen/40 rounded-r-desa-sm mb-6">
+                  {item.ringkasan}
+                </p>
+              )}
+
+              {item.deskripsi ? (
+                <p className="text-slate-700 leading-relaxed">
+                  {item.deskripsi.replace(/\s*\[Data Dummy\]/gi, '')}
+                </p>
+              ) : (
+                <p className="text-slate-700 leading-relaxed">
+                  Potensi unggulan ini dikembangkan secara berkelanjutan oleh masyarakat dan Pemerintah Desa Bolali guna meningkatkan pendapatan warga, membuka lapangan kerja lokal, serta memperkuat identitas kemandirian desa.
+                </p>
+              )}
+            </Prose>
+
+            {/* Galeri Foto Dokumentasi Produk/Kawasan Sesuai Spesifikasi */}
+            <div className="mt-8 pt-6 border-t border-desa-border">
+              <div className="flex items-center gap-2 mb-4">
+                <Images className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />
+                <h3 className="text-base font-bold text-desa-textDark font-sans">
+                  Galeri Dokumentasi Potensi
+                </h3>
               </div>
-            )}
-          </div>
 
-          {/* Featured Image */}
-          <div className="relative aspect-[16/9] w-full bg-slate-100 overflow-hidden">
-            <Image
-              src={imgUrl}
-              alt={potensi.judul}
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 896px"
-            />
-          </div>
-
-          {/* Ringkasan Highlight Box */}
-          <div className="p-6 sm:p-8 bg-desa-green-50/50 border-b border-desa-green-100/60">
-            <p className="text-sm sm:text-base font-medium text-slate-700 italic leading-relaxed">
-              “{potensi.ringkasan}”
-            </p>
-          </div>
-
-          {/* Full Description */}
-          <div className="p-6 sm:p-8 md:p-10 space-y-6">
-            <div className="prose prose-slate max-w-none">
-              <RichText content={potensi.deskripsi || potensi.ringkasan} />
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {galeriTerkait.map((foto, idx) => (
+                  <div
+                    key={idx}
+                    className="relative aspect-square rounded-desa-sm overflow-hidden bg-slate-100 border border-desa-border"
+                  >
+                    <Image
+                      src={foto}
+                      alt={`Dokumentasi ${item.judul} ${idx + 1}`}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 640px) 50vw, 200px"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Pengelola / Kontak Card */}
-            {potensi.kontakPengelola && (
-              <div className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-8">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-desa-green-100 text-desa-green-900 flex items-center justify-center shrink-0">
-                    <Building2 className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-slate-900">Pengelola & Narahubung Usaha</h4>
-                    <p className="text-xs text-slate-600 font-medium mt-0.5">{potensi.kontakPengelola}</p>
-                  </div>
+            {/* Kotak Kontak Pengelola / Pembelian */}
+            {item.kontakPengelola && (
+              <div className="mt-8 p-4 sm:p-5 rounded-desa-card bg-slate-50 border border-desa-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <span className="text-[11px] font-bold text-desa-textMuted uppercase tracking-wider block">
+                    Narahubung & Pengelola Unit
+                  </span>
+                  <span className="text-sm font-bold text-desa-textDark block mt-0.5 font-sans">
+                    {item.kontakPengelola}
+                  </span>
                 </div>
 
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent(`Halo, saya tertarik dengan informasi potensi ${potensi.judul} Desa Bolali.`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm shrink-0"
+                  href={`tel:${item.kontakPengelola.replace(/[^0-9]/g, '')}`}
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-desa-darkGreen hover:bg-desa-greenHover text-white text-xs font-semibold shadow-2xs transition-colors shrink-0 min-h-[44px]"
                 >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Hubungi via WhatsApp</span>
+                  <Phone className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  <span>Hubungi Pengelola</span>
                 </a>
               </div>
             )}
-
-            {/* Share Strip */}
-            <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
-                <Share2 className="w-4 h-4 text-desa-green-800" />
-                <span>Bagikan Potensi Ini:</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(potensi.judul)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
-                >
-                  WhatsApp
-                </a>
-                <a
-                  href={`https://www.facebook.com/sharer/sharer.php`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-colors shadow-sm"
-                >
-                  Facebook
-                </a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        {/* Related Potensi */}
-        {relatedPotensi.length > 0 && (
-          <div className="mt-10 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-desa-green-800" />
-                <span>Potensi Unggulan Lainnya</span>
-              </h3>
-              <Link
-                href="/potensi-desa"
-                className="text-xs font-semibold text-desa-green-800 hover:text-desa-green-950 transition-colors"
-              >
-                Lihat Semua
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {relatedPotensi.map((rel) => {
-                const relImg = getMediaUrl(rel.gambar, '/images/hero-desa.jpg')
-
-                return (
-                  <Link
-                    key={rel.id}
-                    href={`/potensi-desa/${rel.slug}`}
-                    className="bg-white rounded-xl border border-slate-200/90 shadow-card overflow-hidden hover:border-desa-green-300 hover:shadow-card-hover transition-all flex flex-col group"
-                  >
-                    <div className="relative aspect-[16/10] w-full bg-slate-100 overflow-hidden">
-                      <Image
-                        src={relImg}
-                        alt={rel.judul}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform"
-                        sizes="(max-width: 640px) 100vw, 300px"
-                      />
-                    </div>
-                    <div className="p-3.5 flex-1 flex flex-col justify-between">
-                      <span className="text-[10px] font-bold text-desa-green-800 block mb-1">
-                        {rel.kategori}
-                      </span>
-                      <h4 className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-desa-green-800 transition-colors line-clamp-2 leading-snug">
-                        {rel.judul}
-                      </h4>
-                      <span className="text-[11px] font-semibold text-desa-green-900 inline-flex items-center gap-1 mt-2">
-                        <span>Lihat Rincian</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        )}
+          </Card>
+        </div>
       </div>
     </div>
   )

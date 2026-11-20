@@ -75,6 +75,7 @@ export interface BeritaItem {
   tanggalTerbit: string
   status: 'draft' | 'terbit'
   unggulan?: boolean | null
+  penulis?: string | null
 }
 
 export interface DokumenTransparansiItem {
@@ -88,6 +89,7 @@ export interface DokumenTransparansiItem {
   keterangan?: string | null
   tampilkanDiBeranda?: boolean | null
   urutan?: number | null
+  ukuranFile?: string | null
 }
 
 export interface PotensiItem {
@@ -147,6 +149,7 @@ export interface DusunItem {
   kepalaDusun: string
   jumlahRT: number
   jumlahRW: number
+  jumlahKK?: number | null
   luasWilayah?: string | null
   deskripsi?: string | null
   urutan: number
@@ -178,6 +181,9 @@ export interface RtRwItem {
   jenis: 'RT' | 'RW'
   nomor: string
   dusun?: any
+  namaKetua?: string | null
+  kontak?: string | null
+  jumlahKK?: number | null
   telepon?: string | null
   urutan: number
 }
@@ -192,6 +198,7 @@ export interface PengumumanItem {
   lampiran?: any
   prioritas: 'Biasa' | 'Penting' | 'Mendesak'
   status: 'draft' | 'terbit'
+  nomorSurat?: string | null
 }
 
 export interface AgendaItem {
@@ -203,6 +210,7 @@ export interface AgendaItem {
   tanggalSelesai?: string | null
   lokasi: string
   penyelenggara?: string | null
+  kategori?: string | null
   status: 'Akan Datang' | 'Berlangsung' | 'Selesai'
 }
 

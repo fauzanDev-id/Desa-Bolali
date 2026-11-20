@@ -42,55 +42,65 @@ export default async function HomePage() {
   ])
 
   return (
-    <div className="pb-16 sm:pb-20 space-y-6 sm:space-y-10">
+    <div className="pb-16 sm:pb-20 space-y-8 md:space-y-12">
       {/* 1. Hero Banner Slider */}
       <HeroSection settings={settings} statistik={statistik} />
 
-      {/* 2. Floating Statistics Counter Bar Menimpa Tepi Bawah Hero */}
+      {/* 2. Floating Statistics Counter Bar (Overlap -40px) */}
       <StatsBar statistik={statistik} />
 
-      {/* Main Content Grid Sections Sesuai Mockup */}
-      <div className="max-w-[1376px] mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-6">
-        {/* Baris 1: Sambutan Kades, Berita Terbaru, Transparansi APBDes */}
-        {/* Responsif: >=1280px (xl) 3 kolom (4:5:3), 768-1279px (md) 2 kolom, <768px 1 kolom */}
+      {/* Main Content Sections: Container 1344px, Konsisten Jarak Vertikal (32px mobile, 48px desktop) */}
+      <div className="max-w-[1344px] mx-auto px-4 md:px-6 lg:px-8 space-y-8 md:space-y-12">
+        {/* ========================================================
+            BARIS 1: SAMBUTAN KADES, BERITA TERBARU, TRANSPARANSI APBDes
+            - >=1280 (xl): 3 kolom sejajar (rasio 3 : 5 : 3.4, gap 16px)
+            - 1024-1279 (lg): Sambutan + Transparansi berdampingan (col 1 & 2), Berita di bawah lebar penuh (col-span-2)
+            - 768-1023 (md): 2 kolom atau 1 kolom penuh
+            - <768: 1 kolom penuh vertikal
+           ======================================================== */}
         <section
           aria-label="Informasi Utama Desa"
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-4 sm:gap-5 items-stretch"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-[3fr_5fr_3.4fr] gap-4 items-stretch"
         >
-          {/* Card 1: Sambutan Kepala Desa (Rasio ±3 -> xl: 4 Kolom, md: 1 Kolom) */}
-          <div className="xl:col-span-4 md:col-span-1 flex flex-col">
+          {/* Card 1: Sambutan Kepala Desa */}
+          <div className="order-1 lg:order-1 xl:order-1 md:col-span-1 lg:col-span-1 flex flex-col">
             <SambutanCard sambutan={sambutan} />
           </div>
 
-          {/* Card 2: Berita Terbaru (Rasio ±5 -> xl: 5 Kolom, md: 2 Kolom) */}
-          <div className="xl:col-span-5 md:col-span-2 md:order-last xl:order-none flex flex-col">
+          {/* Card 2: Berita Terbaru (di 1024-1279 berada di bawah lebar penuh col-span-2) */}
+          <div className="order-2 lg:order-3 xl:order-2 md:col-span-2 lg:col-span-2 xl:col-span-1 flex flex-col">
             <BeritaSection beritaList={beritaList} />
           </div>
 
-          {/* Card 3: Transparansi Desa (Rasio ±3.4 -> xl: 3 Kolom, md: 1 Kolom) */}
-          <div className="xl:col-span-3 md:col-span-1 flex flex-col">
+          {/* Card 3: Transparansi Desa (di 1024-1279 berdampingan dengan Sambutan) */}
+          <div className="order-3 lg:order-2 xl:order-3 md:col-span-1 lg:col-span-1 flex flex-col">
             <TransparansiCard dokumenList={dokumenList} />
           </div>
         </section>
 
-        {/* Baris 2: Potensi Unggulan, Peta Digital Desa, Galeri Desa */}
-        {/* Responsif: >=1280px (xl) 3 kolom (4:5:3), 768-1279px (md) 2 kolom, <768px 1 kolom */}
+        {/* ========================================================
+            BARIS 2: POTENSI UNGGULAN, PETA DIGITAL DESA, GALERI DESA
+            - >=1280 (xl): 3 kolom sejajar (rasio 3 : 5 : 3.4, gap 16px)
+            - 1024-1279 (lg): Potensi + Peta berdampingan (col 1 & 2), Galeri di bawah lebar penuh (col-span-2)
+            - 768-1023 (md): 2 kolom atau 1 kolom penuh
+            - <768: 1 kolom penuh vertikal
+           ======================================================== */}
         <section
           aria-label="Potensi dan Dokumentasi Desa"
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-4 sm:gap-5 items-stretch"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-[3fr_5fr_3.4fr] gap-4 items-stretch"
         >
-          {/* Card 4: Potensi Unggulan (xl: 4 Kolom, md: 1 Kolom) */}
-          <div className="xl:col-span-4 md:col-span-1 flex flex-col">
+          {/* Card 4: Potensi Unggulan */}
+          <div className="order-1 lg:order-1 xl:order-1 md:col-span-1 lg:col-span-1 flex flex-col">
             <PotensiSection potensiList={potensiList} />
           </div>
 
-          {/* Card 5: Peta Digital Desa (xl: 5 Kolom, md: 2 Kolom) */}
-          <div className="xl:col-span-5 md:col-span-2 md:order-last xl:order-none flex flex-col">
+          {/* Card 5: Peta Digital Desa */}
+          <div className="order-2 lg:order-2 xl:order-2 md:col-span-1 lg:col-span-1 xl:col-span-1 flex flex-col">
             <PetaDigitalSection contact={contact} />
           </div>
 
-          {/* Card 6: Galeri Desa (xl: 3 Kolom, md: 1 Kolom) */}
-          <div className="xl:col-span-3 md:col-span-1 flex flex-col">
+          {/* Card 6: Galeri Desa (di 1024-1279 berada di bawah lebar penuh col-span-2) */}
+          <div className="order-3 lg:order-3 xl:order-3 md:col-span-2 lg:col-span-2 xl:col-span-1 flex flex-col">
             <GaleriSection galeriList={galeriList} />
           </div>
         </section>

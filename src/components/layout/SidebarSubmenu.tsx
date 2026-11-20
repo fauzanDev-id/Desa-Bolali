@@ -2,8 +2,8 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { ChevronRight } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { clsx } from 'clsx'
 
 export interface SubmenuItem {
@@ -12,7 +12,7 @@ export interface SubmenuItem {
   icon?: React.ReactNode
 }
 
-interface SidebarSubmenuProps {
+export interface SidebarSubmenuProps {
   title: string
   subtitle?: string
   icon?: React.ReactNode
@@ -20,6 +20,13 @@ interface SidebarSubmenuProps {
   className?: string
 }
 
+/**
+ * Sidebar Submenu Standar Halaman Dalam:
+ * - >=1024 (lg): sidebar submenu lebar tetap 280px di kiri
+ *   - Menu grup yang sedang dibuka
+ *   - Item aktif ditandai garis hijau tebal di kiri (border-l-4 border-desa-primaryGreen)
+ * - <1024: sidebar menjadi dropdown interaktif "Pilih halaman" di atas konten
+ */
 export function SidebarSubmenu({
   title,
   subtitle,
@@ -28,50 +35,73 @@ export function SidebarSubmenu({
   className,
 }: SidebarSubmenuProps) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  // Cari item aktif atau item pertama
+  const activeItem = items.find((item) => pathname === item.href) || items[0]
+
+  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const targetHref = e.target.value
+    if (targetHref && targetHref !== pathname) {
+      router.push(targetHref)
+    }
+  }
 
   return (
     <aside className={clsx('w-full', className)}>
-      {/* Mobile Horizontal Scrollable Pills */}
-      <div className="lg:hidden mb-6 -mx-4 px-4 overflow-x-auto scrollbar-none flex items-center gap-2 pb-2">
-        {items.map((item, idx) => {
-          const isActive = pathname === item.href
+      {/* 1. TAMPILAN TABLET & MOBILE (<1024px): Dropdown "Pilih Halaman" di Atas Konten */}
+      <div className="lg:hidden mb-6 bg-white rounded-desa-card border border-desa-border shadow-desa-sm p-3.5">
+        <label
+          htmlFor="mobile-submenu-select"
+          className="flex items-center gap-2 text-xs font-bold text-desa-darkGreen uppercase tracking-wider mb-2 font-sans"
+        >
+          {icon && <span className="text-desa-accentGreen shrink-0">{icon}</span>}
+          <span>Pilih Halaman {title}:</span>
+        </label>
 
-          return (
-            <Link
-              key={idx}
-              href={item.href}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all ${
-                isActive
-                  ? 'bg-desa-green-900 text-white shadow-sm'
-                  : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-              }`}
-            >
-              {item.icon && <span className="w-3.5 h-3.5">{item.icon}</span>}
-              <span>{item.label}</span>
-            </Link>
-          )
-        })}
+        <div className="relative">
+          <select
+            id="mobile-submenu-select"
+            value={activeItem?.href || items[0]?.href}
+            onChange={handleDropdownChange}
+            aria-label={`Pilih Halaman ${title}`}
+            className="w-full appearance-none bg-slate-50 border border-desa-border rounded-desa-sm px-3.5 py-2.5 pr-10 text-xs sm:text-sm font-semibold text-desa-textDark shadow-2xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen focus:border-transparent transition-all min-h-[44px]"
+          >
+            {items.map((item, idx) => (
+              <option key={idx} value={item.href}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-desa-textMuted">
+            <ChevronDown className="w-4 h-4 text-desa-darkGreen" strokeWidth={1.75} />
+          </div>
+        </div>
       </div>
 
-      {/* Desktop Sticky Vertical Card */}
-      <div className="hidden lg:block sticky top-28 bg-white rounded-2xl border border-slate-200/90 shadow-card overflow-hidden">
-        {/* Header Widget */}
-        <div className="bg-gradient-to-r from-desa-green-900 to-desa-green-950 p-4 text-white flex items-center gap-3">
+      {/* 2. TAMPILAN DESKTOP (>=1024px): Sidebar 280px di Kiri dengan Garis Hijau di Kiri untuk Item Aktif */}
+      <div className="hidden lg:block sticky top-24 w-[280px] bg-white rounded-desa-card border border-desa-border shadow-desa-sm overflow-hidden select-none">
+        {/* Header Widget Sidebar */}
+        <div className="bg-desa-darkGreen px-4 py-3.5 text-white flex items-center gap-2.5">
           {icon && (
-            <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
+            <div className="w-8 h-8 rounded-desa-sm bg-white/10 flex items-center justify-center shrink-0 border border-white/20 text-desa-gold">
               {icon}
             </div>
           )}
-          <div>
-            <h3 className="font-bold text-sm tracking-tight">{title}</h3>
+          <div className="min-w-0">
+            <h3 className="font-bold text-sm tracking-tight text-white font-sans truncate">
+              {title}
+            </h3>
             {subtitle && (
-              <p className="text-[11px] text-emerald-200/80">{subtitle}</p>
+              <p className="text-[11px] text-emerald-100/80 font-medium truncate mt-0.5">
+                {subtitle}
+              </p>
             )}
           </div>
         </div>
 
-        {/* Links Navigation */}
-        <nav className="p-2 space-y-1">
+        {/* Daftar Navigasi Submenu */}
+        <nav aria-label={`Submenu ${title}`} className="py-2">
           {items.map((item, idx) => {
             const isActive = pathname === item.href
 
@@ -79,31 +109,35 @@ export function SidebarSubmenu({
               <Link
                 key={idx}
                 href={item.href}
-                className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                className={clsx(
+                  'group flex items-center justify-between px-4 py-3 text-xs sm:text-[13px] transition-all border-l-4 min-h-[44px]',
                   isActive
-                    ? 'bg-desa-green-900 text-white shadow-sm'
-                    : 'text-slate-700 hover:text-desa-green-900 hover:bg-desa-green-50/70'
-                }`}
+                    ? 'border-desa-primaryGreen bg-desa-lightGreen text-desa-darkGreen font-bold shadow-2xs'
+                    : 'border-transparent text-desa-textDark hover:bg-slate-50 hover:text-desa-primaryGreen font-medium'
+                )}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
                   {item.icon && (
                     <span
-                      className={`w-4 h-4 shrink-0 ${
-                        isActive ? 'text-desa-gold-400' : 'text-slate-400 group-hover:text-desa-green-800'
-                      }`}
+                      className={clsx(
+                        'shrink-0',
+                        isActive ? 'text-desa-primaryGreen' : 'text-slate-400 group-hover:text-desa-primaryGreen'
+                      )}
                     >
                       {item.icon}
                     </span>
                   )}
-                  <span>{item.label}</span>
+                  <span className="truncate">{item.label}</span>
                 </div>
 
                 <ChevronRight
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  className={clsx(
+                    'w-3.5 h-3.5 shrink-0 transition-transform duration-150',
                     isActive
-                      ? 'text-desa-gold-400 translate-x-0.5'
-                      : 'text-slate-300 group-hover:text-desa-green-800 group-hover:translate-x-0.5'
-                  }`}
+                      ? 'text-desa-primaryGreen translate-x-0.5'
+                      : 'text-slate-300 group-hover:text-desa-primaryGreen group-hover:translate-x-0.5'
+                  )}
+                  strokeWidth={1.75}
                 />
               </Link>
             )

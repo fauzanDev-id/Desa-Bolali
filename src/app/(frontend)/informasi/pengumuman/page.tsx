@@ -2,8 +2,9 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPengumumanList } from '@/lib/cms'
-import { formatDateFullIndonesia, formatDateIndonesia } from '@/lib/utils'
-import { Bell, AlertTriangle, AlertCircle, Info, Calendar, ArrowRight, Search, FileText, Download } from 'lucide-react'
+import { formatDateIndonesia } from '@/lib/utils'
+import { Card, SectionHeader, EmptyState } from '@/components'
+import { Bell, AlertTriangle, AlertCircle, Info, Calendar, ArrowRight, Search, FileText } from 'lucide-react'
 
 export async function generateMetadata({
   searchParams,
@@ -32,7 +33,7 @@ export async function generateMetadata({
 export const revalidate = 60
 
 const prioritasOptions = [
-  { label: 'Semua Prioritas', value: 'Semua' },
+  { label: 'Semua Status', value: 'Semua' },
   { label: 'Mendesak / Darurat', value: 'Mendesak' },
   { label: 'Penting', value: 'Penting' },
   { label: 'Biasa / Umum', value: 'Biasa' },
@@ -56,24 +57,24 @@ export default async function PengumumanListPage({
     switch (prioritas) {
       case 'Mendesak':
         return {
-          icon: <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />,
-          label: 'Mendesak / Darurat',
+          icon: <AlertTriangle className="w-3.5 h-3.5 text-rose-600" strokeWidth={1.75} />,
+          label: 'Mendesak',
           badgeCls: 'bg-rose-50 text-rose-700 border-rose-200',
           borderCls: 'border-l-4 border-l-rose-500',
         }
       case 'Penting':
         return {
-          icon: <AlertCircle className="w-3.5 h-3.5 text-amber-600" />,
+          icon: <AlertCircle className="w-3.5 h-3.5 text-amber-600" strokeWidth={1.75} />,
           label: 'Penting',
           badgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
           borderCls: 'border-l-4 border-l-amber-500',
         }
       default:
         return {
-          icon: <Info className="w-3.5 h-3.5 text-blue-600" />,
-          label: 'Biasa / Umum',
+          icon: <Info className="w-3.5 h-3.5 text-blue-600" strokeWidth={1.75} />,
+          label: 'Umum',
           badgeCls: 'bg-blue-50 text-blue-800 border-blue-200',
-          borderCls: 'border-l-4 border-l-desa-green-800',
+          borderCls: 'border-l-4 border-l-desa-primaryGreen',
         }
     }
   }
@@ -88,138 +89,119 @@ export default async function PengumumanListPage({
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* Header Info & Search */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-desa-green-800 uppercase tracking-wider mb-1">
-              <Bell className="w-4 h-4 text-desa-gold-500" />
-              <span>Papan Informasi Resmi</span>
-              <span className="text-[10px] text-slate-400 font-normal">[Data Dummy]</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-desa-green-950">
-              Pengumuman Warga Desa Bolali
-            </h2>
-          </div>
+      {/* 1. Header Filter & Pencarian */}
+      <Card className="p-5 sm:p-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-desa-border">
+          <SectionHeader
+            title="Papan Pengumuman Resmi Warga"
+            subtitle="Surat edaran, jadwal pelayanan, dan maklumat Pemerintah Desa Bolali"
+            icon={<Bell className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+            className="mb-0"
+          />
 
-          {/* Search Form */}
-          <form method="GET" action="/informasi/pengumuman" className="flex items-center gap-2 max-w-sm w-full">
+          {/* Form Pencarian */}
+          <form method="GET" action="/informasi/pengumuman" className="relative w-full md:w-72">
             {currentPrioritas !== 'Semua' && (
               <input type="hidden" name="prioritas" value={currentPrioritas} />
             )}
-            <div className="relative flex-1">
-              <input
-                type="text"
-                name="q"
-                defaultValue={currentSearch}
-                placeholder="Cari pengumuman..."
-                className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-desa-green-800 focus:bg-white transition-all"
-              />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-            </div>
+            <input
+              type="text"
+              name="q"
+              defaultValue={currentSearch}
+              placeholder="Cari pengumuman..."
+              className="w-full pl-3.5 pr-9 py-2 text-xs sm:text-sm rounded-desa-pill bg-slate-50 border border-desa-border focus:bg-white focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen transition-all placeholder:text-desa-textMuted"
+            />
             <button
               type="submit"
-              className="px-4 py-2 rounded-xl bg-desa-green-900 text-white text-xs sm:text-sm font-semibold hover:bg-desa-green-950 transition-colors shrink-0 shadow-sm"
+              aria-label="Cari Pengumuman"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-desa-textMuted hover:text-desa-darkGreen transition-colors"
             >
-              Cari
+              <Search className="w-4 h-4" strokeWidth={1.75} />
             </button>
           </form>
         </div>
 
-        {/* Priority Filter Pills */}
-        <div className="pt-4 flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
-          <span className="text-xs font-semibold text-slate-400 shrink-0 mr-1">Prioritas:</span>
+        {/* Tab Status Filter */}
+        <div className="flex items-center gap-2 overflow-x-auto pt-4 scrollbar-none">
           {prioritasOptions.map((opt) => {
             const isActive = currentPrioritas === opt.value
+
             return (
               <Link
                 key={opt.value}
                 href={getFilterUrl(opt.value)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all min-h-[36px] ${
                   isActive
-                    ? 'bg-desa-green-900 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
+                    ? 'bg-desa-darkGreen text-white shadow-2xs font-bold'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200/70 border border-slate-200'
                 }`}
               >
-                {opt.label}
+                <span>{opt.label}</span>
               </Link>
             )
           })}
         </div>
-      </div>
+      </Card>
 
-      {/* Announcements List */}
-      {pengumumanList.length > 0 ? (
-        <div className="space-y-4">
+      {/* 2. DAFTAR BERFORMAT LIST DENGAN TANGGAL & BADGE STATUS Sesuai Spesifikasi */}
+      {pengumumanList && pengumumanList.length > 0 ? (
+        <div className="space-y-3.5">
           {pengumumanList.map((item) => {
             const badge = getPrioritasBadge(item.prioritas)
 
             return (
-              <article
+              <Card
                 key={item.id}
-                className={`bg-white rounded-2xl border border-slate-200/90 shadow-card p-5 sm:p-6 hover:shadow-card-hover transition-all ${badge.borderCls}`}
+                className={`p-4 sm:p-5 hover:border-emerald-300 transition-all ${badge.borderCls}`}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${badge.badgeCls}`}>
-                      {badge.icon}
-                      <span>{badge.label}</span>
-                    </span>
-                    <span className="text-[11px] text-slate-400">Pemerintah Desa Bolali</span>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-1.5 flex-1 min-w-0">
+                    <div className="flex items-center gap-2.5">
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${badge.badgeCls}`}>
+                        {badge.icon}
+                        <span>{badge.label}</span>
+                      </span>
+                      <span className="text-[11px] text-desa-textMuted font-medium flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-slate-400" strokeWidth={1.75} />
+                        <span>{formatDateIndonesia(item.tanggal)}</span>
+                      </span>
+                    </div>
+
+                    <Link
+                      href={`/informasi/pengumuman/${item.slug}`}
+                      className="text-sm sm:text-base font-bold text-desa-textDark hover:text-desa-primaryGreen transition-colors block font-sans"
+                    >
+                      {item.judul}
+                    </Link>
+
+                    {item.ringkasan && (
+                      <p className="text-xs text-desa-textMuted line-clamp-2 leading-relaxed font-sans">
+                        {item.ringkasan}
+                      </p>
+                    )}
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                    <Calendar className="w-3.5 h-3.5 text-desa-gold-500" />
-                    <span>{formatDateFullIndonesia(item.tanggal)}</span>
+                  <div className="shrink-0 pt-2 sm:pt-0">
+                    <Link
+                      href={`/informasi/pengumuman/${item.slug}`}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-desa-lightGreen hover:bg-desa-greenHover hover:text-white text-desa-darkGreen text-xs font-bold transition-all min-h-[36px]"
+                    >
+                      <span>Lihat Rincian</span>
+                      <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+                    </Link>
                   </div>
                 </div>
-
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 hover:text-desa-green-800 transition-colors">
-                  <Link href={`/informasi/pengumuman/${item.slug}`}>
-                    {item.judul}
-                  </Link>
-                </h3>
-
-                {item.ringkasan && (
-                  <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    {item.ringkasan}
-                  </p>
-                )}
-
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
-                    <FileText className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Surat Edaran Resmi</span>
-                  </div>
-
-                  <Link
-                    href={`/informasi/pengumuman/${item.slug}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-desa-green-800 hover:text-desa-green-950 transition-colors"
-                  >
-                    <span>Baca Rincian</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </article>
+              </Card>
             )
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-card p-12 text-center">
-          <Bell className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">Tidak ada pengumuman yang ditemukan</h3>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-sm mx-auto">
-            {currentSearch
-              ? `Tidak ditemukan pengumuman dengan kata kunci "${currentSearch}".`
-              : 'Belum ada pengumuman untuk kriteria yang dipilih.'}
-          </p>
-          <Link
-            href="/informasi/pengumuman"
-            className="inline-block mt-4 px-4 py-2 rounded-xl bg-desa-green-900 text-white text-xs font-semibold hover:bg-desa-green-950 transition-colors"
-          >
-            Lihat Semua Pengumuman
-          </Link>
-        </div>
+        <Card className="p-8">
+          <EmptyState
+            title="Belum Ada Pengumuman"
+            description="Tidak ada pengumuman yang sesuai dengan filter atau kata kunci pencarian Anda."
+          />
+        </Card>
       )}
     </div>
   )

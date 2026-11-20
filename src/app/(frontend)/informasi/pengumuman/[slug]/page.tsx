@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPengumumanBySlug } from '@/lib/cms'
 import { getMediaUrl, formatDateFullIndonesia } from '@/lib/utils'
-import { Breadcrumb, RichText } from '@/components'
+import { Card, Prose } from '@/components'
 import {
   Bell,
   AlertTriangle,
@@ -14,8 +14,6 @@ import {
   ArrowLeft,
   FileText,
   Download,
-  Share2,
-  CheckCircle2,
 } from 'lucide-react'
 
 export async function generateMetadata({
@@ -36,20 +34,6 @@ export async function generateMetadata({
   return {
     title: `${pengumuman.judul} | Pengumuman Desa Bolali`,
     description: pengumuman.ringkasan || pengumuman.judul,
-    openGraph: {
-      title: pengumuman.judul,
-      description: pengumuman.ringkasan || pengumuman.judul,
-      url: `/informasi/pengumuman/${slug}`,
-      siteName: 'Desa Bolali',
-      locale: 'id_ID',
-      type: 'article',
-      publishedTime: pengumuman.tanggal,
-    },
-    twitter: {
-      card: 'summary',
-      title: pengumuman.judul,
-      description: pengumuman.ringkasan || pengumuman.judul,
-    },
   }
 }
 
@@ -67,146 +51,110 @@ export default async function PengumumanDetailPage({
     notFound()
   }
 
-  const getPriorityTheme = (prioritas: string) => {
+  const getPrioritasBadge = (prioritas: string) => {
     switch (prioritas) {
       case 'Mendesak':
         return {
-          bannerBg: 'bg-rose-50 border-rose-200 text-rose-900',
-          badgeCls: 'bg-rose-600 text-white',
-          icon: <AlertTriangle className="w-5 h-5 text-rose-600" />,
-          title: 'Perhatian: Pengumuman Bersifat Mendesak / Darurat',
+          icon: <AlertTriangle className="w-3.5 h-3.5 text-rose-600" strokeWidth={1.75} />,
+          label: 'Mendesak / Darurat',
+          badgeCls: 'bg-rose-50 text-rose-700 border-rose-200',
         }
       case 'Penting':
         return {
-          bannerBg: 'bg-amber-50 border-amber-200 text-amber-900',
-          badgeCls: 'bg-amber-500 text-white',
-          icon: <AlertCircle className="w-5 h-5 text-amber-600" />,
-          title: 'Pengumuman Penting untuk Seluruh Warga',
+          icon: <AlertCircle className="w-3.5 h-3.5 text-amber-600" strokeWidth={1.75} />,
+          label: 'Penting',
+          badgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
         }
       default:
         return {
-          bannerBg: 'bg-blue-50 border-blue-200 text-blue-900',
-          badgeCls: 'bg-desa-green-900 text-white',
-          icon: <Info className="w-5 h-5 text-desa-green-800" />,
-          title: 'Pengumuman Informasi Umum Desa',
+          icon: <Info className="w-3.5 h-3.5 text-blue-600" strokeWidth={1.75} />,
+          label: 'Biasa / Umum',
+          badgeCls: 'bg-blue-50 text-blue-800 border-blue-200',
         }
     }
   }
 
-  const theme = getPriorityTheme(pengumuman.prioritas)
-  const lampiranUrl = pengumuman.lampiran ? getMediaUrl(pengumuman.lampiran, '') : null
+  const badge = getPrioritasBadge(pengumuman.prioritas)
+  const lampiranUrl = getMediaUrl(pengumuman.lampiran)
 
   return (
     <div className="space-y-6">
-      {/* Back Link */}
+      {/* Tautan Kembali */}
       <Link
         href="/informasi/pengumuman"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-desa-green-800 hover:text-desa-green-950 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-desa-darkGreen hover:text-desa-greenHover transition-colors py-1"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        <span>Kembali ke Semua Pengumuman</span>
+        <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.75} />
+        <span>Kembali ke Daftar Pengumuman</span>
       </Link>
 
-      {/* Main Container Card */}
-      <article className="bg-white rounded-2xl border border-slate-200/90 shadow-card overflow-hidden">
-        {/* Priority Banner Header */}
-        <div className={`p-4 sm:p-5 border-b flex items-center gap-3 ${theme.bannerBg}`}>
-          <div className="shrink-0">{theme.icon}</div>
-          <div className="flex-1">
-            <span className="text-xs font-bold uppercase tracking-wider block">
-              {theme.title}
+      <Card className="p-6 sm:p-8 md:p-10">
+        {/* Header Metadata */}
+        <div className="pb-5 border-b border-desa-border space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${badge.badgeCls}`}>
+              {badge.icon}
+              <span>{badge.label}</span>
             </span>
-            <span className="text-[11px] opacity-80">
-              Diterbitkan resmi oleh Pemerintah Desa Bolali <span className="font-normal">[Data Dummy]</span>
+            <span className="text-xs text-desa-textMuted font-medium flex items-center gap-1.5 ml-1">
+              <Calendar className="w-3.5 h-3.5 text-desa-accentGreen" strokeWidth={1.75} />
+              <span>{formatDateFullIndonesia(pengumuman.tanggal)}</span>
             </span>
           </div>
-          <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase shrink-0 ${theme.badgeCls}`}>
-            {pengumuman.prioritas}
-          </span>
-        </div>
 
-        {/* Title & Metadata */}
-        <div className="p-6 sm:p-8 md:p-10 pb-6 border-b border-slate-100">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+          <h1 className="text-xl sm:text-2xl font-black text-desa-textDark tracking-tight leading-snug font-sans">
             {pengumuman.judul}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-4 pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-desa-gold-500" />
-              <span>Diterbitkan: {formatDateFullIndonesia(pengumuman.tanggal)}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-desa-green-800" />
-              <span>Status: Berlaku Aktif</span>
-            </div>
-          </div>
+          {pengumuman.nomorSurat && (
+            <p className="text-xs text-desa-textMuted font-sans">
+              Nomor Surat: <span className="font-semibold text-desa-textDark">{pengumuman.nomorSurat}</span>
+            </p>
+          )}
         </div>
 
-        {/* Ringkasan jika ada */}
-        {pengumuman.ringkasan && (
-          <div className="p-6 sm:p-8 bg-slate-50/70 border-b border-slate-100">
-            <p className="text-sm font-medium text-slate-700 italic leading-relaxed">
+        {/* Isi Pengumuman dalam Komponen Prose */}
+        <Prose className="mt-6">
+          {pengumuman.ringkasan && (
+            <p className="text-sm sm:text-base font-semibold text-slate-800 leading-relaxed italic border-l-4 border-desa-primaryGreen pl-4 py-1 bg-desa-lightGreen/40 rounded-r-desa-sm mb-6">
               {pengumuman.ringkasan}
             </p>
-          </div>
-        )}
-
-        {/* Full Rich Text Content */}
-        <div className="p-6 sm:p-8 md:p-10">
-          <RichText content={pengumuman.isi} />
-
-          {/* Lampiran File Box (jika ada) */}
-          {lampiranUrl && (
-            <div className="mt-8 p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-desa-green-100 text-desa-green-900 flex items-center justify-center shrink-0">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-sm text-slate-900">Berkas Lampiran Resmi</h4>
-                  <p className="text-xs text-slate-500">Unduh dokumen edaran resmi (PDF / Gambar)</p>
-                </div>
-              </div>
-              <a
-                href={lampiranUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-desa-green-900 text-white text-xs font-semibold hover:bg-desa-green-950 transition-colors shadow-sm"
-              >
-                <Download className="w-4 h-4" />
-                <span>Unduh Berkas</span>
-              </a>
-            </div>
           )}
 
-          {/* Share Strip */}
-          <div className="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
-              <Share2 className="w-4 h-4 text-desa-green-800" />
-              <span>Bagikan Pengumuman:</span>
+          {pengumuman.isi ? (
+            <div dangerouslySetInnerHTML={{ __html: typeof pengumuman.isi === 'string' ? pengumuman.isi : '' }} />
+          ) : (
+            <p className="text-slate-700 leading-relaxed">
+              Pengumuman resmi dari Pemerintah Desa Bolali untuk seluruh masyarakat desa. Diharapkan seluruh warga dapat memperhatikan dan mematuhi informasi yang telah disampaikan.
+            </p>
+          )}
+        </Prose>
+
+        {/* Lampiran Dokumen jika Ada */}
+        {lampiranUrl && (
+          <div className="mt-8 p-4 rounded-desa-card bg-slate-50 border border-desa-border flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <FileText className="w-6 h-6 text-emerald-600 shrink-0" strokeWidth={1.75} />
+              <div className="min-w-0">
+                <span className="text-xs font-bold text-desa-textDark block truncate font-sans">
+                  Berkas Lampiran Resmi Pengumuman
+                </span>
+                <span className="text-[11px] text-desa-textMuted">Format PDF Dokumen</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <a
-                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(pengumuman.judul)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
-              >
-                WhatsApp
-              </a>
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-colors shadow-sm"
-              >
-                Facebook
-              </a>
-            </div>
+
+            <a
+              href={lampiranUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-desa-darkGreen hover:bg-desa-greenHover text-white text-xs font-semibold shadow-2xs transition-colors shrink-0 min-h-[44px]"
+            >
+              <span>Unduh Berkas</span>
+              <Download className="w-3.5 h-3.5" strokeWidth={1.75} />
+            </a>
           </div>
-        </div>
-      </article>
+        )}
+      </Card>
     </div>
   )
 }
