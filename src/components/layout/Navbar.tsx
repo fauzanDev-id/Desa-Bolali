@@ -220,7 +220,7 @@ export function Navbar({ settings, contact }: NavbarProps) {
               <span className="text-lg sm:text-[19px] font-bold text-slate-900 leading-none group-hover:text-desa-primaryGreen transition-colors font-sans">
                 {settings.namaWebsite || 'Desa Bolali'}
               </span>
-              <span className="text-[11px] sm:text-[12px] text-slate-500 font-normal leading-tight mt-1 whitespace-nowrap">
+              <span className="hidden sm:block text-[11px] sm:text-[12px] text-slate-500 font-normal leading-tight mt-1 whitespace-nowrap">
                 {settings.subInstansi || 'Kecamatan Wonosari • Kabupaten Klaten • Jawa Tengah'}
               </span>
             </div>

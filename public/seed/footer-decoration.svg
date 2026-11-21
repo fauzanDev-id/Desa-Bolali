@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 160" fill="none" preserveAspectRatio="none">
+  <!-- Siluet Atap Joglo / Pegunungan Hijau Sedikit Lebih Terang di Kanan Bawah Sesuai Mockup -->
+  <g fill="#2E9B3E" fill-opacity="0.22">
+    <!-- Pola Atap Joglo / Candi Tradisional Kanan Bawah -->
+    <path d="M1260 160 L1260 90 L1275 80 L1290 90 L1290 160 Z" />
+    <path d="M1295 160 L1295 65 L1315 50 L1335 65 L1335 160 Z" />
+    <path d="M1340 160 L1340 45 L1365 30 L1390 45 L1390 160 Z" />
+    <path d="M1395 160 L1395 60 L1415 45 L1435 60 L1435 160 Z" />
+    <!-- Siluet Pepohonan / Puncak Bukit -->
+    <path d="M1200 160 Q 1240 100 1280 125 T 1360 85 T 1440 95 L 1440 160 Z" fill-opacity="0.18" />
+  </g>
+
+  <!-- Garis Lengkung Emas Metalik di Kanan Bawah Sesuai Mockup -->
+  <path
+    d="M1180 160 Q 1280 145 1350 125 T 1440 105"
+    stroke="url(#goldGrad)"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+  <path
+    d="M1220 160 Q 1310 152 1370 135 T 1440 120"
+    stroke="url(#goldGrad)"
+    stroke-width="1.2"
+    stroke-linecap="round"
+    opacity="0.6"
+  />
+
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EAB308" stop-opacity="0.2" />
+      <stop offset="60%" stop-color="#FACC15" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#CA8A04" stop-opacity="0.95" />
+    </linearGradient>
+  </defs>
+</svg>

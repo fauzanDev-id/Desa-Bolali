@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { MapPin, Phone, Envelope } from '@phosphor-icons/react'
+import { MapPin, Phone, EnvelopeSimple } from '@phosphor-icons/react'
 import { FaYoutube, FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa6'
 import type { ContactData, WebsiteSettingsData } from '@/lib/cms'
 
@@ -17,29 +17,44 @@ export function Footer({ contact, settings }: FooterProps) {
   const navLinks = settings.menuNavigasi || []
   const currentYear = new Date().getFullYear()
 
-  const officialTagline = settings.tagline && settings.tagline.toLowerCase().includes('bersama membangun')
-    ? '“Bersama Membangun Desa yang Lebih Baik”'
-    : `“${settings.tagline || 'Bersama Membangun Desa yang Lebih Baik'}”`
+  const officialTagline =
+    settings.tagline && settings.tagline.toLowerCase().includes('bersama membangun')
+      ? '“Bersama Membangun Desa yang Lebih Baik”'
+      : `“${settings.tagline || 'Bersama Membangun Desa yang Lebih Baik'}”`
+
+  // Format alamat bersih 2 baris persis mockup
+  const rawAddress = contact.alamat || 'Jl. Mawar No. 10, Desa Bolali, Kec. Wonosari, Kab. Klaten, Jawa Tengah'
+  const addressParts = rawAddress.includes('Kec.')
+    ? rawAddress.split(/,\s*(?=Kec\.)/i)
+    : [rawAddress.substring(0, 32), rawAddress.substring(32)]
+  const line1 = addressParts[0] || rawAddress
+  const line2 = addressParts.slice(1).join(', ') || 'Kec. Wonosari, Kab. Klaten, Jawa Tengah'
+
+  const phoneNum = contact.telepon || '(0272) 1234567'
+  const emailAddr = (contact.email || 'desa@bolali.desa.id').replace(/bolalimali/gi, 'bolali')
 
   return (
-    <footer className="relative bg-desa-darkGreen text-emerald-100 overflow-hidden border-t-2 border-desa-gold select-none">
-      {/* Hiasan Motif Siluet Daun / Pegunungan */}
-      <div className="absolute inset-0 pointer-events-none opacity-15 overflow-hidden text-emerald-300">
+    <footer className="relative bg-[#073C24] text-white overflow-hidden select-none">
+      {/* Hiasan Siluet Pegunungan & Daun Hijau Sedikit Lebih Terang + Garis Lengkung Emas di Kanan Bawah Sesuai Mockup */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <Image
-          src="/seed/motif-footer.svg"
+          src="/seed/footer-decoration.svg"
           alt=""
           fill
-          className="object-cover object-bottom"
+          className="object-cover object-right-bottom"
           aria-hidden="true"
         />
       </div>
 
-      <div className="relative max-w-[1440px] mx-auto px-4 sm:px-4 md:px-6 pt-8 pb-6">
-        {/* Bagian Atas: Identitas, Kontak & Media Sosial */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pb-6 border-b border-white/15 items-center">
-          {/* Kolom Kiri: Identitas Desa & Tagline */}
-          <div className="md:col-span-5 flex items-center gap-3.5">
-            <div className="relative w-11 h-11 shrink-0">
+      <div className="relative max-w-[1440px] mx-auto px-4 sm:px-4 md:px-6 pt-5 pb-3">
+        {/* ========================================================
+            BARIS 1: 5 Kolom Dipisah Garis Vertikal Tipis Sesuai Mockup
+            [Logo + Nama + Tagline] | [Pin + Alamat] | [Telepon] | [Email] | [Sosmed]
+           ======================================================== */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-3 py-1">
+          {/* Kolom 1: Logo 56px + Nama 16px/700 + Tagline Miring 12px */}
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="relative w-14 h-14 shrink-0">
               <Image
                 src={
                   settings.logo && typeof settings.logo === 'object' && settings.logo.url
@@ -48,127 +63,141 @@ export function Footer({ contact, settings }: FooterProps) {
                 }
                 alt={settings.namaInstansi || 'Logo Desa Bolali'}
                 fill
-                sizes="44px"
+                sizes="56px"
                 className="object-contain"
               />
             </div>
-
             <div>
-              <h3 className="text-lg font-black text-white font-sans leading-tight">
+              <h3 className="text-[16px] font-bold text-white font-sans leading-tight">
                 {settings.namaInstansi || 'Pemerintah Desa Bolali'}
               </h3>
-              <p className="mt-0.5 text-xs text-white/90 font-medium italic">
+              <p className="mt-0.5 text-[12px] text-white/90 font-normal italic">
                 {officialTagline}
               </p>
             </div>
           </div>
 
-          {/* Kolom Tengah: Rincian Kontak Resmi */}
-          <div className="md:col-span-4 space-y-2 text-xs text-emerald-100/90 font-medium">
-            <div className="flex items-start gap-2.5">
-              <MapPin size={16} weight="fill" className="text-desa-gold shrink-0 mt-0.5" />
-              <span className="leading-relaxed">{contact.alamat}</span>
+          {/* Garis Pemisah Vertikal 1 */}
+          <div className="hidden lg:block w-px h-9 bg-white/15 shrink-0" />
+
+          {/* Kolom 2: Ikon Pin + Alamat 2 Baris 13px */}
+          <div className="flex items-center gap-2.5 text-[13px] text-white/95 shrink-0">
+            <MapPin size={20} weight="fill" className="text-white shrink-0" />
+            <div className="leading-tight">
+              <div>{line1}</div>
+              <div className="text-white/85 text-[12px]">{line2}</div>
             </div>
-
-            {contact.telepon && (
-              <div className="flex items-center gap-2.5">
-                <Phone size={16} weight="fill" className="text-desa-gold shrink-0" />
-                <a
-                  href={`tel:${contact.telepon.replace(/[^0-9+]/g, '')}`}
-                  className="hover:text-white transition-colors py-0.5"
-                >
-                  {contact.telepon}
-                </a>
-              </div>
-            )}
-
-            {contact.email && (
-              <div className="flex items-center gap-2.5">
-                <Envelope size={16} weight="fill" className="text-desa-gold shrink-0" />
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="hover:text-white transition-colors py-0.5"
-                >
-                  {contact.email}
-                </a>
-              </div>
-            )}
           </div>
 
-          {/* Kolom Kanan: Media Sosial Resmi */}
-          <div className="md:col-span-3 flex flex-col md:items-end justify-between">
-            <div>
-              <p className="text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2.5 md:text-right">
-                Ikuti Kami:
-              </p>
-              <div className="flex items-center gap-3 text-white">
-                <a
-                  href={sosmed?.youtube || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Kanal YouTube Desa Bolali"
-                  aria-label="Kunjungi Kanal YouTube Desa Bolali"
-                  className="hover:text-desa-gold transition-colors"
-                >
-                  <FaYoutube className="w-5 h-5" />
-                </a>
+          {/* Garis Pemisah Vertikal 2 */}
+          <div className="hidden lg:block w-px h-9 bg-white/15 shrink-0" />
 
-                <a
-                  href={sosmed?.facebook || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Halaman Facebook Desa Bolali"
-                  aria-label="Kunjungi Halaman Facebook Desa Bolali"
-                  className="hover:text-desa-gold transition-colors"
-                >
-                  <FaFacebookF className="w-4 h-4" />
-                </a>
+          {/* Kolom 3: Ikon Telepon + Nomor 13px */}
+          <div className="flex items-center gap-2.5 text-[13px] text-white/95 shrink-0">
+            <Phone size={20} weight="fill" className="text-white shrink-0" />
+            <a
+              href={`tel:${phoneNum.replace(/[^0-9+]/g, '')}`}
+              className="hover:text-desa-gold transition-colors font-medium"
+            >
+              {phoneNum}
+            </a>
+          </div>
 
-                <a
-                  href={sosmed?.instagram || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Akun Instagram Desa Bolali"
-                  aria-label="Kunjungi Akun Instagram Desa Bolali"
-                  className="hover:text-desa-gold transition-colors"
-                >
-                  <FaInstagram className="w-5 h-5" />
-                </a>
+          {/* Garis Pemisah Vertikal 3 */}
+          <div className="hidden lg:block w-px h-9 bg-white/15 shrink-0" />
 
-                <a
-                  href={sosmed?.tiktok || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Akun TikTok Desa Bolali"
-                  aria-label="Kunjungi Akun TikTok Desa Bolali"
-                  className="hover:text-desa-gold transition-colors"
-                >
-                  <FaTiktok className="w-4 h-4" />
-                </a>
-              </div>
+          {/* Kolom 4: Ikon Amplop + Email 13px */}
+          <div className="flex items-center gap-2.5 text-[13px] text-white/95 shrink-0">
+            <EnvelopeSimple size={20} weight="fill" className="text-white shrink-0" />
+            <a
+              href={`mailto:${emailAddr}`}
+              className="hover:text-desa-gold transition-colors font-medium"
+            >
+              {emailAddr}
+            </a>
+          </div>
+
+          {/* Garis Pemisah Vertikal 4 */}
+          <div className="hidden lg:block w-px h-9 bg-white/15 shrink-0" />
+
+          {/* Kolom 5: "Ikuti Kami:" 12px + 4 Ikon Sosmed Putih Polos 20px Tanpa Lingkaran/Border */}
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="text-[12px] text-white/85 font-medium">Ikuti Kami:</span>
+            <div className="flex items-center gap-2.5 text-white">
+              <a
+                href={sosmed?.youtube || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Kanal YouTube Desa Bolali"
+                aria-label="YouTube Desa Bolali"
+                className="hover:text-desa-gold transition-colors"
+              >
+                <FaYoutube className="w-5 h-5" />
+              </a>
+
+              <a
+                href={sosmed?.facebook || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Halaman Facebook Desa Bolali"
+                aria-label="Facebook Desa Bolali"
+                className="hover:text-desa-gold transition-colors"
+              >
+                <FaFacebookF className="w-4 h-4" />
+              </a>
+
+              <a
+                href={sosmed?.instagram || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Akun Instagram Desa Bolali"
+                aria-label="Instagram Desa Bolali"
+                className="hover:text-desa-gold transition-colors"
+              >
+                <FaInstagram className="w-5 h-5" />
+              </a>
+
+              <a
+                href={sosmed?.tiktok || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Akun TikTok Desa Bolali"
+                aria-label="TikTok Desa Bolali"
+                className="hover:text-desa-gold transition-colors"
+              >
+                <FaTiktok className="w-4 h-4" />
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Bagian Tengah: Tautan Menu Navigasi Bawah */}
-        <div className="py-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-emerald-100/80 border-b border-white/10">
+        {/* Garis Pembatas Tipis Putih 15% Sesuai Mockup */}
+        <hr className="border-t border-white/15 my-2.5" />
+
+        {/* ========================================================
+            BARIS 2: Tautan Navigasi 12px Rata Tengah Dipisah "|" Tipis
+           ======================================================== */}
+        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-[12px] text-white/85 py-0.5">
           {navLinks.map((item, idx) => (
-            <Link
-              key={idx}
-              href={item.url}
-              className="hover:text-desa-gold transition-colors py-1.5"
-            >
-              {item.label}
-            </Link>
+            <React.Fragment key={item.url || idx}>
+              <Link
+                href={item.url}
+                className="hover:text-desa-gold transition-colors py-0.5 whitespace-nowrap"
+              >
+                {item.label}
+              </Link>
+              {idx < navLinks.length - 1 && (
+                <span className="text-white/30 text-[11px] select-none">|</span>
+              )}
+            </React.Fragment>
           ))}
         </div>
 
-        {/* Bagian Bawah: Baris Hak Cipta Tunggal */}
-        <div className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-emerald-100/70 text-center sm:text-left">
-          <p>© {currentYear} {settings.namaInstansi || 'Pemerintah Desa Bolali'}. All Rights Reserved</p>
-          <p className="text-[11px] text-emerald-100/50">
-            Kecamatan Wonosari, Kabupaten Klaten, Jawa Tengah 57473
-          </p>
+        {/* ========================================================
+            BARIS 3: Satu Baris Copyright Rata Tengah 12px
+           ======================================================== */}
+        <div className="text-center text-[11.5px] text-white/70 pt-1 pb-1">
+          <p>© {currentYear} Pemerintah Desa Bolali. Hak cipta dilindungi.</p>
         </div>
       </div>
     </footer>
