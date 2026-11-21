@@ -16,6 +16,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr'
 import { FaYoutube, FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa6'
 import type { WebsiteSettingsData, ContactData } from '@/lib/cms'
+import { getMediaUrl } from '@/lib/utils'
 
 interface NavbarProps {
   settings: WebsiteSettingsData
@@ -229,11 +230,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
           >
             <div className="relative w-9 h-9 sm:w-10 sm:h-10 2xl:w-11 2xl:h-11 shrink-0">
               <Image
-                src={
-                  settings.logo && typeof settings.logo === 'object' && settings.logo.url
-                    ? settings.logo.url
-                    : '/seed/logo-desa-placeholder.svg'
-                }
+                src={getMediaUrl(settings.logo, '/seed/logo-desa-placeholder.svg')}
                 alt={settings.namaWebsite || 'Logo Desa Bolali'}
                 fill
                 sizes="(max-width: 640px) 36px, 44px"
@@ -429,11 +426,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                 <div className="flex items-center gap-2.5">
                   <div className="relative w-8 h-8 shrink-0">
                     <Image
-                      src={
-                        settings.logo && typeof settings.logo === 'object' && settings.logo.url
-                          ? settings.logo.url
-                          : '/seed/logo-desa-placeholder.svg'
-                      }
+                      src={getMediaUrl(settings.logo, '/seed/logo-desa-placeholder.svg')}
                       alt="Logo Desa"
                       fill
                       className="object-contain"

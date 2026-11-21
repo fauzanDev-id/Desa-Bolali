@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { MapPin, Phone, EnvelopeSimple } from '@phosphor-icons/react/dist/ssr'
 import { FaYoutube, FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa6'
 import type { ContactData, WebsiteSettingsData } from '@/lib/cms'
+import { getMediaUrl } from '@/lib/utils'
 
 interface FooterProps {
   contact: ContactData
@@ -56,11 +57,7 @@ export function Footer({ contact, settings }: FooterProps) {
           <div className="flex items-center gap-3 shrink-0">
             <div className="relative w-14 h-14 shrink-0">
               <Image
-                src={
-                  settings.logo && typeof settings.logo === 'object' && settings.logo.url
-                    ? settings.logo.url
-                    : '/seed/logo-desa-placeholder.svg'
-                }
+                src={getMediaUrl(settings.logo, '/seed/logo-desa-placeholder.svg')}
                 alt={settings.namaInstansi || 'Logo Desa Bolali'}
                 fill
                 sizes="56px"
