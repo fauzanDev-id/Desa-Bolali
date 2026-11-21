@@ -143,6 +143,6 @@ export const DataKependudukan: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateGlobal('/profil/kependudukan')],
+    afterChange: [revalidateGlobal('data-kependudukan', '/profil/kependudukan')],
   },
 }

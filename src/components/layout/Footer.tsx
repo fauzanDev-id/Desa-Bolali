@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { MapPin, Phone, EnvelopeSimple } from '@phosphor-icons/react'
+import { MapPin, Phone, EnvelopeSimple } from '@phosphor-icons/react/dist/ssr'
 import { FaYoutube, FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa6'
 import type { ContactData, WebsiteSettingsData } from '@/lib/cms'
 

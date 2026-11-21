@@ -35,6 +35,7 @@ export const DokumenTransparansi: CollectionConfig = {
       label: 'Kategori Dokumen Transparansi',
       type: 'select',
       required: true,
+      index: true,
       defaultValue: 'APBDes',
       options: [
         { label: 'APBDes (Anggaran Pendapatan & Belanja Desa)', value: 'APBDes' },
@@ -51,6 +52,7 @@ export const DokumenTransparansi: CollectionConfig = {
       label: 'Tahun Anggaran',
       type: 'number',
       required: true,
+      index: true,
       defaultValue: 2026,
       admin: {
         position: 'sidebar',
@@ -105,6 +107,7 @@ export const DokumenTransparansi: CollectionConfig = {
       name: 'urutan',
       label: 'Nomor Urutan Tampilan',
       type: 'number',
+      index: true,
       defaultValue: 1,
       admin: {
         position: 'sidebar',
@@ -112,7 +115,7 @@ export const DokumenTransparansi: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/transparansi')],
-    afterDelete: [revalidateCollectionDelete('/transparansi')],
+    afterChange: [revalidateCollection('/transparansi', 'dokumen-transparansi')],
+    afterDelete: [revalidateCollectionDelete('/transparansi', 'dokumen-transparansi')],
   },
 }

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { getPengumumanList } from '@/lib/cms'
 import { formatDateIndonesia } from '@/lib/utils'
 import { Card, SectionHeader, EmptyState } from '@/components'
-import { Bell, AlertTriangle, AlertCircle, Info, Calendar, ArrowRight, Search, FileText } from 'lucide-react'
+import { Bell, Warning, WarningCircle, Info, CalendarBlank, ArrowRight, MagnifyingGlass, FileText } from '@phosphor-icons/react/dist/ssr'
 
 export async function generateMetadata({
   searchParams,
@@ -57,21 +57,21 @@ export default async function PengumumanListPage({
     switch (prioritas) {
       case 'Mendesak':
         return {
-          icon: <AlertTriangle className="w-3.5 h-3.5 text-rose-600" strokeWidth={1.75} />,
+          icon: <Warning className="w-3.5 h-3.5 text-rose-600" />,
           label: 'Mendesak',
           badgeCls: 'bg-rose-50 text-rose-700 border-rose-200',
           borderCls: 'border-l-4 border-l-rose-500',
         }
       case 'Penting':
         return {
-          icon: <AlertCircle className="w-3.5 h-3.5 text-amber-600" strokeWidth={1.75} />,
+          icon: <WarningCircle className="w-3.5 h-3.5 text-amber-600" />,
           label: 'Penting',
           badgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
           borderCls: 'border-l-4 border-l-amber-500',
         }
       default:
         return {
-          icon: <Info className="w-3.5 h-3.5 text-blue-600" strokeWidth={1.75} />,
+          icon: <Info className="w-3.5 h-3.5 text-blue-600" />,
           label: 'Umum',
           badgeCls: 'bg-blue-50 text-blue-800 border-blue-200',
           borderCls: 'border-l-4 border-l-desa-primaryGreen',
@@ -95,7 +95,7 @@ export default async function PengumumanListPage({
           <SectionHeader
             title="Papan Pengumuman Resmi Warga"
             subtitle="Surat edaran, jadwal pelayanan, dan maklumat Pemerintah Desa Bolali"
-            icon={<Bell className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+            icon={<Bell className="w-4 h-4 text-desa-accentGreen" />}
             className="mb-0"
           />
 
@@ -116,7 +116,7 @@ export default async function PengumumanListPage({
               aria-label="Cari Pengumuman"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-desa-textMuted hover:text-desa-darkGreen transition-colors"
             >
-              <Search className="w-4 h-4" strokeWidth={1.75} />
+              <MagnifyingGlass className="w-4 h-4" />
             </button>
           </form>
         </div>
@@ -162,7 +162,7 @@ export default async function PengumumanListPage({
                         <span>{badge.label}</span>
                       </span>
                       <span className="text-[11px] text-desa-textMuted font-medium flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-slate-400" strokeWidth={1.75} />
+                        <CalendarBlank className="w-3 h-3 text-slate-400" />
                         <span>{formatDateIndonesia(item.tanggal)}</span>
                       </span>
                     </div>
@@ -187,7 +187,7 @@ export default async function PengumumanListPage({
                       className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-desa-lightGreen hover:bg-desa-greenHover hover:text-white text-desa-darkGreen text-xs font-bold transition-all min-h-[36px]"
                     >
                       <span>Lihat Rincian</span>
-                      <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </div>

@@ -3,7 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { House, CaretRight } from '@phosphor-icons/react'
+import { House, CaretRight } from '@phosphor-icons/react/dist/ssr'
 import type { BreadcrumbItem } from './Breadcrumb'
 
 export interface PageHeaderProps {

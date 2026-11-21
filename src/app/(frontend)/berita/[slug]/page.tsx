@@ -3,10 +3,17 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getBeritaBySlug, getBeritaTerkait } from '@/lib/cms'
+import { getBeritaBySlug, getBeritaTerkait, getBeritaTerbaru } from '@/lib/cms'
 import { getMediaUrl, formatDateFullIndonesia, formatDateIndonesia } from '@/lib/utils'
 import { PageHeader, Card, Prose } from '@/components'
-import { Calendar, User, ArrowLeft, ArrowRight, Share2, Copy, Check } from 'lucide-react'
+import { CalendarBlank, User, ArrowLeft, ArrowRight, ShareNetwork, Copy, Check } from '@phosphor-icons/react/dist/ssr'
+
+export const revalidate = 60
+
+export async function generateStaticParams() {
+  const beritaList = await getBeritaTerbaru(20)
+  return beritaList.map((item) => ({ slug: item.slug }))
+}
 
 export async function generateMetadata({
   params,
@@ -23,7 +30,7 @@ export async function generateMetadata({
     }
   }
 
-  const imageUrl = getMediaUrl(berita.gambar, '/seed/berita-1.jpg')
+  const imageUrl = getMediaUrl(berita.gambar, '/seed/berita-1.webp')
 
   return {
     title: `${berita.judul} | Kabar Desa Bolali`,
@@ -54,8 +61,6 @@ export async function generateMetadata({
   }
 }
 
-export const revalidate = 60
-
 export default async function BeritaDetailPage({
   params,
 }: {
@@ -69,7 +74,7 @@ export default async function BeritaDetailPage({
   }
 
   const relatedArticles = await getBeritaTerkait(slug, berita.kategori, 3)
-  const imgUrl = getMediaUrl(berita.gambar, '/seed/berita-1.jpg')
+  const imgUrl = getMediaUrl(berita.gambar, '/seed/berita-1.webp')
 
   // Share URL encode
   const shareTitle = encodeURIComponent(berita.judul)
@@ -98,7 +103,7 @@ export default async function BeritaDetailPage({
             href="/informasi/berita"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-desa-darkGreen hover:text-desa-greenHover transition-colors py-1"
           >
-            <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.75} />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Kembali ke Daftar Berita</span>
           </Link>
 
@@ -116,11 +121,11 @@ export default async function BeritaDetailPage({
 
               <div className="flex flex-wrap items-center gap-4 text-xs text-desa-textMuted font-medium pt-1">
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-desa-accentGreen" strokeWidth={1.75} />
+                  <CalendarBlank className="w-3.5 h-3.5 text-desa-accentGreen" />
                   <span>{formatDateFullIndonesia(berita.tanggalTerbit)}</span>
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-desa-accentGreen" strokeWidth={1.75} />
+                  <User className="w-3.5 h-3.5 text-desa-accentGreen" />
                   <span>{berita.penulis || 'Pemerintah Desa Bolali'}</span>
                 </span>
               </div>
@@ -158,7 +163,7 @@ export default async function BeritaDetailPage({
             {/* Tombol Bagikan Sederhana Sesuai Spesifikasi: Salin Tautan, WhatsApp, Facebook */}
             <div className="mt-8 pt-6 border-t border-desa-border flex flex-wrap items-center justify-between gap-4">
               <span className="text-xs font-bold text-desa-textMuted uppercase tracking-wider flex items-center gap-1.5">
-                <Share2 className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />
+                <ShareNetwork className="w-4 h-4 text-desa-accentGreen" />
                 <span>Bagikan Artikel Ini:</span>
               </span>
 
@@ -203,7 +208,7 @@ export default async function BeritaDetailPage({
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {relatedArticles.map((item) => {
-                  const relImg = getMediaUrl(item.gambar, '/seed/berita-2.jpg')
+                  const relImg = getMediaUrl(item.gambar, '/seed/berita-2.webp')
 
                   return (
                     <Card
@@ -241,7 +246,7 @@ export default async function BeritaDetailPage({
                           className="inline-flex items-center gap-1 text-[11px] font-bold text-desa-primaryGreen mt-2 font-sans"
                         >
                           <span>Baca</span>
-                          <ArrowRight className="w-3 h-3" strokeWidth={1.75} />
+                          <ArrowRight className="w-3 h-3" />
                         </Link>
                       </div>
                     </Card>

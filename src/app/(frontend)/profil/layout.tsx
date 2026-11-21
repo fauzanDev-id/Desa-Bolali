@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { PageHeader, SidebarSubmenu, type SubmenuItem } from '@/components'
-import { BookOpen, Target, Compass, Users, MapPin, Landmark } from 'lucide-react'
+import { BookOpen, Target, Compass, Users, MapPin, Bank } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Profil Desa',
@@ -12,27 +12,27 @@ const profilSubmenu: SubmenuItem[] = [
   {
     label: 'Sejarah Desa',
     href: '/profil/sejarah',
-    icon: <BookOpen className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <BookOpen className="w-4 h-4" />,
   },
   {
     label: 'Visi & Misi',
     href: '/profil/visi-misi',
-    icon: <Target className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <Target className="w-4 h-4" />,
   },
   {
     label: 'Geografis & Wilayah',
     href: '/profil/geografis',
-    icon: <Compass className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <Compass className="w-4 h-4" />,
   },
   {
     label: 'Data Kependudukan',
     href: '/profil/kependudukan',
-    icon: <Users className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <Users className="w-4 h-4" />,
   },
   {
     label: 'Wilayah & Dusun',
     href: '/profil/wilayah-dusun',
-    icon: <MapPin className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <MapPin className="w-4 h-4" />,
   },
 ]
 
@@ -48,7 +48,7 @@ export default function ProfilLayout({
         title="Profil Desa Bolali"
         subtitle="Mengenal lebih dekat sejarah berdirinya desa, visi & misi pembangunan, bentang geografis, dan kependudukan."
         badge="Profil Resmi Desa"
-        badgeIcon={<Landmark className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        badgeIcon={<Bank className="w-3.5 h-3.5 text-desa-gold" />}
         breadcrumbs={[{ label: 'Profil Desa', href: '/profil/sejarah' }]}
         bgImage="/seed/hero-1.webp"
       />
@@ -60,7 +60,7 @@ export default function ProfilLayout({
           <SidebarSubmenu
             title="Profil Desa"
             subtitle="Pilih informasi profil"
-            icon={<Landmark className="w-4 h-4 text-desa-gold" strokeWidth={1.75} />}
+            icon={<Bank className="w-4 h-4 text-desa-gold" />}
             items={profilSubmenu}
             className="lg:w-[280px] shrink-0"
           />

@@ -88,6 +88,7 @@ export const Berita: CollectionConfig = {
       label: 'Tanggal Terbit',
       type: 'date',
       required: true,
+      index: true,
       defaultValue: () => new Date(),
       admin: {
         position: 'sidebar',
@@ -101,6 +102,7 @@ export const Berita: CollectionConfig = {
       label: 'Status Publikasi',
       type: 'select',
       required: true,
+      index: true,
       defaultValue: 'terbit',
       options: [
         { label: 'Draf', value: 'draft' },
@@ -121,7 +123,7 @@ export const Berita: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/informasi/berita')],
-    afterDelete: [revalidateCollectionDelete('/informasi/berita')],
+    afterChange: [revalidateCollection('/informasi/berita', 'berita')],
+    afterDelete: [revalidateCollectionDelete('/informasi/berita', 'berita')],
   },
 }

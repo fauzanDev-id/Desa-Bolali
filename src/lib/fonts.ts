@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans, Allura, Kaushan_Script } from 'next/font/google'
 export const sans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
-  display: 'optional',
+  display: 'swap',
   weight: ['400', '500', '600', '700', '800'],
 })
 

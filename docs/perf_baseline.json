@@ -1,0 +1,69 @@
+{
+  "ttfb": {
+    "/": 9,
+    "/berita": 37,
+    "/profil/sejarah": 8,
+    "/galeri": 5,
+    "/kontak": 5
+  },
+  "network": {
+    "totalRequests": 38,
+    "totalTransferredKB": 818,
+    "top10Assets": [
+      {
+        "url": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fberita-1.jpg&w=828&q=75",
+        "mimeType": "image/avif",
+        "sizeKB": 120
+      },
+      {
+        "url": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fpotensi-pertanian.jpg&w=640&q=75",
+        "mimeType": "image/avif",
+        "sizeKB": 84
+      },
+      {
+        "url": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fhero-3.webp&w=828&q=75",
+        "mimeType": "image/avif",
+        "sizeKB": 75
+      },
+      {
+        "url": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fhero-1.webp&w=828&q=75",
+        "mimeType": "image/avif",
+        "sizeKB": 62
+      },
+      {
+        "url": "/_next/static/chunks/8fbbab92-500ca981cc367396.js",
+        "mimeType": "application/javascript",
+        "sizeKB": 54
+      },
+      {
+        "url": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fhero-2.webp&w=828&q=75",
+        "mimeType": "image/avif",
+        "sizeKB": 50
+      },
+      {
+        "url": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fhero-4.webp&w=828&q=75",
+        "mimeType": "image/avif",
+        "sizeKB": 50
+      },
+      {
+        "url": "/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fpotensi-umkm.jpg&w=640&q=75",
+        "mimeType": "image/avif",
+        "sizeKB": 49
+      },
+      {
+        "url": "/_next/static/chunks/8454-52abcd7b72e6f533.js",
+        "mimeType": "application/javascript",
+        "sizeKB": 44
+      },
+      {
+        "url": "/_next/static/media/636a5ac981f94f8b-s.p.woff2",
+        "mimeType": "font/woff2",
+        "sizeKB": 27
+      }
+    ]
+  },
+  "vitals": {
+    "fcp": 524,
+    "lcp": 0
+  }
+}

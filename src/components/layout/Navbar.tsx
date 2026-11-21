@@ -13,7 +13,7 @@ import {
   MapPin,
   Phone,
   Envelope,
-} from '@phosphor-icons/react'
+} from '@phosphor-icons/react/dist/ssr'
 import { FaYoutube, FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa6'
 import type { WebsiteSettingsData, ContactData } from '@/lib/cms'
 

@@ -5,17 +5,7 @@ import Link from 'next/link'
 import { getPotensiList } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
 import { PageHeader, Card, SectionHeader, EmptyState } from '@/components'
-import {
-  Sparkles,
-  MapPin,
-  ArrowRight,
-  Search,
-  Building,
-  Wheat,
-  ShoppingBag,
-  Palmtree,
-  Music,
-} from 'lucide-react'
+import { Sparkle, MapPin, ArrowRight, MagnifyingGlass, Buildings, Plant, Bag, TreePalm, MusicNote } from '@phosphor-icons/react/dist/ssr'
 
 export async function generateMetadata({
   searchParams,
@@ -89,7 +79,7 @@ export default async function PotensiDesaPage({
         title="Potensi Unggulan Desa Bolali"
         subtitle="Kekayaan agraris, sentra kerajinan gerabah UMKM, pesona embung wisata alam, dan tradisi budaya"
         badge="Potensi & Kemandirian"
-        badgeIcon={<Sparkles className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        badgeIcon={<Sparkle className="w-3.5 h-3.5 text-desa-gold" />}
         breadcrumbs={[{ label: 'Potensi Desa', href: '/potensi-desa' }]}
         bgImage="/seed/hero-1.webp"
       />
@@ -102,7 +92,7 @@ export default async function PotensiDesaPage({
             <SectionHeader
               title="Eksplorasi Sektor Unggulan Desa"
               subtitle="Pilar penggerak ekonomi, ketahanan pangan, dan kemakmuran warga"
-              icon={<Sparkles className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+              icon={<Sparkle className="w-4 h-4 text-desa-accentGreen" />}
               className="mb-0"
             />
 
@@ -123,7 +113,7 @@ export default async function PotensiDesaPage({
                 aria-label="Cari Potensi"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-desa-textMuted hover:text-desa-darkGreen transition-colors"
               >
-                <Search className="w-4 h-4" strokeWidth={1.75} />
+                <MagnifyingGlass className="w-4 h-4" />
               </button>
             </form>
           </div>
@@ -156,14 +146,14 @@ export default async function PotensiDesaPage({
             {filteredItems.map((item) => {
               const defaultImg =
                 item.kategori === 'Pertanian'
-                  ? '/seed/potensi-pertanian.jpg'
+                  ? '/seed/potensi-pertanian.webp'
                   : item.kategori === 'UMKM'
-                  ? '/seed/potensi-umkm.jpg'
+                  ? '/seed/potensi-umkm.webp'
                   : item.kategori === 'Wisata' || item.kategori === 'Wisata Alam'
-                  ? '/seed/potensi-wisata.jpg'
+                  ? '/seed/potensi-wisata.webp'
                   : item.kategori === 'Seni-Budaya' || item.kategori === 'Budaya'
-                  ? '/seed/potensi-budaya.jpg'
-                  : '/seed/potensi-umkm.jpg'
+                  ? '/seed/potensi-budaya.webp'
+                  : '/seed/potensi-umkm.webp'
               const imgUrl = getMediaUrl(item.gambar, defaultImg)
 
               return (
@@ -210,7 +200,7 @@ export default async function PotensiDesaPage({
 
                       {item.lokasi && (
                         <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-sans pt-1">
-                          <MapPin className="w-3.5 h-3.5 text-desa-accentGreen shrink-0" strokeWidth={1.75} />
+                          <MapPin className="w-3.5 h-3.5 text-desa-accentGreen shrink-0" />
                           <span className="truncate">{item.lokasi}</span>
                         </div>
                       )}
@@ -224,7 +214,7 @@ export default async function PotensiDesaPage({
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-desa-primaryGreen hover:text-desa-darkGreen transition-colors font-sans py-1"
                     >
                       <span>Lihat Rincian & Galeri</span>
-                      <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </Card>

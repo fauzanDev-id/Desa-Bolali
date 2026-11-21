@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CaretLeft, CaretRight, Play, CaretRight as ArrowIcon } from '@phosphor-icons/react'
+import { CaretLeft, CaretRight, Play, CaretRight as ArrowIcon } from '@phosphor-icons/react/dist/ssr'
 import type { WebsiteSettingsData, StatistikDesaData } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
 import { getBlurDataUrl } from '@/lib/blur'
@@ -118,8 +118,13 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
   const touchStartXRef = useRef<number | null>(null)
   const touchEndXRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
 
   const prevSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
@@ -179,6 +184,10 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
           const imgUrl = getMediaUrl(slide.gambar, `/seed/hero-${(idx % 4) + 1}.webp`)
           const blurUrl = getBlurDataUrl(imgUrl)
 
+          if (idx > 0 && !isHydrated) {
+            return null
+          }
+
           return (
             <div
               key={idx}
@@ -192,6 +201,7 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
                 alt={slide.judul || 'Lanskap Desa Bolali'}
                 fill
                 priority={idx === 0}
+                loading={idx === 0 ? undefined : 'lazy'}
                 placeholder={blurUrl ? 'blur' : 'empty'}
                 blurDataURL={blurUrl}
                 sizes="100vw"

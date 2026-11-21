@@ -2,19 +2,10 @@ import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getPengumumanBySlug } from '@/lib/cms'
+import { getPengumumanBySlug, getPengumumanList } from '@/lib/cms'
 import { getMediaUrl, formatDateFullIndonesia } from '@/lib/utils'
 import { Card, Prose } from '@/components'
-import {
-  Bell,
-  AlertTriangle,
-  AlertCircle,
-  Info,
-  Calendar,
-  ArrowLeft,
-  FileText,
-  Download,
-} from 'lucide-react'
+import { Bell, Warning, WarningCircle, Info, CalendarBlank, ArrowLeft, FileText, DownloadSimple } from '@phosphor-icons/react/dist/ssr'
 
 export async function generateMetadata({
   params,
@@ -39,6 +30,11 @@ export async function generateMetadata({
 
 export const revalidate = 60
 
+export async function generateStaticParams() {
+  const list = await getPengumumanList({ limit: 20 })
+  return list.map((item) => ({ slug: item.slug }))
+}
+
 export default async function PengumumanDetailPage({
   params,
 }: {
@@ -55,19 +51,19 @@ export default async function PengumumanDetailPage({
     switch (prioritas) {
       case 'Mendesak':
         return {
-          icon: <AlertTriangle className="w-3.5 h-3.5 text-rose-600" strokeWidth={1.75} />,
+          icon: <Warning className="w-3.5 h-3.5 text-rose-600" />,
           label: 'Mendesak / Darurat',
           badgeCls: 'bg-rose-50 text-rose-700 border-rose-200',
         }
       case 'Penting':
         return {
-          icon: <AlertCircle className="w-3.5 h-3.5 text-amber-600" strokeWidth={1.75} />,
+          icon: <WarningCircle className="w-3.5 h-3.5 text-amber-600" />,
           label: 'Penting',
           badgeCls: 'bg-amber-50 text-amber-800 border-amber-200',
         }
       default:
         return {
-          icon: <Info className="w-3.5 h-3.5 text-blue-600" strokeWidth={1.75} />,
+          icon: <Info className="w-3.5 h-3.5 text-blue-600" />,
           label: 'Biasa / Umum',
           badgeCls: 'bg-blue-50 text-blue-800 border-blue-200',
         }
@@ -84,7 +80,7 @@ export default async function PengumumanDetailPage({
         href="/informasi/pengumuman"
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-desa-darkGreen hover:text-desa-greenHover transition-colors py-1"
       >
-        <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.75} />
+        <ArrowLeft className="w-3.5 h-3.5" />
         <span>Kembali ke Daftar Pengumuman</span>
       </Link>
 
@@ -97,7 +93,7 @@ export default async function PengumumanDetailPage({
               <span>{badge.label}</span>
             </span>
             <span className="text-xs text-desa-textMuted font-medium flex items-center gap-1.5 ml-1">
-              <Calendar className="w-3.5 h-3.5 text-desa-accentGreen" strokeWidth={1.75} />
+              <CalendarBlank className="w-3.5 h-3.5 text-desa-accentGreen" />
               <span>{formatDateFullIndonesia(pengumuman.tanggal)}</span>
             </span>
           </div>
@@ -134,7 +130,7 @@ export default async function PengumumanDetailPage({
         {lampiranUrl && (
           <div className="mt-8 p-4 rounded-desa-card bg-slate-50 border border-desa-border flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
-              <FileText className="w-6 h-6 text-emerald-600 shrink-0" strokeWidth={1.75} />
+              <FileText className="w-6 h-6 text-emerald-600 shrink-0" />
               <div className="min-w-0">
                 <span className="text-xs font-bold text-desa-textDark block truncate font-sans">
                   Berkas Lampiran Resmi Pengumuman
@@ -150,7 +146,7 @@ export default async function PengumumanDetailPage({
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-desa-darkGreen hover:bg-desa-greenHover text-white text-xs font-semibold shadow-2xs transition-colors shrink-0 min-h-[44px]"
             >
               <span>Unduh Berkas</span>
-              <Download className="w-3.5 h-3.5" strokeWidth={1.75} />
+              <DownloadSimple className="w-3.5 h-3.5" />
             </a>
           </div>
         )}

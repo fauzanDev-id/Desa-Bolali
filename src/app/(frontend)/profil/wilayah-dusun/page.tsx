@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { getDusunList } from '@/lib/cms'
 import { Card, SectionHeader } from '@/components'
-import { MapPin, Users, Home, Maximize2, ShieldCheck, Building2 } from 'lucide-react'
+import { MapPin, Users, House, ArrowsOut, ShieldCheck, Buildings } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Wilayah & Dusun | Profil Desa Bolali',
@@ -24,7 +24,7 @@ export default async function WilayahDusunPage() {
         <SectionHeader
           title="Wilayah Pedukuhan Desa Bolali"
           subtitle="Pembagian administratif 4 dusun di bawah Pemerintah Desa Bolali"
-          icon={<MapPin className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<MapPin className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans mt-2">
@@ -61,12 +61,12 @@ export default async function WilayahDusunPage() {
             <div>
               <div className="flex items-center justify-between gap-3 mb-3">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-desa-lightGreen text-desa-darkGreen text-xs font-bold border border-emerald-200">
-                  <Building2 className="w-3.5 h-3.5 text-desa-accentGreen" strokeWidth={1.75} />
+                  <Buildings className="w-3.5 h-3.5 text-desa-accentGreen" />
                   <span>Dusun #{dusun.urutan}</span>
                 </div>
                 {dusun.luasWilayah && (
                   <span className="text-xs font-semibold text-desa-textMuted flex items-center gap-1">
-                    <Maximize2 className="w-3.5 h-3.5 text-slate-400" strokeWidth={1.75} />
+                    <ArrowsOut className="w-3.5 h-3.5 text-slate-400" />
                     {dusun.luasWilayah}
                   </span>
                 )}
@@ -82,7 +82,7 @@ export default async function WilayahDusunPage() {
                   Kepala Dusun (Kadus)
                 </span>
                 <span className="text-xs sm:text-sm font-bold text-desa-darkGreen flex items-center gap-1.5 mt-0.5 font-sans">
-                  <ShieldCheck className="w-4 h-4 text-desa-accentGreen shrink-0" strokeWidth={1.75} />
+                  <ShieldCheck className="w-4 h-4 text-desa-accentGreen shrink-0" />
                   {dusun.kepalaDusun}
                 </span>
               </div>
@@ -105,7 +105,7 @@ export default async function WilayahDusunPage() {
                 </span>
               </div>
               <div className="flex items-center gap-1 text-desa-darkGreen font-bold">
-                <Home className="w-3.5 h-3.5 text-desa-accentGreen" strokeWidth={1.75} />
+                <House className="w-3.5 h-3.5 text-desa-accentGreen" />
                 <span>{dusun.jumlahKK || 400} KK</span>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default async function WilayahDusunPage() {
         <SectionHeader
           title="Peta Sebaran Wilayah Dusun"
           subtitle="Peta skematis letak 4 pedukuhan di wilayah Desa Bolali"
-          icon={<MapPin className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<MapPin className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <div className="relative aspect-[16/9] w-full rounded-desa-card overflow-hidden border border-desa-border shadow-2xs bg-[#1a2d1d] flex items-center justify-center mt-4">

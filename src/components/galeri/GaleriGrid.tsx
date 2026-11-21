@@ -5,15 +5,7 @@ import Image from 'next/image'
 import type { GaleriItem } from '@/lib/cms'
 import { getMediaUrl, formatDateIndonesia } from '@/lib/utils'
 import { Card, SectionHeader, EmptyState } from '@/components'
-import {
-  Images,
-  Play,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Calendar,
-  Maximize2,
-} from 'lucide-react'
+import { Images, Play, X, CaretLeft, CaretRight, CalendarBlank, ArrowsOut } from '@phosphor-icons/react/dist/ssr'
 
 interface GaleriGridProps {
   initialItems: GaleriItem[]
@@ -90,7 +82,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
           <SectionHeader
             title="Arsip Dokumentasi & Publikasi Visual"
             subtitle="Pilih kategori media dan album dokumentasi"
-            icon={<Images className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+            icon={<Images className="w-4 h-4 text-desa-accentGreen" />}
             className="mb-0"
           />
 
@@ -194,13 +186,13 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
                 {isVideo ? (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-11 h-11 rounded-full bg-desa-gold text-desa-darkGreen flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
-                      <Play className="w-5 h-5 fill-current translate-x-0.5" strokeWidth={1.75} />
+                      <Play className="w-5 h-5 fill-current translate-x-0.5" />
                     </div>
                   </div>
                 ) : (
                   <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center backdrop-blur-xs">
-                      <Maximize2 className="w-4 h-4" strokeWidth={1.75} />
+                      <ArrowsOut className="w-4 h-4" />
                     </div>
                   </div>
                 )}
@@ -244,7 +236,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
             aria-label="Tutup Tampilan Penuh (Esc)"
             className="absolute top-4 right-4 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-50"
           >
-            <X className="w-6 h-6" strokeWidth={1.75} />
+            <X className="w-6 h-6" />
           </button>
 
           {/* Tombol Navigasi Kiri */}
@@ -257,7 +249,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
             aria-label="Foto Sebelumnya (Panah Kiri)"
             className="absolute left-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-50"
           >
-            <ChevronLeft className="w-6 h-6" strokeWidth={1.75} />
+            <CaretLeft className="w-6 h-6" />
           </button>
 
           {/* Gambar di Tengah */}
@@ -284,7 +276,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
             aria-label="Foto Selanjutnya (Panah Kanan)"
             className="absolute right-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-50"
           >
-            <ChevronRight className="w-6 h-6" strokeWidth={1.75} />
+            <CaretRight className="w-6 h-6" />
           </button>
 
           {/* Keterangan Bawah */}
@@ -309,7 +301,7 @@ export function GaleriGrid({ initialItems, albums }: GaleriGridProps) {
             aria-label="Tutup Video (Esc)"
             className="absolute top-4 right-4 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-50"
           >
-            <X className="w-6 h-6" strokeWidth={1.75} />
+            <X className="w-6 h-6" />
           </button>
 
           <div

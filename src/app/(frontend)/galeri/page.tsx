@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { getGaleriList, getGaleriAlbums } from '@/lib/cms'
 import { GaleriGrid } from '@/components/galeri/GaleriGrid'
 import { PageHeader } from '@/components'
-import { Images } from 'lucide-react'
+import { Images } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Galeri Foto & Video Kegiatan | Pemerintah Desa Bolali',
@@ -21,10 +21,15 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function GaleriPage() {
+  const isPerfLog = process.env.PERF_LOG === '1'
+  const t0 = isPerfLog ? performance.now() : 0
   const [items, albums] = await Promise.all([
     getGaleriList(),
     getGaleriAlbums(),
   ])
+  if (isPerfLog) {
+    console.log(`[PERF_LOG] Server Render /galeri data fetching took ${(performance.now() - t0).toFixed(2)}ms`)
+  }
 
   return (
     <div className="min-h-screen bg-desa-pageBg pb-16">
@@ -33,7 +38,7 @@ export default async function GaleriPage() {
         title="Galeri Dokumentasi Foto & Video"
         subtitle="Dokumentasi visual peristiwa bersejarah, kerja bakti, festival seni, dan panorama alam Desa Bolali"
         badge="Dokumentasi Resmi Desa"
-        badgeIcon={<Images className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        badgeIcon={<Images className="w-3.5 h-3.5 text-desa-gold" />}
         breadcrumbs={[{ label: 'Galeri Desa', href: '/galeri' }]}
         bgImage="/seed/hero-1.webp"
       />

@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { CaretLeft, CaretRight } from '@phosphor-icons/react/dist/ssr'
 import { clsx } from 'clsx'
 
 export interface PaginationProps {
@@ -57,7 +57,7 @@ export function Pagination({
           aria-label="Halaman Sebelumnya"
           className="min-w-[44px] min-h-[44px] px-3 py-2 rounded-full border border-desa-border bg-white text-desa-textDark hover:bg-desa-lightGreen hover:text-desa-darkGreen flex items-center justify-center text-xs font-semibold transition-colors shadow-desa-sm"
         >
-          <ChevronLeft className="w-4 h-4 mr-1" strokeWidth={1.75} />
+          <CaretLeft className="w-4 h-4 mr-1" />
           <span className="hidden sm:inline">Sebelumnya</span>
         </Link>
       ) : (
@@ -65,7 +65,7 @@ export function Pagination({
           className="min-w-[44px] min-h-[44px] px-3 py-2 rounded-full border border-desa-border/50 bg-slate-50 text-slate-300 flex items-center justify-center text-xs font-semibold cursor-not-allowed"
           aria-disabled="true"
         >
-          <ChevronLeft className="w-4 h-4 mr-1" strokeWidth={1.75} />
+          <CaretLeft className="w-4 h-4 mr-1" />
           <span className="hidden sm:inline">Sebelumnya</span>
         </span>
       )}
@@ -106,7 +106,7 @@ export function Pagination({
           className="min-w-[44px] min-h-[44px] px-3 py-2 rounded-full border border-desa-border bg-white text-desa-textDark hover:bg-desa-lightGreen hover:text-desa-darkGreen flex items-center justify-center text-xs font-semibold transition-colors shadow-desa-sm"
         >
           <span className="hidden sm:inline">Selanjutnya</span>
-          <ChevronRight className="w-4 h-4 ml-1" strokeWidth={1.75} />
+          <CaretRight className="w-4 h-4 ml-1" />
         </Link>
       ) : (
         <span
@@ -114,7 +114,7 @@ export function Pagination({
           aria-disabled="true"
         >
           <span className="hidden sm:inline">Selanjutnya</span>
-          <ChevronRight className="w-4 h-4 ml-1" strokeWidth={1.75} />
+          <CaretRight className="w-4 h-4 ml-1" />
         </span>
       )}
     </nav>

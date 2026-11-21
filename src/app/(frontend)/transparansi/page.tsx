@@ -4,15 +4,7 @@ import Link from 'next/link'
 import { getDokumenTransparansiList } from '@/lib/cms'
 import { getMediaUrl, formatRupiah } from '@/lib/utils'
 import { PageHeader, Card, SectionHeader, EmptyState } from '@/components'
-import {
-  FileText,
-  Download,
-  Calendar,
-  CheckCircle2,
-  TrendingUp,
-  BarChart3,
-  Filter,
-} from 'lucide-react'
+import { FileText, DownloadSimple, CalendarBlank, CheckCircle, TrendUp, ChartBar, Funnel } from '@phosphor-icons/react/dist/ssr'
 
 export async function generateMetadata({
   searchParams,
@@ -104,7 +96,7 @@ export default async function TransparansiPage({
         title={`Transparansi APBDes Tahun ${selectedTahun}`}
         subtitle="Akuntabilitas publik pengelolaan Anggaran Pendapatan dan Belanja Desa (APBDes) Bolali"
         badge="Keterbukaan Anggaran"
-        badgeIcon={<BarChart3 className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        badgeIcon={<ChartBar className="w-3.5 h-3.5 text-desa-gold" />}
         breadcrumbs={[{ label: 'Transparansi Desa', href: '/transparansi' }]}
         bgImage="/seed/hero-1.webp"
       />
@@ -117,7 +109,7 @@ export default async function TransparansiPage({
             <SectionHeader
               title="Laporan Pertanggungjawaban Keuangan"
               subtitle="Pilih tahun anggaran dan jenis laporan yang ingin Anda unduh"
-              icon={<BarChart3 className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+              icon={<ChartBar className="w-4 h-4 text-desa-accentGreen" />}
               className="mb-0"
             />
 
@@ -166,7 +158,7 @@ export default async function TransparansiPage({
         <Card className="p-6 sm:p-8">
           <SectionHeader
             title={`Ringkasan Realisasi APBDes Tahun Anggaran ${selectedTahun}`}
-            icon={<TrendingUp className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+            icon={<TrendUp className="w-4 h-4 text-desa-accentGreen" />}
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center mt-6">
@@ -252,7 +244,7 @@ export default async function TransparansiPage({
           <SectionHeader
             title="Daftar Dokumen Resmi yang Dapat Diunduh Warga"
             subtitle="Seluruh berkas tersedia dalam format PDF resmi dengan legalitas Pemerintah Desa Bolali"
-            icon={<FileText className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+            icon={<FileText className="w-4 h-4 text-desa-accentGreen" />}
           />
 
           {dokumenList.length > 0 ? (
@@ -268,7 +260,7 @@ export default async function TransparansiPage({
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-9 h-9 rounded-desa-sm bg-emerald-100/70 text-emerald-800 flex items-center justify-center shrink-0">
-                        <FileText className="w-5 h-5 text-emerald-700" strokeWidth={1.75} />
+                        <FileText className="w-5 h-5 text-emerald-700" />
                       </div>
                       <div className="min-w-0">
                         <h4 className="text-xs sm:text-sm font-bold text-desa-textDark truncate font-sans">
@@ -291,7 +283,7 @@ export default async function TransparansiPage({
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-desa-darkGreen hover:bg-desa-greenHover text-white text-xs font-semibold shadow-2xs transition-colors min-h-[44px]"
                         aria-label={`Unduh ${doc.judul} format PDF ukuran ${fileSize}`}
                       >
-                        <Download className="w-3.5 h-3.5" strokeWidth={1.75} />
+                        <DownloadSimple className="w-3.5 h-3.5" />
                         <span>Download (PDF • {fileSize})</span>
                       </a>
                     </div>

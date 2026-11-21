@@ -51,6 +51,6 @@ export const SambutanKepalaDesa: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateGlobal('/', '/profil/sambutan-kades')],
+    afterChange: [revalidateGlobal('sambutan-kepala-desa', '/', '/profil/sambutan-kades')],
   },
 }

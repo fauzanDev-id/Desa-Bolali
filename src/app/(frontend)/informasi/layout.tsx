@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { PageHeader, SidebarSubmenu, type SubmenuItem } from '@/components'
-import { Newspaper, Bell, Calendar, Info } from 'lucide-react'
+import { Newspaper, Bell, CalendarBlank, Info } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Informasi Desa',
@@ -19,17 +19,17 @@ const informasiSubmenu: SubmenuItem[] = [
   {
     label: 'Berita Desa',
     href: '/informasi/berita',
-    icon: <Newspaper className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <Newspaper className="w-4 h-4" />,
   },
   {
     label: 'Pengumuman Warga',
     href: '/informasi/pengumuman',
-    icon: <Bell className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <Bell className="w-4 h-4" />,
   },
   {
     label: 'Agenda Kegiatan',
     href: '/informasi/agenda',
-    icon: <Calendar className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <CalendarBlank className="w-4 h-4" />,
   },
 ]
 
@@ -45,7 +45,7 @@ export default function InformasiLayout({
         title="Pusat Informasi Desa Bolali"
         subtitle="Kanal informasi resmi seputar kabar terkini, pengumuman warga, serta kalender agenda kegiatan desa."
         badge="Pusat Informasi Publik"
-        badgeIcon={<Info className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        badgeIcon={<Info className="w-3.5 h-3.5 text-desa-gold" />}
         breadcrumbs={[{ label: 'Informasi', href: '/informasi/berita' }]}
         bgImage="/seed/hero-1.webp"
       />
@@ -57,7 +57,7 @@ export default function InformasiLayout({
           <SidebarSubmenu
             title="Informasi"
             subtitle="Kanal publikasi desa"
-            icon={<Info className="w-4 h-4 text-desa-gold" strokeWidth={1.75} />}
+            icon={<Info className="w-4 h-4 text-desa-gold" />}
             items={informasiSubmenu}
             className="lg:w-[280px] shrink-0"
           />

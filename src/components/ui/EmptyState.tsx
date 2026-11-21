@@ -1,5 +1,5 @@
 import React from 'react'
-import { Inbox } from 'lucide-react'
+import { Tray } from '@phosphor-icons/react/dist/ssr'
 import { clsx } from 'clsx'
 import { Button, type ButtonProps } from './Button'
 
@@ -45,7 +45,7 @@ export function EmptyState({
               ),
               strokeWidth: 1.75,
             })
-          : <Inbox className="w-6 h-6 text-desa-textMuted" strokeWidth={1.75} />}
+          : <Tray className="w-6 h-6 text-desa-textMuted" />}
       </div>
 
       <h3 className="text-base sm:text-lg font-bold text-desa-textDark tracking-tight font-sans">

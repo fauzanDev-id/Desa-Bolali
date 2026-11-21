@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { PageHeader, SidebarSubmenu, type SubmenuItem } from '@/components'
-import { GitFork, Users, ShieldCheck, Home, Landmark } from 'lucide-react'
+import { GitFork, Users, ShieldCheck, House, Bank } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Pemerintahan Desa',
@@ -12,22 +12,22 @@ const pemerintahanSubmenu: SubmenuItem[] = [
   {
     label: 'Struktur Organisasi',
     href: '/pemerintahan/struktur',
-    icon: <GitFork className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <GitFork className="w-4 h-4" />,
   },
   {
     label: 'Perangkat Desa',
     href: '/pemerintahan/perangkat-desa',
-    icon: <Users className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <Users className="w-4 h-4" />,
   },
   {
     label: 'Badan Permusyawaratan Desa (BPD)',
     href: '/pemerintahan/bpd',
-    icon: <ShieldCheck className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <ShieldCheck className="w-4 h-4" />,
   },
   {
     label: 'Rukun Tetangga & RW',
     href: '/pemerintahan/rt-rw',
-    icon: <Home className="w-4 h-4" strokeWidth={1.75} />,
+    icon: <House className="w-4 h-4" />,
   },
 ]
 
@@ -43,7 +43,7 @@ export default function PemerintahanLayout({
         title="Pemerintahan Desa Bolali"
         subtitle="Susunan hierarki kepemimpinan, jajaran aparatur pamong praja desa, BPD, serta lembaga kemasyarakatan RT/RW."
         badge="Tata Pamong Desa"
-        badgeIcon={<Landmark className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        badgeIcon={<Bank className="w-3.5 h-3.5 text-desa-gold" />}
         breadcrumbs={[{ label: 'Pemerintahan', href: '/pemerintahan/struktur' }]}
         bgImage="/seed/hero-1.webp"
       />
@@ -55,7 +55,7 @@ export default function PemerintahanLayout({
           <SidebarSubmenu
             title="Pemerintahan"
             subtitle="Pilih struktur & lembaga"
-            icon={<Landmark className="w-4 h-4 text-desa-gold" strokeWidth={1.75} />}
+            icon={<Bank className="w-4 h-4 text-desa-gold" />}
             items={pemerintahanSubmenu}
             className="lg:w-[280px] shrink-0"
           />

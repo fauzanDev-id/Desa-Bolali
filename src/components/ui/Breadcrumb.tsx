@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { Home, ChevronRight } from 'lucide-react'
+import { House, CaretRight } from '@phosphor-icons/react/dist/ssr'
 import { clsx } from 'clsx'
 
 export interface BreadcrumbItem {
@@ -31,7 +31,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
             href="/"
             className="inline-flex items-center gap-1 text-desa-textMuted hover:text-desa-darkGreen transition-colors"
           >
-            <Home className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />
+            <House className="w-4 h-4 text-desa-accentGreen" />
             <span>Beranda</span>
           </Link>
         </li>
@@ -42,7 +42,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
 
           return (
             <li key={index} className="inline-flex items-center gap-1.5 sm:gap-2">
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" strokeWidth={1.75} />
+              <CaretRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               {item.href && !isLast ? (
                 <Link
                   href={item.href}

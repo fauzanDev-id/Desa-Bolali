@@ -58,6 +58,7 @@ export const Pengumuman: CollectionConfig = {
       label: 'Tanggal Pengumuman',
       type: 'date',
       required: true,
+      index: true,
       defaultValue: () => new Date(),
       admin: {
         position: 'sidebar',
@@ -90,6 +91,7 @@ export const Pengumuman: CollectionConfig = {
       label: 'Status Publikasi',
       type: 'select',
       required: true,
+      index: true,
       defaultValue: 'terbit',
       options: [
         { label: 'Draf', value: 'draft' },
@@ -101,7 +103,7 @@ export const Pengumuman: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/informasi/pengumuman')],
-    afterDelete: [revalidateCollectionDelete('/informasi/pengumuman')],
+    afterChange: [revalidateCollection('/informasi/pengumuman', 'pengumuman')],
+    afterDelete: [revalidateCollectionDelete('/informasi/pengumuman', 'pengumuman')],
   },
 }

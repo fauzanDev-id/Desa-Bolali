@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { Card } from '@/components/ui/Card'
@@ -11,9 +11,8 @@ import { PETA_CATEGORIES } from './petaConstants'
 
 const mapBlur = getBlurDataUrl('/seed/peta-desa.webp')
 
-const PetaDigitalLeaflet = dynamic(() => import('./PetaDigitalLeaflet'), {
-  ssr: false,
-  loading: () => (
+function PetaFallback() {
+  return (
     <div className="flex flex-col md:flex-row gap-2.5 sm:gap-3 mt-3 row2-card-body flex-1 min-h-0">
       {/* Fallback Citra Satelit Aerial */}
       <div className="w-full md:w-[60%] h-[240px] md:h-full relative rounded-[10px] overflow-hidden border border-slate-200 shadow-xs bg-slate-900 shrink-0">
@@ -56,7 +55,12 @@ const PetaDigitalLeaflet = dynamic(() => import('./PetaDigitalLeaflet'), {
         ))}
       </div>
     </div>
-  ),
+  )
+}
+
+const PetaDigitalLeaflet = dynamic(() => import('./PetaDigitalLeaflet'), {
+  ssr: false,
+  loading: () => <PetaFallback />,
 })
 
 interface PetaDigitalSectionProps {
@@ -66,16 +70,37 @@ interface PetaDigitalSectionProps {
 export function PetaDigitalSection({ contact }: PetaDigitalSectionProps) {
   const lat = contact.latitude ?? -7.6321
   const lng = contact.longitude ?? 110.7432
+  const [inView, setInView] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (inView) return
+    const el = cardRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px' }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [inView])
 
   return (
-    <Card className="flex flex-col">
+    <Card ref={cardRef} className="flex flex-col">
       <SectionHeader
         title="Peta Digital Desa"
         linkText="Lihat Peta"
         linkHref={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=15/${lat}/${lng}`}
       />
 
-      <PetaDigitalLeaflet centerLat={lat} centerLng={lng} />
+      {inView ? <PetaDigitalLeaflet centerLat={lat} centerLng={lng} /> : <PetaFallback />}
     </Card>
   )
 }

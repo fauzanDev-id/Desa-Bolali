@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { getProfilDesa } from '@/lib/cms'
 import { Card, SectionHeader } from '@/components'
-import { Target, Compass, Award, ShieldCheck, HeartHandshake, Trees, Landmark, Quote } from 'lucide-react'
+import { Target, Compass, Medal, ShieldCheck, Handshake, Tree, Bank, Quotes } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Visi & Misi | Profil Desa Bolali',
@@ -16,22 +16,22 @@ export default async function VisiMisiPage() {
 
   const pilarPrioritas = [
     {
-      icon: <Landmark className="w-5 h-5 text-desa-accentGreen" strokeWidth={1.75} />,
+      icon: <Bank className="w-5 h-5 text-desa-accentGreen" />,
       judul: 'Tata Kelola & Pelayanan Prima',
       deskripsi: 'Keterbukaan informasi anggaran desa dan percepatan pelayanan administrasi warga secara terpadu.',
     },
     {
-      icon: <Trees className="w-5 h-5 text-desa-accentGreen" strokeWidth={1.75} />,
+      icon: <Tree className="w-5 h-5 text-desa-accentGreen" />,
       judul: 'Pertanian & Ketahanan Pangan',
       deskripsi: 'Modernisasi sistem irigasi teknis, bantuan sarana produksi pertanian, dan pendampingan kelompok tani.',
     },
     {
-      icon: <HeartHandshake className="w-5 h-5 text-desa-accentGreen" strokeWidth={1.75} />,
+      icon: <Handshake className="w-5 h-5 text-desa-accentGreen" />,
       judul: 'Pemberdayaan Ekonomi & BUMDes',
       deskripsi: 'Penguatan sentra UMKM gerabah, olahan pangan lokal, permodalan usaha, dan inovasi pemasaran produk.',
     },
     {
-      icon: <ShieldCheck className="w-5 h-5 text-desa-accentGreen" strokeWidth={1.75} />,
+      icon: <ShieldCheck className="w-5 h-5 text-desa-accentGreen" />,
       judul: 'Infrastruktur & Lingkungan Lestari',
       deskripsi: 'Pembangunan jalan rabat beton dan drainase lingkungan, penerangan jalan umum, dan kebersihan lingkungan.',
     },
@@ -42,12 +42,12 @@ export default async function VisiMisiPage() {
       {/* 1. VISI DESA: Ditampilkan sebagai Blok Rapi Sesuai Spesifikasi */}
       <Card className="p-6 sm:p-8 bg-desa-darkGreen text-white border-0 shadow-desa-sm relative overflow-hidden">
         <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-desa-gold text-xs font-bold border border-white/20 w-fit mb-4">
-          <Target className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />
+          <Target className="w-3.5 h-3.5 text-desa-gold" />
           <span>VISI PEMERINTAH DESA BOLALI</span>
         </div>
 
         <div className="relative pl-2 sm:pl-3">
-          <Quote className="w-8 h-8 text-desa-gold/40 rotate-180 mb-2" strokeWidth={1.75} />
+          <Quotes className="w-8 h-8 text-desa-gold/40 rotate-180 mb-2" />
           <blockquote className="text-xl sm:text-2xl md:text-3xl font-bold leading-relaxed text-white font-sans tracking-tight">
             “{profil.visi || 'Terwujudnya Desa Bolali yang Maju, Mandiri, dan Sejahtera Berlandaskan Gotong Royong dan Nilai Keagamaan.'}”
           </blockquote>
@@ -62,7 +62,7 @@ export default async function VisiMisiPage() {
       <Card className="p-6 sm:p-8">
         <SectionHeader
           title="Misi Pembangunan Desa Bolali"
-          icon={<Compass className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<Compass className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <div className="space-y-3.5 mt-5">
@@ -93,7 +93,7 @@ export default async function VisiMisiPage() {
       <Card className="p-6 sm:p-8">
         <SectionHeader
           title="Fokus & Pilar Prioritas Pelaksanaan"
-          icon={<Award className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<Medal className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">

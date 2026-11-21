@@ -3,9 +3,9 @@ import fs from 'fs'
 
 const PAGES = [
   { name: 'Beranda', path: '/' },
-  { name: 'Profil Sejarah', path: '/profil/sejarah' },
   { name: 'Informasi Berita', path: '/informasi/berita' },
-  { name: 'Transparansi APBDes', path: '/transparansi' },
+  { name: 'Profil Sejarah', path: '/profil/sejarah' },
+  { name: 'Galeri', path: '/galeri' },
   { name: 'Kontak', path: '/kontak' },
 ]
 

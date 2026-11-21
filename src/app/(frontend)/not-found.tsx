@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { Home, Phone, FileText, BarChart3, Search, HelpCircle } from 'lucide-react'
+import { House, Phone, FileText, ChartBar, MagnifyingGlass, Question } from '@phosphor-icons/react/dist/ssr'
 
 export default function NotFound() {
   return (
@@ -8,7 +8,7 @@ export default function NotFound() {
       <div className="max-w-2xl w-full text-center">
         {/* Badge 404 */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-desa-pill bg-emerald-100 text-desa-darkGreen text-xs sm:text-sm font-semibold mb-6">
-          <HelpCircle className="w-4 h-4 text-desa-primaryGreen" strokeWidth={1.75} />
+          <Question className="w-4 h-4 text-desa-primaryGreen" />
           <span>Galat 404 • Halaman Tidak Ditemukan</span>
         </div>
 
@@ -33,14 +33,14 @@ export default function NotFound() {
             href="/"
             className="inline-flex items-center justify-center gap-2 px-6 min-h-[44px] rounded-desa-pill bg-desa-primaryGreen text-white text-xs sm:text-sm font-bold hover:bg-desa-darkGreen shadow-desa-sm transition-all focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen/20"
           >
-            <Home className="w-4 h-4 text-desa-gold" strokeWidth={1.75} />
+            <House className="w-4 h-4 text-desa-gold" />
             <span>Kembali ke Beranda</span>
           </Link>
           <Link
             href="/kontak"
             className="inline-flex items-center justify-center gap-2 px-6 min-h-[44px] rounded-desa-pill bg-white border border-desa-border text-desa-textDark text-xs sm:text-sm font-semibold hover:bg-slate-50 shadow-desa-sm transition-all focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen/20"
           >
-            <Phone className="w-4 h-4 text-desa-textMuted" strokeWidth={1.75} />
+            <Phone className="w-4 h-4 text-desa-textMuted" />
             <span>Hubungi Perangkat Desa</span>
           </Link>
         </div>
@@ -56,7 +56,7 @@ export default function NotFound() {
               className="flex items-center gap-3 p-3 rounded-desa-sm bg-slate-50 border border-desa-border hover:border-desa-primaryGreen hover:bg-emerald-50/40 text-desa-textDark transition-colors group"
             >
               <div className="w-8 h-8 rounded-desa-sm bg-emerald-100 text-desa-primaryGreen flex items-center justify-center shrink-0">
-                <FileText className="w-4 h-4" strokeWidth={1.75} />
+                <FileText className="w-4 h-4" />
               </div>
               <div className="min-w-0">
                 <div className="text-xs font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors truncate">
@@ -71,7 +71,7 @@ export default function NotFound() {
               className="flex items-center gap-3 p-3 rounded-desa-sm bg-slate-50 border border-desa-border hover:border-desa-primaryGreen hover:bg-emerald-50/40 text-desa-textDark transition-colors group"
             >
               <div className="w-8 h-8 rounded-desa-sm bg-amber-100 text-desa-gold flex items-center justify-center shrink-0">
-                <BarChart3 className="w-4 h-4" strokeWidth={1.75} />
+                <ChartBar className="w-4 h-4" />
               </div>
               <div className="min-w-0">
                 <div className="text-xs font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors truncate">
@@ -86,7 +86,7 @@ export default function NotFound() {
               className="flex items-center gap-3 p-3 rounded-desa-sm bg-slate-50 border border-desa-border hover:border-desa-primaryGreen hover:bg-emerald-50/40 text-desa-textDark transition-colors group"
             >
               <div className="w-8 h-8 rounded-desa-sm bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-                <Search className="w-4 h-4" strokeWidth={1.75} />
+                <MagnifyingGlass className="w-4 h-4" />
               </div>
               <div className="min-w-0">
                 <div className="text-xs font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors truncate">

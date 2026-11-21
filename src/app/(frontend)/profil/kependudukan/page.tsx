@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { getDataKependudukan } from '@/lib/cms'
 import { Card, SectionHeader } from '@/components'
-import { Users, Home, User, Calendar } from 'lucide-react'
+import { Users, House, User, CalendarBlank } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Data Kependudukan | Profil Desa Bolali',
@@ -45,7 +45,7 @@ export default async function KependudukanPage() {
         <Card className="p-4 sm:p-5">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-              <Users className="w-4 h-4 text-emerald-600" strokeWidth={1.75} />
+              <Users className="w-4 h-4 text-emerald-600" />
             </div>
             <span className="text-[11px] font-bold text-desa-textMuted uppercase tracking-wider">
               Penduduk
@@ -61,7 +61,7 @@ export default async function KependudukanPage() {
         <Card className="p-4 sm:p-5">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-              <Home className="w-4 h-4 text-emerald-600" strokeWidth={1.75} />
+              <House className="w-4 h-4 text-emerald-600" />
             </div>
             <span className="text-[11px] font-bold text-desa-textMuted uppercase tracking-wider">
               Kepala Keluarga
@@ -77,7 +77,7 @@ export default async function KependudukanPage() {
         <Card className="p-4 sm:p-5">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-              <User className="w-4 h-4 text-emerald-600" strokeWidth={1.75} />
+              <User className="w-4 h-4 text-emerald-600" />
             </div>
             <span className="text-[11px] font-bold text-desa-textMuted uppercase tracking-wider">
               Laki-Laki
@@ -93,7 +93,7 @@ export default async function KependudukanPage() {
         <Card className="p-4 sm:p-5">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-              <User className="w-4 h-4 text-emerald-600" strokeWidth={1.75} />
+              <User className="w-4 h-4 text-emerald-600" />
             </div>
             <span className="text-[11px] font-bold text-desa-textMuted uppercase tracking-wider">
               Perempuan
@@ -111,7 +111,7 @@ export default async function KependudukanPage() {
         <SectionHeader
           title="Distribusi Penduduk per Wilayah Dusun"
           subtitle="Grafik bar sederhana satu warna hijau resmi desa"
-          icon={<Users className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<Users className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <div className="space-y-4 mt-6">
@@ -140,7 +140,7 @@ export default async function KependudukanPage() {
       <Card className="p-5 sm:p-7">
         <SectionHeader
           title="Tabel Struktur Usia Penduduk"
-          icon={<Calendar className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<CalendarBlank className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <div className="overflow-x-auto mt-4">

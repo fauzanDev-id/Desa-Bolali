@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { getPerangkatDesaList } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
 import { Card, SectionHeader } from '@/components'
-import { Users, User, CheckCircle2 } from 'lucide-react'
+import { Users, User, CheckCircle } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Perangkat Desa | Pemerintah Desa Bolali',
@@ -40,7 +40,7 @@ export default async function PerangkatDesaPage() {
         <SectionHeader
           title="Jajaran Aparatur Pamong Desa Bolali"
           subtitle="Aparatur pelaksana urusan pemerintahan, pembangunan, dan kemasyarakatan"
-          icon={<Users className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<Users className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans mt-2">
@@ -48,7 +48,7 @@ export default async function PerangkatDesaPage() {
         </p>
 
         <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-desa-lightGreen text-desa-darkGreen text-xs font-semibold border border-emerald-200">
-          <CheckCircle2 className="w-3.5 h-3.5 text-desa-accentGreen" strokeWidth={1.75} />
+          <CheckCircle className="w-3.5 h-3.5 text-desa-accentGreen" />
           <span>Total {perangkatList.length} Aparatur Aktif Bertugas</span>
         </div>
       </Card>
@@ -76,7 +76,7 @@ export default async function PerangkatDesaPage() {
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-100">
-                    <User className="w-14 h-14 text-slate-300" strokeWidth={1.75} />
+                    <User className="w-14 h-14 text-slate-300" />
                     <span className="text-[10px] text-slate-400 mt-1 font-medium font-sans">Foto Resmi</span>
                   </div>
                 )}

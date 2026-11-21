@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { FileText, DownloadSimple, ArrowRight } from '@phosphor-icons/react'
+import { FileText, DownloadSimple, ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { Card } from '@/components/ui/Card'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EmptyState } from '@/components/ui/EmptyState'

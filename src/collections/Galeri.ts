@@ -49,6 +49,7 @@ export const Galeri: CollectionConfig = {
       label: 'Tipe Media Dokumentasi',
       type: 'select',
       required: true,
+      index: true,
       defaultValue: 'foto',
       options: [
         { label: 'Foto / Gambar', value: 'foto' },
@@ -92,6 +93,7 @@ export const Galeri: CollectionConfig = {
       label: 'Tanggal Dokumentasi',
       type: 'date',
       required: true,
+      index: true,
       defaultValue: () => new Date(),
       admin: {
         position: 'sidebar',
@@ -114,7 +116,7 @@ export const Galeri: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/galeri')],
-    afterDelete: [revalidateCollectionDelete('/galeri')],
+    afterChange: [revalidateCollection('/galeri', 'galeri')],
+    afterDelete: [revalidateCollectionDelete('/galeri', 'galeri')],
   },
 }

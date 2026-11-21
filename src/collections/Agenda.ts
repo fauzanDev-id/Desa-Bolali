@@ -52,6 +52,7 @@ export const Agenda: CollectionConfig = {
       label: 'Waktu Mulai',
       type: 'date',
       required: true,
+      index: true,
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -87,6 +88,7 @@ export const Agenda: CollectionConfig = {
       label: 'Status Agenda',
       type: 'select',
       required: true,
+      index: true,
       defaultValue: 'Akan Datang',
       options: [
         { label: 'Akan Datang', value: 'Akan Datang' },
@@ -99,7 +101,7 @@ export const Agenda: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/informasi/agenda')],
-    afterDelete: [revalidateCollectionDelete('/informasi/agenda')],
+    afterChange: [revalidateCollection('/informasi/agenda', 'agenda')],
+    afterDelete: [revalidateCollectionDelete('/informasi/agenda', 'agenda')],
   },
 }

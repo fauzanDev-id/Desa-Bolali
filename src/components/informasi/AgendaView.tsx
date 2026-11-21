@@ -3,15 +3,7 @@
 import React, { useState } from 'react'
 import type { AgendaItem } from '@/lib/cms'
 import { Card, SectionHeader, EmptyState } from '@/components'
-import {
-  Calendar as CalendarIcon,
-  Clock,
-  MapPin,
-  Users,
-  ChevronLeft,
-  ChevronRight,
-  Sparkles,
-} from 'lucide-react'
+import { CalendarBlank as CalendarIcon, Clock, MapPin, Users, CaretLeft, CaretRight, Sparkle } from '@phosphor-icons/react/dist/ssr'
 
 interface AgendaViewProps {
   initialAgenda: AgendaItem[]
@@ -76,7 +68,7 @@ export function AgendaView({ initialAgenda }: AgendaViewProps) {
           <SectionHeader
             title="Kalender Agenda & Kegiatan Desa"
             subtitle="Jadwal musyawarah desa, posyandu, pelatihan, dan kegiatan kemasyarakatan"
-            icon={<CalendarIcon className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+            icon={<CalendarIcon className="w-4 h-4 text-desa-accentGreen" />}
             className="mb-0"
           />
 
@@ -88,7 +80,7 @@ export function AgendaView({ initialAgenda }: AgendaViewProps) {
               aria-label="Bulan Sebelumnya"
               className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 border border-desa-border flex items-center justify-center text-desa-textDark transition-colors"
             >
-              <ChevronLeft className="w-4 h-4" strokeWidth={1.75} />
+              <CaretLeft className="w-4 h-4" />
             </button>
 
             <span className="px-4 py-1.5 rounded-desa-pill bg-desa-lightGreen border border-emerald-200 text-xs sm:text-sm font-bold text-desa-darkGreen min-w-[150px] text-center font-sans">
@@ -101,7 +93,7 @@ export function AgendaView({ initialAgenda }: AgendaViewProps) {
               aria-label="Bulan Selanjutnya"
               className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 border border-desa-border flex items-center justify-center text-desa-textDark transition-colors"
             >
-              <ChevronRight className="w-4 h-4" strokeWidth={1.75} />
+              <CaretRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -153,7 +145,7 @@ export function AgendaView({ initialAgenda }: AgendaViewProps) {
                       {item.kategori || 'Kegiatan Desa'}
                     </span>
                     <span className="text-[11px] text-desa-textMuted font-medium flex items-center gap-1 font-sans">
-                      <Clock className="w-3 h-3 text-desa-accentGreen" strokeWidth={1.75} />
+                      <Clock className="w-3 h-3 text-desa-accentGreen" />
                       <span>Pukul {dateInfo.time} WIB</span>
                     </span>
                   </div>
@@ -170,12 +162,12 @@ export function AgendaView({ initialAgenda }: AgendaViewProps) {
 
                   <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-700 font-sans">
                     <span className="flex items-center gap-1 font-medium">
-                      <MapPin className="w-3.5 h-3.5 text-desa-accentGreen shrink-0" strokeWidth={1.75} />
+                      <MapPin className="w-3.5 h-3.5 text-desa-accentGreen shrink-0" />
                       <span>{item.lokasi}</span>
                     </span>
                     {item.penyelenggara && (
                       <span className="flex items-center gap-1 text-desa-textMuted">
-                        <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" strokeWidth={1.75} />
+                        <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                         <span>Oleh: {item.penyelenggara}</span>
                       </span>
                     )}

@@ -33,24 +33,28 @@ export const Media: CollectionConfig = {
   ],
   upload: {
     staticDir: 'media',
+    formatOptions: {
+      format: 'webp',
+      options: { quality: 80 },
+    },
     imageSizes: [
       {
         name: 'thumbnail',
         width: 400,
         height: 300,
-        position: 'centre',
+        formatOptions: { format: 'webp', options: { quality: 80 } },
       },
       {
         name: 'card',
-        width: 768,
-        height: 512,
-        position: 'centre',
+        width: 800,
+        height: 600,
+        formatOptions: { format: 'webp', options: { quality: 80 } },
       },
       {
         name: 'hero',
         width: 1920,
         height: 1080,
-        position: 'centre',
+        formatOptions: { format: 'webp', options: { quality: 80 } },
       },
     ],
     adminThumbnail: 'thumbnail',

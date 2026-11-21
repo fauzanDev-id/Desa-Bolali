@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { CaretDown, CaretRight } from '@phosphor-icons/react/dist/ssr'
 import { clsx } from 'clsx'
 
 export interface SubmenuItem {
@@ -74,7 +74,7 @@ export function SidebarSubmenu({
             ))}
           </select>
           <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-desa-textMuted">
-            <ChevronDown className="w-4 h-4 text-desa-darkGreen" strokeWidth={1.75} />
+            <CaretDown className="w-4 h-4 text-desa-darkGreen" />
           </div>
         </div>
       </div>
@@ -130,14 +130,13 @@ export function SidebarSubmenu({
                   <span className="truncate">{item.label}</span>
                 </div>
 
-                <ChevronRight
+                <CaretRight
                   className={clsx(
                     'w-3.5 h-3.5 shrink-0 transition-transform duration-150',
                     isActive
                       ? 'text-desa-primaryGreen translate-x-0.5'
                       : 'text-slate-300 group-hover:text-desa-primaryGreen group-hover:translate-x-0.5'
                   )}
-                  strokeWidth={1.75}
                 />
               </Link>
             )

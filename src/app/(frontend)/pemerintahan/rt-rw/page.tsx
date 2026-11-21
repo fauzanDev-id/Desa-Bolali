@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { getRtRwList, getDusunList, type RtRwItem, type DusunItem } from '@/lib/cms'
 import { Card, SectionHeader } from '@/components'
-import { Home, Users, Phone, Building2, ShieldCheck } from 'lucide-react'
+import { House, Users, Phone, Buildings, ShieldCheck } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Rukun Tetangga & RW | Pemerintah Desa Bolali',
@@ -29,7 +29,7 @@ export default async function RtRwPage() {
         <SectionHeader
           title="Lembaga Rukun Warga (RW) & Rukun Tetangga (RT)"
           subtitle="Kelembagaan kemasyarakatan tingkat lingkungan di seluruh wilayah Desa Bolali"
-          icon={<Home className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<House className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans mt-2">
@@ -73,7 +73,7 @@ export default async function RtRwPage() {
             <Card key={dusun.id} className="p-5 sm:p-6">
               <div className="flex items-center justify-between gap-3 pb-3 border-b border-desa-border mb-4">
                 <div className="flex items-center gap-2.5">
-                  <Building2 className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />
+                  <Buildings className="w-4 h-4 text-desa-accentGreen" />
                   <h3 className="text-base sm:text-lg font-bold text-desa-textDark font-sans">
                     Wilayah {dusun.nama}
                   </h3>

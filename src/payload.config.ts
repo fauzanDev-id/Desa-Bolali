@@ -85,6 +85,7 @@ export default buildConfig({
       connectionString:
         process.env.DATABASE_URI ||
         'postgresql://postgres:postgrespassword@127.0.0.1:5433/desa_bolali',
+      max: 10,
     },
   }),
 })

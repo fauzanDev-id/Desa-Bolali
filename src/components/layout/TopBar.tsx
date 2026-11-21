@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { MapPin, Phone, Envelope } from '@phosphor-icons/react'
+import { MapPin, Phone, Envelope } from '@phosphor-icons/react/dist/ssr'
 import { FaYoutube, FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa6'
 import { AccessibilityResizer } from './AccessibilityResizer'
 import type { ContactData, WebsiteSettingsData } from '@/lib/cms'

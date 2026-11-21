@@ -6,7 +6,7 @@ import {
   House,
   MapPin,
   HouseLine,
-} from '@phosphor-icons/react'
+} from '@phosphor-icons/react/dist/ssr'
 import type { StatistikDesaData } from '@/lib/cms'
 
 interface StatsBarProps {

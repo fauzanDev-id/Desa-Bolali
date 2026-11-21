@@ -1,9 +1,16 @@
 import { withPayload } from '@payloadcms/next/withPayload'
+import withBundleAnalyzer from '@next/bundle-analyzer'
+
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   devIndicators: false,
   images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: 'https',
@@ -19,6 +26,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/berita',
+        destination: '/informasi/berita',
+        permanent: true,
+      },
+    ]
+  },
 }
 
-export default withPayload(nextConfig)
+export default withPayload(bundleAnalyzer(nextConfig))

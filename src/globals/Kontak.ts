@@ -95,6 +95,6 @@ export const Kontak: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateGlobal('/', '/kontak')],
+    afterChange: [revalidateGlobal('kontak', '/', '/kontak')],
   },
 }

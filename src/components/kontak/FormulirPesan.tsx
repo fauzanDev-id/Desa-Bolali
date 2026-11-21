@@ -1,17 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import {
-  Send,
-  CheckCircle2,
-  AlertCircle,
-  ShieldCheck,
-  RefreshCw,
-  User,
-  Phone,
-  Mail,
-  MessageSquare,
-} from 'lucide-react'
+import { PaperPlaneTilt, CheckCircle, WarningCircle, ShieldCheck, ArrowsClockwise, User, Phone, Envelope, ChatCircleText } from '@phosphor-icons/react/dist/ssr'
 
 export function FormulirPesan() {
   const [formData, setFormData] = useState({
@@ -141,7 +131,7 @@ export function FormulirPesan() {
   return (
     <div className="bg-white rounded-desa-card border border-desa-border shadow-desa-sm p-6 sm:p-8">
       <div className="flex items-center gap-2 text-xs font-semibold text-desa-primaryGreen uppercase tracking-wider mb-2">
-        <MessageSquare className="w-4 h-4 text-desa-gold" strokeWidth={1.75} />
+        <ChatCircleText className="w-4 h-4 text-desa-gold" />
         <span>Kanal Aspirasi & Pesan Warga</span>
       </div>
 
@@ -155,7 +145,7 @@ export function FormulirPesan() {
       {/* Success Notification */}
       {isSuccess && (
         <div className="mb-6 p-4 rounded-desa-card bg-emerald-50 border border-emerald-200 text-emerald-950 flex items-start gap-3 animate-in fade-in">
-          <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" strokeWidth={1.75} />
+          <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
           <div>
             <h4 className="font-bold text-sm">Pesan Berhasil Terkirim!</h4>
             <p className="text-xs mt-1 text-emerald-800 leading-relaxed">
@@ -175,7 +165,7 @@ export function FormulirPesan() {
       {/* Spam Error Alert */}
       {errors.spam && (
         <div className="mb-6 p-4 rounded-desa-card bg-rose-50 border border-rose-200 text-rose-950 flex items-center gap-3">
-          <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" strokeWidth={1.75} />
+          <WarningCircle className="w-5 h-5 text-rose-600 shrink-0" />
           <p className="text-xs font-semibold">{errors.spam}</p>
         </div>
       )}
@@ -214,7 +204,7 @@ export function FormulirPesan() {
                     : 'border-desa-border'
                 }`}
               />
-              <User className="w-4 h-4 text-desa-textMuted absolute left-3 top-3.5" strokeWidth={1.75} />
+              <User className="w-4 h-4 text-desa-textMuted absolute left-3 top-3.5" />
             </div>
             {errors.nama && (
               <p className="text-[11px] text-rose-500 font-medium mt-1">{errors.nama}</p>
@@ -238,7 +228,7 @@ export function FormulirPesan() {
                     : 'border-desa-border'
                 }`}
               />
-              <Phone className="w-4 h-4 text-desa-textMuted absolute left-3 top-3.5" strokeWidth={1.75} />
+              <Phone className="w-4 h-4 text-desa-textMuted absolute left-3 top-3.5" />
             </div>
             {errors.telepon && (
               <p className="text-[11px] text-rose-500 font-medium mt-1">{errors.telepon}</p>
@@ -265,7 +255,7 @@ export function FormulirPesan() {
                     : 'border-desa-border'
                 }`}
               />
-              <Mail className="w-4 h-4 text-desa-textMuted absolute left-3 top-3.5" strokeWidth={1.75} />
+              <Envelope className="w-4 h-4 text-desa-textMuted absolute left-3 top-3.5" />
             </div>
             {errors.email && (
               <p className="text-[11px] text-rose-500 font-medium mt-1">{errors.email}</p>
@@ -315,7 +305,7 @@ export function FormulirPesan() {
         {/* Math Challenge Captcha Anti-Spam */}
         <div className="p-4 rounded-desa-sm bg-slate-50 border border-desa-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-desa-primaryGreen shrink-0" strokeWidth={1.75} />
+            <ShieldCheck className="w-4 h-4 text-desa-primaryGreen shrink-0" />
             <span className="text-xs text-desa-textDark font-medium">
               Verifikasi Keamanan: Berapakah <strong>{captchaNum1} + {captchaNum2}</strong> ?
             </span>
@@ -325,7 +315,7 @@ export function FormulirPesan() {
               className="p-1.5 text-desa-textMuted hover:text-desa-darkGreen transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
               title="Ganti Pertanyaan"
             >
-              <RefreshCw className="w-3.5 h-3.5" strokeWidth={1.75} />
+              <ArrowsClockwise className="w-3.5 h-3.5" />
             </button>
           </div>
 
@@ -355,12 +345,12 @@ export function FormulirPesan() {
         >
           {isSubmitting ? (
             <>
-              <RefreshCw className="w-4 h-4 animate-spin" strokeWidth={1.75} />
+              <ArrowsClockwise className="w-4 h-4 animate-spin" />
               <span>Mengirim Pesan...</span>
             </>
           ) : (
             <>
-              <Send className="w-4 h-4" strokeWidth={1.75} />
+              <PaperPlaneTilt className="w-4 h-4" />
               <span>Kirim Pesan Sekarang</span>
             </>
           )}

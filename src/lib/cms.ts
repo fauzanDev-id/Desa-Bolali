@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
@@ -1044,295 +1045,428 @@ export const defaultGaleriList: GaleriItem[] = [
 
 // ======================== API FETCH FUNCTIONS ========================
 
-export async function getWebsiteSettings(): Promise<WebsiteSettingsData> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const data = await payload.findGlobal({ slug: 'pengaturan-website' })
-    if (!data) return defaultWebsiteSettings
+let cachedPayload: any = null
 
-    return {
-      namaWebsite: data.namaWebsite || defaultWebsiteSettings.namaWebsite,
-      namaInstansi: data.namaInstansi || defaultWebsiteSettings.namaInstansi,
-      subInstansi: data.subInstansi || defaultWebsiteSettings.subInstansi,
-      tagline: data.tagline || defaultWebsiteSettings.tagline,
-      deskripsiHero: data.deskripsiHero || defaultWebsiteSettings.deskripsiHero,
-      logo: data.logo,
-      bannerSlider:
-        data.bannerSlider && data.bannerSlider.length > 0
-          ? data.bannerSlider
-          : defaultWebsiteSettings.bannerSlider,
-      menuNavigasi:
-        data.menuNavigasi && data.menuNavigasi.length > 0
-          ? data.menuNavigasi.map((item) => ({
-              label: item.label,
-              url: item.url,
-              submenus: item.submenus
-                ? item.submenus.map((sub) => ({
-                    label: sub.label,
-                    url: sub.url,
-                  }))
-                : [],
-            }))
-          : defaultWebsiteSettings.menuNavigasi,
-      mediaSosial: {
-        youtube: data.mediaSosial?.youtube || defaultWebsiteSettings.mediaSosial?.youtube,
-        facebook: data.mediaSosial?.facebook || defaultWebsiteSettings.mediaSosial?.facebook,
-        instagram: data.mediaSosial?.instagram || defaultWebsiteSettings.mediaSosial?.instagram,
-        tiktok: data.mediaSosial?.tiktok || defaultWebsiteSettings.mediaSosial?.tiktok,
-      },
-      teksFooter: data.teksFooter || defaultWebsiteSettings.teksFooter,
-      copyright: data.copyright || defaultWebsiteSettings.copyright,
-    }
-  } catch (error) {
-    return defaultWebsiteSettings
+export async function getPayloadClient() {
+  if (!cachedPayload) {
+    cachedPayload = await getPayload({ config: configPromise })
+  }
+  return cachedPayload
+}
+
+export async function withPerfLog<T>(name: string, fn: () => Promise<T>): Promise<T> {
+  const isPerfLog = process.env.PERF_LOG === '1'
+  if (!isPerfLog) {
+    return fn()
+  }
+  const start = performance.now()
+  try {
+    const result = await fn()
+    const duration = (performance.now() - start).toFixed(2)
+    console.log(`[PERF_LOG] Payload Query: ${name} took ${duration}ms`)
+    return result
+  } catch (err) {
+    const duration = (performance.now() - start).toFixed(2)
+    console.log(`[PERF_LOG] Payload Query: ${name} failed after ${duration}ms`)
+    throw err
   }
 }
 
-export async function getContactData(): Promise<ContactData> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const data = await payload.findGlobal({ slug: 'kontak' })
-    if (!data) return defaultContactData
+// 1. Pengaturan Website
+const fetchWebsiteSettings = async (): Promise<WebsiteSettingsData> => {
+  return withPerfLog('findGlobal(pengaturan-website)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const data = await payload.findGlobal({ slug: 'pengaturan-website', depth: 1 })
+      if (!data) return defaultWebsiteSettings
 
-    return {
-      alamat: data.alamat || defaultContactData.alamat,
-      kodePos: data.kodePos || defaultContactData.kodePos,
-      telepon: data.telepon || defaultContactData.telepon,
-      whatsapp: data.whatsapp || defaultContactData.whatsapp,
-      email: data.email || defaultContactData.email,
-      jamOperasional: data.jamOperasional || defaultContactData.jamOperasional,
-      latitude: data.latitude || defaultContactData.latitude,
-      longitude: data.longitude || defaultContactData.longitude,
-      googleMapsEmbedUrl: data.googleMapsEmbedUrl || undefined,
+      return {
+        namaWebsite: data.namaWebsite || defaultWebsiteSettings.namaWebsite,
+        namaInstansi: data.namaInstansi || defaultWebsiteSettings.namaInstansi,
+        subInstansi: data.subInstansi || defaultWebsiteSettings.subInstansi,
+        tagline: data.tagline || defaultWebsiteSettings.tagline,
+        deskripsiHero: data.deskripsiHero || defaultWebsiteSettings.deskripsiHero,
+        logo: data.logo,
+        bannerSlider:
+          data.bannerSlider && data.bannerSlider.length > 0
+            ? data.bannerSlider
+            : defaultWebsiteSettings.bannerSlider,
+        menuNavigasi:
+          data.menuNavigasi && data.menuNavigasi.length > 0
+            ? data.menuNavigasi.map((item: any) => ({
+                label: item.label,
+                url: item.url,
+                submenus: item.submenus
+                  ? item.submenus.map((sub: any) => ({
+                      label: sub.label,
+                      url: sub.url,
+                    }))
+                  : [],
+              }))
+            : defaultWebsiteSettings.menuNavigasi,
+        mediaSosial: {
+          youtube: data.mediaSosial?.youtube || defaultWebsiteSettings.mediaSosial?.youtube,
+          facebook: data.mediaSosial?.facebook || defaultWebsiteSettings.mediaSosial?.facebook,
+          instagram: data.mediaSosial?.instagram || defaultWebsiteSettings.mediaSosial?.instagram,
+          tiktok: data.mediaSosial?.tiktok || defaultWebsiteSettings.mediaSosial?.tiktok,
+        },
+        teksFooter: data.teksFooter || defaultWebsiteSettings.teksFooter,
+        copyright: data.copyright || defaultWebsiteSettings.copyright,
+      }
+    } catch (error) {
+      return defaultWebsiteSettings
     }
-  } catch (error) {
-    return defaultContactData
-  }
+  })
 }
 
-export async function getStatistikDesa(): Promise<StatistikDesaData> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const data = await payload.findGlobal({ slug: 'statistik-desa' })
-    if (!data) return defaultStatistikDesa
+export const getWebsiteSettings = unstable_cache(
+  fetchWebsiteSettings,
+  ['cms-website-settings'],
+  { tags: ['global-pengaturan-website'], revalidate: 3600 }
+)
 
-    return {
-      jumlahPenduduk: data.jumlahPenduduk || defaultStatistikDesa.jumlahPenduduk,
-      jumlahKK: data.jumlahKK || defaultStatistikDesa.jumlahKK,
-      luasWilayah: data.luasWilayah || defaultStatistikDesa.luasWilayah,
-      jumlahDusun: data.jumlahDusun || defaultStatistikDesa.jumlahDusun,
-      indeksDesaMembangun: data.indeksDesaMembangun || defaultStatistikDesa.indeksDesaMembangun,
-      taglineIDM: data.taglineIDM || defaultStatistikDesa.taglineIDM,
-      statusDesaDigital: data.statusDesaDigital || defaultStatistikDesa.statusDesaDigital,
-      taglineDesaDigital: data.taglineDesaDigital || defaultStatistikDesa.taglineDesaDigital,
+// 2. Kontak Desa
+const fetchContactData = async (): Promise<ContactData> => {
+  return withPerfLog('findGlobal(kontak)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const data = await payload.findGlobal({ slug: 'kontak', depth: 1 })
+      if (!data) return defaultContactData
+
+      return {
+        alamat: data.alamat || defaultContactData.alamat,
+        kodePos: data.kodePos || defaultContactData.kodePos,
+        telepon: data.telepon || defaultContactData.telepon,
+        whatsapp: data.whatsapp || defaultContactData.whatsapp,
+        email: data.email || defaultContactData.email,
+        jamOperasional: data.jamOperasional || defaultContactData.jamOperasional,
+        latitude: data.latitude || defaultContactData.latitude,
+        longitude: data.longitude || defaultContactData.longitude,
+        googleMapsEmbedUrl: data.googleMapsEmbedUrl || undefined,
+      }
+    } catch (error) {
+      return defaultContactData
     }
-  } catch (error) {
-    return defaultStatistikDesa
-  }
+  })
 }
 
-export async function getSambutanKades(): Promise<SambutanKadesData> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const data = await payload.findGlobal({ slug: 'sambutan-kepala-desa' })
-    if (!data) return defaultSambutanKades
+export const getContactData = unstable_cache(
+  fetchContactData,
+  ['cms-contact-data'],
+  { tags: ['global-kontak'], revalidate: 3600 }
+)
 
-    return {
-      namaKepalaDesa: data.namaKepalaDesa || defaultSambutanKades.namaKepalaDesa,
-      jabatan: data.jabatan || defaultSambutanKades.jabatan,
-      foto: data.foto || defaultSambutanKades.foto,
-      kutipanSingkat: data.kutipanSingkat || defaultSambutanKades.kutipanSingkat,
-      isiLengkap: data.isiLengkap,
+// 3. Statistik Desa
+const fetchStatistikDesa = async (): Promise<StatistikDesaData> => {
+  return withPerfLog('findGlobal(statistik-desa)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const data = await payload.findGlobal({ slug: 'statistik-desa', depth: 1 })
+      if (!data) return defaultStatistikDesa
+
+      return {
+        jumlahPenduduk: data.jumlahPenduduk || defaultStatistikDesa.jumlahPenduduk,
+        jumlahKK: data.jumlahKK || defaultStatistikDesa.jumlahKK,
+        luasWilayah: data.luasWilayah || defaultStatistikDesa.luasWilayah,
+        jumlahDusun: data.jumlahDusun || defaultStatistikDesa.jumlahDusun,
+        indeksDesaMembangun: data.indeksDesaMembangun || defaultStatistikDesa.indeksDesaMembangun,
+        taglineIDM: data.taglineIDM || defaultStatistikDesa.taglineIDM,
+        statusDesaDigital: data.statusDesaDigital || defaultStatistikDesa.statusDesaDigital,
+        taglineDesaDigital: data.taglineDesaDigital || defaultStatistikDesa.taglineDesaDigital,
+      }
+    } catch (error) {
+      return defaultStatistikDesa
     }
-  } catch (error) {
-    return defaultSambutanKades
-  }
+  })
 }
 
-export async function getProfilDesa(): Promise<ProfilDesaData> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const data = await payload.findGlobal({ slug: 'profil-desa' })
-    if (!data) return defaultProfilDesa
+export const getStatistikDesa = unstable_cache(
+  fetchStatistikDesa,
+  ['cms-statistik-desa'],
+  { tags: ['global-statistik-desa'], revalidate: 3600 }
+)
 
-    return {
-      sejarah: data.sejarah || defaultProfilDesa.sejarah,
-      visi: data.visi || defaultProfilDesa.visi,
-      misi: data.misi && data.misi.length > 0 ? data.misi : defaultProfilDesa.misi,
-      geografis: data.geografis || defaultProfilDesa.geografis,
-      batasUtara: data.batasUtara || defaultProfilDesa.batasUtara,
-      batasSelatan: data.batasSelatan || defaultProfilDesa.batasSelatan,
-      batasTimur: data.batasTimur || defaultProfilDesa.batasTimur,
-      batasBarat: data.batasBarat || defaultProfilDesa.batasBarat,
-      luasWilayah: data.luasWilayah || defaultProfilDesa.luasWilayah,
-      tipologi: data.tipologi || defaultProfilDesa.tipologi,
+// 4. Sambutan Kepala Desa
+const fetchSambutanKades = async (): Promise<SambutanKadesData> => {
+  return withPerfLog('findGlobal(sambutan-kepala-desa)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const data = await payload.findGlobal({ slug: 'sambutan-kepala-desa', depth: 1 })
+      if (!data) return defaultSambutanKades
+
+      return {
+        namaKepalaDesa: data.namaKepalaDesa || defaultSambutanKades.namaKepalaDesa,
+        jabatan: data.jabatan || defaultSambutanKades.jabatan,
+        foto: data.foto || defaultSambutanKades.foto,
+        kutipanSingkat: data.kutipanSingkat || defaultSambutanKades.kutipanSingkat,
+        isiLengkap: data.isiLengkap,
+      }
+    } catch (error) {
+      return defaultSambutanKades
     }
-  } catch (error) {
-    return defaultProfilDesa
-  }
+  })
 }
 
-export async function getDataKependudukan(): Promise<DataKependudukanData> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const data = await payload.findGlobal({ slug: 'data-kependudukan' })
-    if (!data) return defaultDataKependudukan
+export const getSambutanKades = unstable_cache(
+  fetchSambutanKades,
+  ['cms-sambutan-kades'],
+  { tags: ['global-sambutan-kades'], revalidate: 3600 }
+)
 
-    return {
-      totalPenduduk: data.totalPenduduk || defaultDataKependudukan.totalPenduduk,
-      jumlahKepalaKeluarga: data.jumlahKepalaKeluarga || defaultDataKependudukan.jumlahKepalaKeluarga,
-      jumlahLakiLaki: data.jumlahLakiLaki || defaultDataKependudukan.jumlahLakiLaki,
-      jumlahPerempuan: data.jumlahPerempuan || defaultDataKependudukan.jumlahPerempuan,
-      tahunData: data.tahunData || defaultDataKependudukan.tahunData,
-      kelompokUmur: data.kelompokUmur || defaultDataKependudukan.kelompokUmur,
-      pekerjaan: data.pekerjaan || defaultDataKependudukan.pekerjaan,
-      pendidikan: data.pendidikan || defaultDataKependudukan.pendidikan,
+// 5. Profil Desa
+const fetchProfilDesa = async (): Promise<ProfilDesaData> => {
+  return withPerfLog('findGlobal(profil-desa)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const data = await payload.findGlobal({ slug: 'profil-desa', depth: 1 })
+      if (!data) return defaultProfilDesa
+
+      return {
+        sejarah: data.sejarah || defaultProfilDesa.sejarah,
+        visi: data.visi || defaultProfilDesa.visi,
+        misi: data.misi && data.misi.length > 0 ? data.misi : defaultProfilDesa.misi,
+        geografis: data.geografis || defaultProfilDesa.geografis,
+        batasUtara: data.batasUtara || defaultProfilDesa.batasUtara,
+        batasSelatan: data.batasSelatan || defaultProfilDesa.batasSelatan,
+        batasTimur: data.batasTimur || defaultProfilDesa.batasTimur,
+        batasBarat: data.batasBarat || defaultProfilDesa.batasBarat,
+        luasWilayah: data.luasWilayah || defaultProfilDesa.luasWilayah,
+        tipologi: data.tipologi || defaultProfilDesa.tipologi,
+      }
+    } catch (error) {
+      return defaultProfilDesa
     }
-  } catch (error) {
-    return defaultDataKependudukan
-  }
+  })
 }
 
-export async function getDusunList(): Promise<DusunItem[]> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'dusun',
-      sort: 'urutan',
-      limit: 20,
-    })
+export const getProfilDesa = unstable_cache(
+  fetchProfilDesa,
+  ['cms-profil-desa'],
+  { tags: ['global-profil-desa'], revalidate: 3600 }
+)
 
-    if (!result.docs || result.docs.length === 0) {
+// 6. Data Kependudukan
+const fetchDataKependudukan = async (): Promise<DataKependudukanData> => {
+  return withPerfLog('findGlobal(data-kependudukan)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const data = await payload.findGlobal({ slug: 'data-kependudukan', depth: 1 })
+      if (!data) return defaultDataKependudukan
+
+      return {
+        totalPenduduk: data.totalPenduduk || defaultDataKependudukan.totalPenduduk,
+        jumlahKepalaKeluarga: data.jumlahKepalaKeluarga || defaultDataKependudukan.jumlahKepalaKeluarga,
+        jumlahLakiLaki: data.jumlahLakiLaki || defaultDataKependudukan.jumlahLakiLaki,
+        jumlahPerempuan: data.jumlahPerempuan || defaultDataKependudukan.jumlahPerempuan,
+        tahunData: data.tahunData || defaultDataKependudukan.tahunData,
+        kelompokUmur: data.kelompokUmur || defaultDataKependudukan.kelompokUmur,
+        pekerjaan: data.pekerjaan || defaultDataKependudukan.pekerjaan,
+        pendidikan: data.pendidikan || defaultDataKependudukan.pendidikan,
+      }
+    } catch (error) {
+      return defaultDataKependudukan
+    }
+  })
+}
+
+export const getDataKependudukan = unstable_cache(
+  fetchDataKependudukan,
+  ['cms-data-kependudukan'],
+  { tags: ['global-data-kependudukan'], revalidate: 3600 }
+)
+
+// 7. Dusun List
+const fetchDusunList = async (): Promise<DusunItem[]> => {
+  return withPerfLog('find(dusun)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'dusun',
+        sort: 'urutan',
+        limit: 20,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        return defaultDusunList
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        nama: doc.nama,
+        kepalaDusun: doc.kepalaDusun,
+        jumlahRT: doc.jumlahRT || 0,
+        jumlahRW: doc.jumlahRW || 0,
+        luasWilayah: doc.luasWilayah,
+        deskripsi: doc.deskripsi,
+        urutan: doc.urutan,
+      }))
+    } catch (error) {
       return defaultDusunList
     }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      nama: doc.nama,
-      kepalaDusun: doc.kepalaDusun,
-      jumlahRT: doc.jumlahRT || 0,
-      jumlahRW: doc.jumlahRW || 0,
-      luasWilayah: doc.luasWilayah,
-      deskripsi: doc.deskripsi,
-      urutan: doc.urutan,
-    }))
-  } catch (error) {
-    return defaultDusunList
-  }
+  })
 }
 
-export async function getPerangkatDesaList(): Promise<PerangkatDesaItem[]> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'perangkat-desa',
-      sort: 'urutan',
-      limit: 50,
-    })
+export const getDusunList = unstable_cache(
+  fetchDusunList,
+  ['cms-dusun-list'],
+  { tags: ['collection-dusun'], revalidate: 3600 }
+)
 
-    if (!result.docs || result.docs.length === 0) {
+// 8. Perangkat Desa
+const fetchPerangkatDesaList = async (): Promise<PerangkatDesaItem[]> => {
+  return withPerfLog('find(perangkat-desa)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'perangkat-desa',
+        sort: 'urutan',
+        limit: 50,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        return defaultPerangkatDesaList
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        nama: doc.nama,
+        jabatan: doc.jabatan,
+        kategoriJabatan: doc.kategoriJabatan,
+        niap: doc.niap,
+        foto: doc.foto,
+        urutan: doc.urutan,
+        statusAktif: doc.statusAktif ?? true,
+      }))
+    } catch (error) {
       return defaultPerangkatDesaList
     }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      nama: doc.nama,
-      jabatan: doc.jabatan,
-      kategoriJabatan: doc.kategoriJabatan,
-      niap: doc.niap,
-      foto: doc.foto,
-      urutan: doc.urutan,
-      statusAktif: doc.statusAktif ?? true,
-    }))
-  } catch (error) {
-    return defaultPerangkatDesaList
-  }
+  })
 }
 
-export async function getBpdList(): Promise<BpdItem[]> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'bpd',
-      sort: 'urutan',
-      limit: 20,
-    })
+export const getPerangkatDesaList = unstable_cache(
+  fetchPerangkatDesaList,
+  ['cms-perangkat-desa-list'],
+  { tags: ['collection-perangkat-desa'], revalidate: 3600 }
+)
 
-    if (!result.docs || result.docs.length === 0) {
+// 9. BPD
+const fetchBpdList = async (): Promise<BpdItem[]> => {
+  return withPerfLog('find(bpd)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'bpd',
+        sort: 'urutan',
+        limit: 20,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        return defaultBpdList
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        nama: doc.nama,
+        jabatan: doc.jabatan,
+        keterangan: doc.keterangan,
+        foto: doc.foto,
+        urutan: doc.urutan,
+      }))
+    } catch (error) {
       return defaultBpdList
     }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      nama: doc.nama,
-      jabatan: doc.jabatan,
-      keterangan: doc.keterangan,
-      foto: doc.foto,
-      urutan: doc.urutan,
-    }))
-  } catch (error) {
-    return defaultBpdList
-  }
+  })
 }
 
-export async function getRtRwList(): Promise<RtRwItem[]> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'rt-rw',
-      sort: 'urutan',
-      limit: 100,
-    })
+export const getBpdList = unstable_cache(
+  fetchBpdList,
+  ['cms-bpd-list'],
+  { tags: ['collection-bpd'], revalidate: 3600 }
+)
 
-    if (!result.docs || result.docs.length === 0) {
+// 10. RT / RW
+const fetchRtRwList = async (): Promise<RtRwItem[]> => {
+  return withPerfLog('find(rt-rw)', async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'rt-rw',
+        sort: 'urutan',
+        limit: 100,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        return defaultRtRwList
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        nama: doc.nama,
+        jenis: doc.jenis,
+        nomor: doc.nomor,
+        dusun: doc.dusun,
+        telepon: doc.telepon,
+        urutan: doc.urutan,
+      }))
+    } catch (error) {
       return defaultRtRwList
     }
+  })
+}
 
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      nama: doc.nama,
-      jenis: doc.jenis,
-      nomor: doc.nomor,
-      dusun: doc.dusun,
-      telepon: doc.telepon,
-      urutan: doc.urutan,
-    }))
-  } catch (error) {
-    return defaultRtRwList
-  }
+export const getRtRwList = unstable_cache(
+  fetchRtRwList,
+  ['cms-rt-rw-list'],
+  { tags: ['collection-rt-rw'], revalidate: 3600 }
+)
+
+// 11. Berita Terbaru
+const fetchBeritaTerbaru = async (limit: number): Promise<BeritaItem[]> => {
+  return withPerfLog(`find(berita-terbaru-${limit})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'berita',
+        where: {
+          status: { equals: 'terbit' },
+        },
+        sort: '-tanggalTerbit',
+        limit,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        return defaultBeritaList.slice(0, limit)
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        ringkasan: doc.ringkasan,
+        isi: doc.isi,
+        gambar: doc.gambar,
+        kategori: doc.kategori,
+        tanggalTerbit: doc.tanggalTerbit,
+        status: doc.status,
+        unggulan: doc.unggulan,
+      }))
+    } catch (error) {
+      return defaultBeritaList.slice(0, limit)
+    }
+  })
 }
 
 export async function getBeritaTerbaru(limit = 4): Promise<BeritaItem[]> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'berita',
-      where: {
-        status: { equals: 'terbit' },
-      },
-      sort: '-tanggalTerbit',
-      limit,
-    })
-
-    if (!result.docs || result.docs.length === 0) {
-      return defaultBeritaList.slice(0, limit)
-    }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      judul: doc.judul,
-      slug: doc.slug,
-      ringkasan: doc.ringkasan,
-      isi: doc.isi,
-      gambar: doc.gambar,
-      kategori: doc.kategori,
-      tanggalTerbit: doc.tanggalTerbit,
-      status: doc.status,
-      unggulan: doc.unggulan,
-    }))
-  } catch (error) {
-    return defaultBeritaList.slice(0, limit)
-  }
+  return unstable_cache(
+    () => fetchBeritaTerbaru(limit),
+    [`cms-berita-terbaru-${limit}`],
+    { tags: ['collection-berita'], revalidate: 60 }
+  )()
 }
 
 function getFallbackBeritaPaginated(
@@ -1370,6 +1504,7 @@ function getFallbackBeritaPaginated(
   }
 }
 
+// 12. Berita Paginated
 export async function getBeritaPaginated(options?: {
   page?: number
   limit?: number
@@ -1381,213 +1516,210 @@ export async function getBeritaPaginated(options?: {
   const kategori = options?.kategori
   const search = options?.search
 
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const where: any = {
-      status: { equals: 'terbit' },
-    }
+  return withPerfLog(`find(berita-page-${page}-${limit}-${kategori || 'all'}-${search || ''})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const where: any = {
+        status: { equals: 'terbit' },
+      }
 
-    if (kategori && kategori !== 'Semua') {
-      where.kategori = { equals: kategori }
-    }
+      if (kategori && kategori !== 'Semua') {
+        where.kategori = { equals: kategori }
+      }
 
-    if (search && search.trim() !== '') {
-      where.or = [
-        { judul: { contains: search.trim() } },
-        { ringkasan: { contains: search.trim() } },
-      ]
-    }
+      if (search && search.trim() !== '') {
+        where.or = [
+          { judul: { contains: search.trim() } },
+          { ringkasan: { contains: search.trim() } },
+        ]
+      }
 
-    const result = await payload.find({
-      collection: 'berita',
-      where,
-      sort: '-tanggalTerbit',
-      page,
-      limit,
-    })
+      const result = await payload.find({
+        collection: 'berita',
+        where,
+        sort: '-tanggalTerbit',
+        page,
+        limit,
+        depth: 1,
+      })
 
-    if (!result.docs || result.docs.length === 0) {
+      if (!result.docs || result.docs.length === 0) {
+        return getFallbackBeritaPaginated(page, limit, kategori, search)
+      }
+
+      return {
+        docs: result.docs.map((doc: any) => ({
+          id: doc.id,
+          judul: doc.judul,
+          slug: doc.slug,
+          ringkasan: doc.ringkasan,
+          isi: doc.isi,
+          gambar: doc.gambar,
+          kategori: doc.kategori,
+          tanggalTerbit: doc.tanggalTerbit,
+          status: doc.status,
+          unggulan: doc.unggulan,
+        })),
+        totalDocs: result.totalDocs,
+        limit: result.limit,
+        totalPages: result.totalPages,
+        page: result.page || 1,
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        prevPage: result.prevPage,
+        nextPage: result.nextPage,
+      }
+    } catch (error) {
       return getFallbackBeritaPaginated(page, limit, kategori, search)
     }
+  })
+}
 
-    return {
-      docs: result.docs.map((doc: any) => ({
-        id: doc.id,
-        judul: doc.judul,
-        slug: doc.slug,
-        ringkasan: doc.ringkasan,
-        isi: doc.isi,
-        gambar: doc.gambar,
-        kategori: doc.kategori,
-        tanggalTerbit: doc.tanggalTerbit,
-        status: doc.status,
-        unggulan: doc.unggulan,
-      })),
-      totalDocs: result.totalDocs,
-      limit: result.limit,
-      totalPages: result.totalPages,
-      page: result.page || 1,
-      hasPrevPage: result.hasPrevPage,
-      hasNextPage: result.hasNextPage,
-      prevPage: result.prevPage,
-      nextPage: result.nextPage,
-    }
-  } catch (error) {
-    return getFallbackBeritaPaginated(page, limit, kategori, search)
-  }
+// 13. Berita By Slug
+const fetchBeritaBySlug = async (slug: string): Promise<BeritaItem | null> => {
+  return withPerfLog(`find(berita-slug-${slug})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'berita',
+        where: {
+          slug: { equals: slug },
+        },
+        limit: 1,
+        depth: 1,
+      })
+
+      if (result.docs && result.docs.length > 0) {
+        const doc = result.docs[0]
+        return {
+          id: doc.id,
+          judul: doc.judul,
+          slug: doc.slug,
+          ringkasan: doc.ringkasan,
+          isi: doc.isi,
+          gambar: doc.gambar,
+          kategori: doc.kategori,
+          tanggalTerbit: doc.tanggalTerbit,
+          status: doc.status,
+          unggulan: doc.unggulan,
+        }
+      }
+    } catch (error) {}
+
+    const match = defaultBeritaList.find((b) => b.slug === slug)
+    return match || null
+  })
 }
 
 export async function getBeritaBySlug(slug: string): Promise<BeritaItem | null> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'berita',
-      where: {
-        slug: { equals: slug },
-      },
-      limit: 1,
-    })
+  return unstable_cache(
+    () => fetchBeritaBySlug(slug),
+    [`cms-berita-slug-${slug}`],
+    { tags: ['collection-berita'], revalidate: 60 }
+  )()
+}
 
-    if (result.docs && result.docs.length > 0) {
-      const doc = result.docs[0]
-      return {
-        id: doc.id,
-        judul: doc.judul,
-        slug: doc.slug,
-        ringkasan: doc.ringkasan,
-        isi: doc.isi,
-        gambar: doc.gambar,
-        kategori: doc.kategori,
-        tanggalTerbit: doc.tanggalTerbit,
-        status: doc.status,
-        unggulan: doc.unggulan,
+// 14. Berita Terkait
+const fetchBeritaTerkait = async (currentSlug: string, kategori?: string, limit = 3): Promise<BeritaItem[]> => {
+  return withPerfLog(`find(berita-terkait-${currentSlug}-${kategori || 'all'})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const where: any = {
+        status: { equals: 'terbit' },
+        slug: { not_equals: currentSlug },
       }
-    }
-  } catch (error) {}
 
-  const match = defaultBeritaList.find((b) => b.slug === slug)
-  return match || null
+      if (kategori) {
+        where.kategori = { equals: kategori }
+      }
+
+      const result = await payload.find({
+        collection: 'berita',
+        where,
+        sort: '-tanggalTerbit',
+        limit,
+        depth: 1,
+      })
+
+      if (result.docs && result.docs.length > 0) {
+        return result.docs.map((doc: any) => ({
+          id: doc.id,
+          judul: doc.judul,
+          slug: doc.slug,
+          ringkasan: doc.ringkasan,
+          isi: doc.isi,
+          gambar: doc.gambar,
+          kategori: doc.kategori,
+          tanggalTerbit: doc.tanggalTerbit,
+          status: doc.status,
+          unggulan: doc.unggulan,
+        }))
+      }
+    } catch (error) {}
+
+    return defaultBeritaList
+      .filter((b) => b.slug !== currentSlug)
+      .slice(0, limit)
+  })
 }
 
 export async function getBeritaTerkait(currentSlug: string, kategori?: string, limit = 3): Promise<BeritaItem[]> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const where: any = {
-      status: { equals: 'terbit' },
-      slug: { not_equals: currentSlug },
-    }
-
-    if (kategori) {
-      where.kategori = { equals: kategori }
-    }
-
-    const result = await payload.find({
-      collection: 'berita',
-      where,
-      sort: '-tanggalTerbit',
-      limit,
-    })
-
-    if (result.docs && result.docs.length > 0) {
-      return result.docs.map((doc: any) => ({
-        id: doc.id,
-        judul: doc.judul,
-        slug: doc.slug,
-        ringkasan: doc.ringkasan,
-        isi: doc.isi,
-        gambar: doc.gambar,
-        kategori: doc.kategori,
-        tanggalTerbit: doc.tanggalTerbit,
-        status: doc.status,
-        unggulan: doc.unggulan,
-      }))
-    }
-  } catch (error) {}
-
-  return defaultBeritaList
-    .filter((b) => b.slug !== currentSlug)
-    .slice(0, limit)
+  return unstable_cache(
+    () => fetchBeritaTerkait(currentSlug, kategori, limit),
+    [`cms-berita-terkait-${currentSlug}-${kategori || 'all'}-${limit}`],
+    { tags: ['collection-berita'], revalidate: 60 }
+  )()
 }
 
-export async function getPengumumanList(options?: {
+// 15. Pengumuman List
+const fetchPengumumanList = async (options?: {
   prioritas?: string
   search?: string
   limit?: number
-}): Promise<PengumumanItem[]> {
+}): Promise<PengumumanItem[]> => {
   const limit = options?.limit || 20
   const prioritas = options?.prioritas
   const search = options?.search
 
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const where: any = {
-      status: { equals: 'terbit' },
-    }
+  return withPerfLog(`find(pengumuman-${prioritas || 'all'}-${search || ''})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const where: any = {
+        status: { equals: 'terbit' },
+      }
 
-    if (prioritas && prioritas !== 'Semua') {
-      where.prioritas = { equals: prioritas }
-    }
-
-    if (search && search.trim() !== '') {
-      where.or = [
-        { judul: { contains: search.trim() } },
-        { ringkasan: { contains: search.trim() } },
-      ]
-    }
-
-    const result = await payload.find({
-      collection: 'pengumuman',
-      where,
-      sort: '-tanggal',
-      limit,
-    })
-
-    if (!result.docs || result.docs.length === 0) {
-      let list = defaultPengumumanList.filter((p) => p.status === 'terbit')
       if (prioritas && prioritas !== 'Semua') {
-        list = list.filter((p) => p.prioritas.toLowerCase() === prioritas.toLowerCase())
+        where.prioritas = { equals: prioritas }
       }
+
       if (search && search.trim() !== '') {
-        const q = search.trim().toLowerCase()
-        list = list.filter((p) => p.judul.toLowerCase().includes(q) || (p.ringkasan && p.ringkasan.toLowerCase().includes(q)))
+        where.or = [
+          { judul: { contains: search.trim() } },
+          { ringkasan: { contains: search.trim() } },
+        ]
       }
-      return list.slice(0, limit)
-    }
 
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      judul: doc.judul,
-      slug: doc.slug,
-      ringkasan: doc.ringkasan,
-      isi: doc.isi,
-      tanggal: doc.tanggal,
-      lampiran: doc.lampiran,
-      prioritas: doc.prioritas,
-      status: doc.status,
-    }))
-  } catch (error) {
-    let list = defaultPengumumanList.filter((p) => p.status === 'terbit')
-    if (prioritas && prioritas !== 'Semua') {
-      list = list.filter((p) => p.prioritas.toLowerCase() === prioritas.toLowerCase())
-    }
-    return list.slice(0, limit)
-  }
-}
+      const result = await payload.find({
+        collection: 'pengumuman',
+        where,
+        sort: '-tanggal',
+        limit,
+        depth: 1,
+      })
 
-export async function getPengumumanBySlug(slug: string): Promise<PengumumanItem | null> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'pengumuman',
-      where: {
-        slug: { equals: slug },
-      },
-      limit: 1,
-    })
+      if (!result.docs || result.docs.length === 0) {
+        let list = defaultPengumumanList.filter((p) => p.status === 'terbit')
+        if (prioritas && prioritas !== 'Semua') {
+          list = list.filter((p) => p.prioritas.toLowerCase() === prioritas.toLowerCase())
+        }
+        if (search && search.trim() !== '') {
+          const q = search.trim().toLowerCase()
+          list = list.filter((p) => p.judul.toLowerCase().includes(q) || (p.ringkasan && p.ringkasan.toLowerCase().includes(q)))
+        }
+        return list.slice(0, limit)
+      }
 
-    if (result.docs && result.docs.length > 0) {
-      const doc = result.docs[0]
-      return {
+      return result.docs.map((doc: any) => ({
         id: doc.id,
         judul: doc.judul,
         slug: doc.slug,
@@ -1597,78 +1729,114 @@ export async function getPengumumanBySlug(slug: string): Promise<PengumumanItem 
         lampiran: doc.lampiran,
         prioritas: doc.prioritas,
         status: doc.status,
-      }
-    }
-  } catch (error) {}
-
-  const match = defaultPengumumanList.find((p) => p.slug === slug)
-  return match || null
-}
-
-export async function getAgendaList(options?: {
-  status?: string
-  limit?: number
-}): Promise<AgendaItem[]> {
-  const limit = options?.limit || 50
-  const status = options?.status
-
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const where: any = {}
-
-    if (status && status !== 'Semua') {
-      where.status = { equals: status }
-    }
-
-    const result = await payload.find({
-      collection: 'agenda',
-      where,
-      sort: 'tanggalMulai',
-      limit,
-    })
-
-    if (!result.docs || result.docs.length === 0) {
-      let list = defaultAgendaList
-      if (status && status !== 'Semua') {
-        list = list.filter((a) => a.status.toLowerCase() === status.toLowerCase())
+      }))
+    } catch (error) {
+      let list = defaultPengumumanList.filter((p) => p.status === 'terbit')
+      if (prioritas && prioritas !== 'Semua') {
+        list = list.filter((p) => p.prioritas.toLowerCase() === prioritas.toLowerCase())
       }
       return list.slice(0, limit)
     }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      judul: doc.judul,
-      slug: doc.slug,
-      deskripsi: doc.deskripsi,
-      tanggalMulai: doc.tanggalMulai,
-      tanggalSelesai: doc.tanggalSelesai,
-      lokasi: doc.lokasi,
-      penyelenggara: doc.penyelenggara,
-      status: doc.status,
-    }))
-  } catch (error) {
-    let list = defaultAgendaList
-    if (status && status !== 'Semua') {
-      list = list.filter((a) => a.status.toLowerCase() === status.toLowerCase())
-    }
-    return list.slice(0, limit)
-  }
+  })
 }
 
-export async function getAgendaBySlug(slug: string): Promise<AgendaItem | null> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'agenda',
-      where: {
-        slug: { equals: slug },
-      },
-      limit: 1,
-    })
+export async function getPengumumanList(options?: {
+  prioritas?: string
+  search?: string
+  limit?: number
+}): Promise<PengumumanItem[]> {
+  const limit = options?.limit || 20
+  const prioritas = options?.prioritas || 'Semua'
+  const search = options?.search || ''
 
-    if (result.docs && result.docs.length > 0) {
-      const doc = result.docs[0]
-      return {
+  if (search) {
+    return fetchPengumumanList(options)
+  }
+
+  return unstable_cache(
+    () => fetchPengumumanList({ prioritas, limit }),
+    [`cms-pengumuman-list-${prioritas}-${limit}`],
+    { tags: ['collection-pengumuman'], revalidate: 60 }
+  )()
+}
+
+// 16. Pengumuman By Slug
+const fetchPengumumanBySlug = async (slug: string): Promise<PengumumanItem | null> => {
+  return withPerfLog(`find(pengumuman-slug-${slug})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'pengumuman',
+        where: {
+          slug: { equals: slug },
+        },
+        limit: 1,
+        depth: 1,
+      })
+
+      if (result.docs && result.docs.length > 0) {
+        const doc = result.docs[0]
+        return {
+          id: doc.id,
+          judul: doc.judul,
+          slug: doc.slug,
+          ringkasan: doc.ringkasan,
+          isi: doc.isi,
+          tanggal: doc.tanggal,
+          lampiran: doc.lampiran,
+          prioritas: doc.prioritas,
+          status: doc.status,
+        }
+      }
+    } catch (error) {}
+
+    const match = defaultPengumumanList.find((p) => p.slug === slug)
+    return match || null
+  })
+}
+
+export async function getPengumumanBySlug(slug: string): Promise<PengumumanItem | null> {
+  return unstable_cache(
+    () => fetchPengumumanBySlug(slug),
+    [`cms-pengumuman-slug-${slug}`],
+    { tags: ['collection-pengumuman'], revalidate: 60 }
+  )()
+}
+
+// 17. Agenda List
+const fetchAgendaList = async (options?: {
+  status?: string
+  limit?: number
+}): Promise<AgendaItem[]> => {
+  const limit = options?.limit || 50
+  const status = options?.status
+
+  return withPerfLog(`find(agenda-${status || 'all'})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const where: any = {}
+
+      if (status && status !== 'Semua') {
+        where.status = { equals: status }
+      }
+
+      const result = await payload.find({
+        collection: 'agenda',
+        where,
+        sort: 'tanggalMulai',
+        limit,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        let list = defaultAgendaList
+        if (status && status !== 'Semua') {
+          list = list.filter((a) => a.status.toLowerCase() === status.toLowerCase())
+        }
+        return list.slice(0, limit)
+      }
+
+      return result.docs.map((doc: any) => ({
         id: doc.id,
         judul: doc.judul,
         slug: doc.slug,
@@ -1678,254 +1846,431 @@ export async function getAgendaBySlug(slug: string): Promise<AgendaItem | null> 
         lokasi: doc.lokasi,
         penyelenggara: doc.penyelenggara,
         status: doc.status,
+      }))
+    } catch (error) {
+      let list = defaultAgendaList
+      if (status && status !== 'Semua') {
+        list = list.filter((a) => a.status.toLowerCase() === status.toLowerCase())
       }
+      return list.slice(0, limit)
     }
-  } catch (error) {}
+  })
+}
 
-  const match = defaultAgendaList.find((a) => a.slug === slug)
-  return match || null
+export async function getAgendaList(options?: {
+  status?: string
+  limit?: number
+}): Promise<AgendaItem[]> {
+  const limit = options?.limit || 50
+  const status = options?.status || 'Semua'
+  return unstable_cache(
+    () => fetchAgendaList({ status, limit }),
+    [`cms-agenda-list-${status}-${limit}`],
+    { tags: ['collection-agenda'], revalidate: 60 }
+  )()
+}
+
+// 18. Agenda By Slug
+const fetchAgendaBySlug = async (slug: string): Promise<AgendaItem | null> => {
+  return withPerfLog(`find(agenda-slug-${slug})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'agenda',
+        where: {
+          slug: { equals: slug },
+        },
+        limit: 1,
+        depth: 1,
+      })
+
+      if (result.docs && result.docs.length > 0) {
+        const doc = result.docs[0]
+        return {
+          id: doc.id,
+          judul: doc.judul,
+          slug: doc.slug,
+          deskripsi: doc.deskripsi,
+          tanggalMulai: doc.tanggalMulai,
+          tanggalSelesai: doc.tanggalSelesai,
+          lokasi: doc.lokasi,
+          penyelenggara: doc.penyelenggara,
+          status: doc.status,
+        }
+      }
+    } catch (error) {}
+
+    const match = defaultAgendaList.find((a) => a.slug === slug)
+    return match || null
+  })
+}
+
+export async function getAgendaBySlug(slug: string): Promise<AgendaItem | null> {
+  return unstable_cache(
+    () => fetchAgendaBySlug(slug),
+    [`cms-agenda-slug-${slug}`],
+    { tags: ['collection-agenda'], revalidate: 60 }
+  )()
+}
+
+// 19. Dokumen Transparansi
+const fetchDokumenTransparansi = async (limit: number): Promise<DokumenTransparansiItem[]> => {
+  return withPerfLog(`find(dokumen-transparansi-${limit})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'dokumen-transparansi',
+        sort: 'urutan',
+        limit,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        return defaultTransparansiList
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        judul: doc.judul,
+        kategori: doc.kategori,
+        tahun: doc.tahun,
+        persentaseRealisasi: doc.persentaseRealisasi,
+        nominalAnggaran: doc.nominalAnggaran,
+        filePdf: doc.filePdf,
+        keterangan: doc.keterangan,
+        tampilkanDiBeranda: doc.tampilkanDiBeranda,
+      }))
+    } catch (error) {
+      return defaultTransparansiList
+    }
+  })
 }
 
 export async function getDokumenTransparansi(limit = 3): Promise<DokumenTransparansiItem[]> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'dokumen-transparansi',
-      sort: 'urutan',
-      limit,
-    })
+  return unstable_cache(
+    () => fetchDokumenTransparansi(limit),
+    [`cms-dokumen-transparansi-${limit}`],
+    { tags: ['collection-transparansi'], revalidate: 3600 }
+  )()
+}
 
-    if (!result.docs || result.docs.length === 0) {
-      return defaultTransparansiList
+// 20. Potensi Unggulan
+const fetchPotensiUnggulan = async (limit: number): Promise<PotensiItem[]> => {
+  return withPerfLog(`find(potensi-unggulan-${limit})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'potensi',
+        sort: 'urutan',
+        limit,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        return defaultPotensiList
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        kategori: doc.kategori,
+        ringkasan: doc.ringkasan,
+        gambar: doc.gambar,
+        unggulan: doc.unggulan,
+      }))
+    } catch (error) {
+      return defaultPotensiList
     }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      judul: doc.judul,
-      kategori: doc.kategori,
-      tahun: doc.tahun,
-      persentaseRealisasi: doc.persentaseRealisasi,
-      nominalAnggaran: doc.nominalAnggaran,
-      filePdf: doc.filePdf,
-      keterangan: doc.keterangan,
-      tampilkanDiBeranda: doc.tampilkanDiBeranda,
-    }))
-  } catch (error) {
-    return defaultTransparansiList
-  }
+  })
 }
 
 export async function getPotensiUnggulan(limit = 4): Promise<PotensiItem[]> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'potensi',
-      sort: 'urutan',
-      limit,
-    })
+  return unstable_cache(
+    () => fetchPotensiUnggulan(limit),
+    [`cms-potensi-unggulan-${limit}`],
+    { tags: ['collection-potensi'], revalidate: 3600 }
+  )()
+}
 
-    if (!result.docs || result.docs.length === 0) {
-      return defaultPotensiList
+// 21. Potensi List
+const fetchPotensiList = async (options?: {
+  kategori?: string
+  search?: string
+}): Promise<PotensiItem[]> => {
+  const kategori = options?.kategori
+  const search = options?.search
+
+  return withPerfLog(`find(potensi-list-${kategori || 'all'}-${search || ''})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const where: any = {}
+
+      if (kategori && kategori !== 'Semua') {
+        where.kategori = { equals: kategori }
+      }
+
+      if (search && search.trim() !== '') {
+        where.or = [
+          { judul: { contains: search.trim() } },
+          { ringkasan: { contains: search.trim() } },
+        ]
+      }
+
+      const result = await payload.find({
+        collection: 'potensi',
+        where,
+        sort: 'urutan',
+        limit: 50,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        let list = defaultPotensiList
+        if (kategori && kategori !== 'Semua') {
+          list = list.filter((p) => p.kategori.toLowerCase() === kategori.toLowerCase())
+        }
+        if (search && search.trim() !== '') {
+          const q = search.trim().toLowerCase()
+          list = list.filter((p) => p.judul.toLowerCase().includes(q) || p.ringkasan.toLowerCase().includes(q))
+        }
+        return list
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        kategori: doc.kategori,
+        ringkasan: doc.ringkasan,
+        gambar: doc.gambar,
+        kontakPengelola: doc.kontakPengelola,
+        lokasi: doc.lokasi,
+        unggulan: doc.unggulan,
+      }))
+    } catch (error) {
+      let list = defaultPotensiList
+      if (kategori && kategori !== 'Semua') {
+        list = list.filter((p) => p.kategori.toLowerCase() === kategori.toLowerCase())
+      }
+      return list
     }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      judul: doc.judul,
-      slug: doc.slug,
-      kategori: doc.kategori,
-      ringkasan: doc.ringkasan,
-      gambar: doc.gambar,
-      unggulan: doc.unggulan,
-    }))
-  } catch (error) {
-    return defaultPotensiList
-  }
+  })
 }
 
 export async function getPotensiList(options?: {
   kategori?: string
   search?: string
 }): Promise<PotensiItem[]> {
-  const kategori = options?.kategori
-  const search = options?.search
+  const kategori = options?.kategori || 'Semua'
+  const search = options?.search || ''
 
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const where: any = {}
-
-    if (kategori && kategori !== 'Semua') {
-      where.kategori = { equals: kategori }
-    }
-
-    if (search && search.trim() !== '') {
-      where.or = [
-        { judul: { contains: search.trim() } },
-        { ringkasan: { contains: search.trim() } },
-      ]
-    }
-
-    const result = await payload.find({
-      collection: 'potensi',
-      where,
-      sort: 'urutan',
-      limit: 50,
-    })
-
-    if (!result.docs || result.docs.length === 0) {
-      let list = defaultPotensiList
-      if (kategori && kategori !== 'Semua') {
-        list = list.filter((p) => p.kategori.toLowerCase() === kategori.toLowerCase())
-      }
-      if (search && search.trim() !== '') {
-        const q = search.trim().toLowerCase()
-        list = list.filter((p) => p.judul.toLowerCase().includes(q) || p.ringkasan.toLowerCase().includes(q))
-      }
-      return list
-    }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      judul: doc.judul,
-      slug: doc.slug,
-      kategori: doc.kategori,
-      ringkasan: doc.ringkasan,
-      deskripsi: doc.deskripsi,
-      gambar: doc.gambar,
-      kontakPengelola: doc.kontakPengelola,
-      lokasi: doc.lokasi,
-      unggulan: doc.unggulan,
-      urutan: doc.urutan,
-    }))
-  } catch (error) {
-    let list = defaultPotensiList
-    if (kategori && kategori !== 'Semua') {
-      list = list.filter((p) => p.kategori.toLowerCase() === kategori.toLowerCase())
-    }
-    return list
+  if (search) {
+    return fetchPotensiList(options)
   }
+
+  return unstable_cache(
+    () => fetchPotensiList({ kategori }),
+    [`cms-potensi-list-${kategori}`],
+    { tags: ['collection-potensi'], revalidate: 3600 }
+  )()
+}
+
+// 22. Potensi By Slug
+const fetchPotensiBySlug = async (slug: string): Promise<PotensiItem | null> => {
+  return withPerfLog(`find(potensi-slug-${slug})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const result = await payload.find({
+        collection: 'potensi',
+        where: {
+          slug: { equals: slug },
+        },
+        limit: 1,
+        depth: 1,
+      })
+
+      if (result.docs && result.docs.length > 0) {
+        const doc = result.docs[0]
+        return {
+          id: doc.id,
+          judul: doc.judul,
+          slug: doc.slug,
+          kategori: doc.kategori,
+          ringkasan: doc.ringkasan,
+          deskripsi: doc.deskripsi,
+          gambar: doc.gambar,
+          kontakPengelola: doc.kontakPengelola,
+          lokasi: doc.lokasi,
+          unggulan: doc.unggulan,
+        }
+      }
+    } catch (error) {}
+
+    const match = defaultPotensiList.find((p) => p.slug === slug)
+    return match || null
+  })
 }
 
 export async function getPotensiBySlug(slug: string): Promise<PotensiItem | null> {
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'potensi',
-      where: {
-        slug: { equals: slug },
-      },
-      limit: 1,
-    })
-
-    if (result.docs && result.docs.length > 0) {
-      const doc = result.docs[0]
-      return {
-        id: doc.id,
-        judul: doc.judul,
-        slug: doc.slug,
-        kategori: doc.kategori,
-        ringkasan: doc.ringkasan,
-        deskripsi: doc.deskripsi,
-        gambar: doc.gambar,
-        kontakPengelola: doc.kontakPengelola,
-        lokasi: doc.lokasi,
-        unggulan: doc.unggulan,
-        urutan: doc.urutan,
-      }
-    }
-  } catch (error) {}
-
-  const match = defaultPotensiList.find((p) => p.slug === slug)
-  return match || null
+  return unstable_cache(
+    () => fetchPotensiBySlug(slug),
+    [`cms-potensi-slug-${slug}`],
+    { tags: ['collection-potensi'], revalidate: 3600 }
+  )()
 }
 
-export async function getDokumenTransparansiList(options?: {
-  tahun?: number
+// 23. Dokumen Transparansi List
+const fetchDokumenTransparansiList = async (options?: {
   kategori?: string
-}): Promise<DokumenTransparansiItem[]> {
-  const tahun = options?.tahun
+  tahun?: number
+  search?: string
+}): Promise<DokumenTransparansiItem[]> => {
   const kategori = options?.kategori
+  const tahun = options?.tahun
+  const search = options?.search
 
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const where: any = {}
+  return withPerfLog(`find(dokumen-transparansi-list-${kategori || 'all'}-${tahun || 'all'}-${search || ''})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const where: any = {}
 
-    if (tahun) {
-      where.tahun = { equals: tahun }
-    }
-
-    if (kategori && kategori !== 'Semua') {
-      where.kategori = { equals: kategori }
-    }
-
-    const result = await payload.find({
-      collection: 'dokumen-transparansi',
-      where,
-      sort: 'urutan',
-      limit: 100,
-    })
-
-    if (!result.docs || result.docs.length === 0) {
-      let list = defaultTransparansiList
-      if (tahun) {
-        list = list.filter((d) => d.tahun === tahun)
+      if (kategori && kategori !== 'Semua') {
+        where.kategori = { equals: kategori }
       }
+
+      if (tahun) {
+        where.tahun = { equals: tahun }
+      }
+
+      if (search && search.trim() !== '') {
+        where.or = [
+          { judul: { contains: search.trim() } },
+          { keterangan: { contains: search.trim() } },
+        ]
+      }
+
+      const result = await payload.find({
+        collection: 'dokumen-transparansi',
+        where,
+        sort: 'urutan',
+        limit: 50,
+        depth: 1,
+      })
+
+      if (!result.docs || result.docs.length === 0) {
+        let list = defaultTransparansiList
+        if (kategori && kategori !== 'Semua') {
+          list = list.filter((d) => d.kategori.toLowerCase() === kategori.toLowerCase())
+        }
+        if (tahun) {
+          list = list.filter((d) => d.tahun === tahun)
+        }
+        if (search && search.trim() !== '') {
+          const q = search.trim().toLowerCase()
+          list = list.filter((d) => d.judul.toLowerCase().includes(q) || (d.keterangan && d.keterangan.toLowerCase().includes(q)))
+        }
+        return list
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        judul: doc.judul,
+        kategori: doc.kategori,
+        tahun: doc.tahun,
+        persentaseRealisasi: doc.persentaseRealisasi,
+        nominalAnggaran: doc.nominalAnggaran,
+        filePdf: doc.filePdf,
+        keterangan: doc.keterangan,
+        tampilkanDiBeranda: doc.tampilkanDiBeranda,
+        ukuranFile: doc.ukuranFile,
+      }))
+    } catch (error) {
+      let list = defaultTransparansiList
       if (kategori && kategori !== 'Semua') {
         list = list.filter((d) => d.kategori.toLowerCase() === kategori.toLowerCase())
       }
+      if (tahun) {
+        list = list.filter((d) => d.tahun === tahun)
+      }
       return list
     }
-
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      judul: doc.judul,
-      kategori: doc.kategori,
-      tahun: doc.tahun,
-      persentaseRealisasi: doc.persentaseRealisasi,
-      nominalAnggaran: doc.nominalAnggaran,
-      filePdf: doc.filePdf,
-      keterangan: doc.keterangan,
-      tampilkanDiBeranda: doc.tampilkanDiBeranda,
-      urutan: doc.urutan,
-    }))
-  } catch (error) {
-    let list = defaultTransparansiList
-    if (tahun) {
-      list = list.filter((d) => d.tahun === tahun)
-    }
-    if (kategori && kategori !== 'Semua') {
-      list = list.filter((d) => d.kategori.toLowerCase() === kategori.toLowerCase())
-    }
-    return list
-  }
+  })
 }
 
-export async function getGaleriList(options?: {
-  tipe?: 'foto' | 'video' | 'semua'
+export async function getDokumenTransparansiList(options?: {
+  kategori?: string
+  tahun?: number
+  search?: string
+}): Promise<DokumenTransparansiItem[]> {
+  const kategori = options?.kategori || 'Semua'
+  const tahun = options?.tahun || 0
+  const search = options?.search || ''
+
+  if (search) {
+    return fetchDokumenTransparansiList(options)
+  }
+
+  return unstable_cache(
+    () => fetchDokumenTransparansiList({ kategori, tahun }),
+    [`cms-dokumen-transparansi-list-${kategori}-${tahun}`],
+    { tags: ['collection-transparansi'], revalidate: 3600 }
+  )()
+}
+
+// 24. Galeri List
+const fetchGaleriList = async (options?: {
+  tipe?: string
   album?: string
-}): Promise<GaleriItem[]> {
+}): Promise<GaleriItem[]> => {
   const tipe = options?.tipe
   const album = options?.album
 
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const where: any = {}
+  return withPerfLog(`find(galeri-${tipe || 'all'}-${album || 'all'})`, async () => {
+    try {
+      const payload = await getPayloadClient()
+      const where: any = {}
 
-    if (tipe && tipe !== 'semua') {
-      where.tipe = { equals: tipe }
-    }
+      if (tipe && tipe !== 'semua') {
+        where.tipe = { equals: tipe }
+      }
 
-    if (album && album !== 'Semua') {
-      where.album = { equals: album }
-    }
+      if (album && album !== 'Semua') {
+        where.album = { equals: album }
+      }
 
-    const result = await payload.find({
-      collection: 'galeri',
-      where,
-      sort: '-tanggal',
-      limit: 100,
-    })
+      const result = await payload.find({
+        collection: 'galeri',
+        where,
+        sort: '-tanggal',
+        limit: 100,
+        depth: 1,
+      })
 
-    if (!result.docs || result.docs.length === 0) {
+      if (!result.docs || result.docs.length === 0) {
+        let list = defaultGaleriList
+        if (tipe && tipe !== 'semua') {
+          list = list.filter((g) => g.tipe === tipe)
+        }
+        if (album && album !== 'Semua') {
+          list = list.filter((g) => g.album?.toLowerCase() === album.toLowerCase())
+        }
+        return list
+      }
+
+      return result.docs.map((doc: any) => ({
+        id: doc.id,
+        judul: doc.judul,
+        slug: doc.slug,
+        tipe: doc.tipe,
+        album: doc.album,
+        foto: doc.foto,
+        videoUrl: doc.videoUrl,
+        tanggal: doc.tanggal,
+        keterangan: doc.keterangan,
+        tampilkanDiBeranda: doc.tampilkanDiBeranda,
+      }))
+    } catch (error) {
       let list = defaultGaleriList
       if (tipe && tipe !== 'semua') {
         list = list.filter((g) => g.tipe === tipe)
@@ -1935,44 +2280,41 @@ export async function getGaleriList(options?: {
       }
       return list
     }
+  })
+}
 
-    return result.docs.map((doc: any) => ({
-      id: doc.id,
-      judul: doc.judul,
-      slug: doc.slug,
-      tipe: doc.tipe,
-      album: doc.album,
-      foto: doc.foto,
-      videoUrl: doc.videoUrl,
-      tanggal: doc.tanggal,
-      keterangan: doc.keterangan,
-      tampilkanDiBeranda: doc.tampilkanDiBeranda,
-    }))
-  } catch (error) {
-    let list = defaultGaleriList
-    if (tipe && tipe !== 'semua') {
-      list = list.filter((g) => g.tipe === tipe)
-    }
-    if (album && album !== 'Semua') {
-      list = list.filter((g) => g.album?.toLowerCase() === album.toLowerCase())
-    }
-    return list
-  }
+export async function getGaleriList(options?: {
+  tipe?: string
+  album?: string
+}): Promise<GaleriItem[]> {
+  const tipe = options?.tipe || 'semua'
+  const album = options?.album || 'Semua'
+  return unstable_cache(
+    () => fetchGaleriList({ tipe, album }),
+    [`cms-galeri-list-${tipe}-${album}`],
+    { tags: ['collection-galeri'], revalidate: 3600 }
+  )()
 }
 
 export async function getGaleriAlbums(): Promise<string[]> {
-  try {
-    const items = await getGaleriList()
-    const albumSet = new Set<string>()
-    for (const item of items) {
-      if (item.album && item.album.trim() !== '') {
-        albumSet.add(item.album.trim())
+  return unstable_cache(
+    async () => {
+      try {
+        const items = await getGaleriList()
+        const albumSet = new Set<string>()
+        for (const item of items) {
+          if (item.album && item.album.trim() !== '') {
+            albumSet.add(item.album.trim())
+          }
+        }
+        return Array.from(albumSet)
+      } catch (error) {
+        return ['Pariwisata', 'Perekonomian', 'Kebudayaan', 'Pembangunan']
       }
-    }
-    return Array.from(albumSet)
-  } catch (error) {
-    return ['Pariwisata', 'Perekonomian', 'Kebudayaan', 'Pembangunan']
-  }
+    },
+    ['cms-galeri-albums'],
+    { tags: ['collection-galeri'], revalidate: 3600 }
+  )()
 }
 
 export async function getGaleriTerbaru(limit = 6): Promise<GaleriItem[]> {

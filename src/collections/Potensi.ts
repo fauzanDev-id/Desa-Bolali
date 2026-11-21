@@ -50,6 +50,7 @@ export const Potensi: CollectionConfig = {
       label: 'Kategori Potensi',
       type: 'select',
       required: true,
+      index: true,
       defaultValue: 'Pertanian',
       options: [
         { label: 'BUMDes (Badan Usaha Milik Desa)', value: 'BUMDes' },
@@ -116,6 +117,7 @@ export const Potensi: CollectionConfig = {
       name: 'urutan',
       label: 'Nomor Urutan Tampilan',
       type: 'number',
+      index: true,
       defaultValue: 1,
       admin: {
         position: 'sidebar',
@@ -123,7 +125,7 @@ export const Potensi: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/potensi-desa')],
-    afterDelete: [revalidateCollectionDelete('/potensi-desa')],
+    afterChange: [revalidateCollection('/potensi-desa', 'potensi')],
+    afterDelete: [revalidateCollectionDelete('/potensi-desa', 'potensi')],
   },
 }

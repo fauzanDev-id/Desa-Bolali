@@ -209,6 +209,6 @@ export const PengaturanWebsite: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateGlobal('/')],
+    afterChange: [revalidateGlobal('pengaturan-website', '/')],
   },
 }

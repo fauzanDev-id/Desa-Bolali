@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { getPerangkatDesaList, getBpdList } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
 import { Card, SectionHeader } from '@/components'
-import { GitFork, User, ShieldCheck, ChevronRight } from 'lucide-react'
+import { GitFork, User, ShieldCheck, CaretRight } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Struktur Organisasi | Pemerintah Desa Bolali',
@@ -40,7 +40,7 @@ export default async function StrukturOrganisasiPage() {
         <SectionHeader
           title="Struktur Organisasi & Tata Kerja (SOTK)"
           subtitle="Pemerintah Desa Bolali, Kecamatan Wonosari, Kabupaten Klaten"
-          icon={<GitFork className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<GitFork className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans mt-2">
@@ -52,7 +52,7 @@ export default async function StrukturOrganisasiPage() {
       <Card className="p-5 sm:p-8 overflow-hidden">
         <SectionHeader
           title="Bagan Hierarki Kepemimpinan Desa"
-          icon={<GitFork className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<GitFork className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         {/* ========================================================
@@ -74,7 +74,7 @@ export default async function StrukturOrganisasiPage() {
                       sizes="64px"
                     />
                   ) : (
-                    <User className="w-8 h-8 text-white m-auto" strokeWidth={1.75} />
+                    <User className="w-8 h-8 text-white m-auto" />
                   )}
                 </div>
                 <span className="inline-block px-2 py-0.5 rounded-full bg-desa-gold text-desa-darkGreen text-[10px] font-extrabold uppercase mb-1">
@@ -101,7 +101,7 @@ export default async function StrukturOrganisasiPage() {
                       sizes="56px"
                     />
                   ) : (
-                    <ShieldCheck className="w-7 h-7 text-slate-400 m-auto" strokeWidth={1.75} />
+                    <ShieldCheck className="w-7 h-7 text-slate-400 m-auto" />
                   )}
                 </div>
                 <span className="inline-block px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-bold uppercase mb-1">

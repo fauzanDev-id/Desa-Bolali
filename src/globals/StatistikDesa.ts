@@ -104,6 +104,6 @@ export const StatistikDesa: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateGlobal('/')],
+    afterChange: [revalidateGlobal('statistik-desa', '/')],
   },
 }

@@ -6,17 +6,7 @@ import { notFound } from 'next/navigation'
 import { getPotensiBySlug, getPotensiList } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
 import { PageHeader, Card, Prose } from '@/components'
-import {
-  Sparkles,
-  MapPin,
-  Phone,
-  ArrowLeft,
-  ArrowRight,
-  MessageCircle,
-  Building2,
-  CheckCircle2,
-  Images,
-} from 'lucide-react'
+import { Sparkle, MapPin, Phone, ArrowLeft, ArrowRight, ChatCircleText, Buildings, CheckCircle, Images } from '@phosphor-icons/react/dist/ssr'
 
 export async function generateMetadata({
   params,
@@ -33,7 +23,7 @@ export async function generateMetadata({
     }
   }
 
-  const imageUrl = getMediaUrl(item.gambar, '/seed/potensi-pertanian.jpg')
+  const imageUrl = getMediaUrl(item.gambar, '/seed/potensi-pertanian.webp')
 
   return {
     title: `${item.judul} | Potensi Unggulan Desa Bolali`,
@@ -59,6 +49,11 @@ export async function generateMetadata({
 
 export const revalidate = 60
 
+export async function generateStaticParams() {
+  const list = await getPotensiList()
+  return list.map((item) => ({ slug: item.slug }))
+}
+
 export default async function PotensiDetailPage({
   params,
 }: {
@@ -76,20 +71,20 @@ export default async function PotensiDetailPage({
 
   const defaultImg =
     item.kategori === 'Pertanian'
-      ? '/seed/potensi-pertanian.jpg'
+      ? '/seed/potensi-pertanian.webp'
       : item.kategori === 'UMKM'
-      ? '/seed/potensi-umkm.jpg'
+      ? '/seed/potensi-umkm.webp'
       : item.kategori === 'Wisata' || item.kategori === 'Wisata Alam'
-      ? '/seed/potensi-wisata.jpg'
-      : '/seed/potensi-budaya.jpg'
+      ? '/seed/potensi-wisata.webp'
+      : '/seed/potensi-budaya.webp'
   const imgUrl = getMediaUrl(item.gambar, defaultImg)
 
   // Contoh galeri foto terkait untuk detail potensi
   const galeriTerkait = [
     imgUrl,
-    '/seed/galeri-1.jpg',
-    '/seed/galeri-2.jpg',
-    '/seed/galeri-3.jpg',
+    '/seed/galeri-1.webp',
+    '/seed/galeri-2.webp',
+    '/seed/galeri-3.webp',
   ]
 
   return (
@@ -99,7 +94,7 @@ export default async function PotensiDetailPage({
         title={item.judul}
         subtitle={`Sektor ${item.kategori} Unggulan Desa Bolali`}
         badge="Potensi Desa"
-        badgeIcon={<Sparkles className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />}
+        badgeIcon={<Sparkle className="w-3.5 h-3.5 text-desa-gold" />}
         breadcrumbs={[
           { label: 'Potensi Desa', href: '/potensi-desa' },
           { label: item.judul },
@@ -115,7 +110,7 @@ export default async function PotensiDetailPage({
             href="/potensi-desa"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-desa-darkGreen hover:text-desa-greenHover transition-colors py-1"
           >
-            <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.75} />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Kembali ke Daftar Potensi Desa</span>
           </Link>
 
@@ -132,7 +127,7 @@ export default async function PotensiDetailPage({
 
               {item.lokasi && (
                 <div className="flex items-center gap-1.5 text-xs text-desa-textMuted font-sans">
-                  <MapPin className="w-4 h-4 text-desa-accentGreen shrink-0" strokeWidth={1.75} />
+                  <MapPin className="w-4 h-4 text-desa-accentGreen shrink-0" />
                   <span>{item.lokasi}</span>
                 </div>
               )}
@@ -172,7 +167,7 @@ export default async function PotensiDetailPage({
             {/* Galeri Foto Dokumentasi Produk/Kawasan Sesuai Spesifikasi */}
             <div className="mt-8 pt-6 border-t border-desa-border">
               <div className="flex items-center gap-2 mb-4">
-                <Images className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />
+                <Images className="w-4 h-4 text-desa-accentGreen" />
                 <h3 className="text-base font-bold text-desa-textDark font-sans">
                   Galeri Dokumentasi Potensi
                 </h3>
@@ -212,7 +207,7 @@ export default async function PotensiDetailPage({
                   href={`tel:${item.kontakPengelola.replace(/[^0-9]/g, '')}`}
                   className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-desa-darkGreen hover:bg-desa-greenHover text-white text-xs font-semibold shadow-2xs transition-colors shrink-0 min-h-[44px]"
                 >
-                  <Phone className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  <Phone className="w-3.5 h-3.5" />
                   <span>Hubungi Pengelola</span>
                 </a>
               </div>

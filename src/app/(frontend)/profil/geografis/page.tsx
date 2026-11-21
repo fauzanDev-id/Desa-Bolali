@@ -2,15 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { getProfilDesa } from '@/lib/cms'
 import { Card, SectionHeader, Prose } from '@/components'
-import {
-  Compass,
-  MapPin,
-  Maximize2,
-  ArrowUp,
-  ArrowRight,
-  ArrowDown,
-  ArrowLeft,
-} from 'lucide-react'
+import { Compass, MapPin, ArrowsOut, ArrowUp, ArrowRight, ArrowDown, ArrowLeft } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
   title: 'Geografis & Wilayah | Profil Desa Bolali',
@@ -37,22 +29,22 @@ export default async function GeografisPage() {
     {
       arah: 'Sebelah Utara',
       desa: profil.batasUtara || 'Desa Boto, Kecamatan Wonosari',
-      icon: <ArrowUp className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />,
+      icon: <ArrowUp className="w-4 h-4 text-desa-accentGreen" />,
     },
     {
       arah: 'Sebelah Timur',
       desa: profil.batasTimur || 'Desa Bentakan, Kecamatan Wonosari',
-      icon: <ArrowRight className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />,
+      icon: <ArrowRight className="w-4 h-4 text-desa-accentGreen" />,
     },
     {
       arah: 'Sebelah Selatan',
       desa: profil.batasSelatan || 'Desa Teloyo, Kecamatan Wonosari',
-      icon: <ArrowDown className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />,
+      icon: <ArrowDown className="w-4 h-4 text-desa-accentGreen" />,
     },
     {
       arah: 'Sebelah Barat',
       desa: profil.batasBarat || 'Desa Sekaran, Kecamatan Wonosari',
-      icon: <ArrowLeft className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />,
+      icon: <ArrowLeft className="w-4 h-4 text-desa-accentGreen" />,
     },
   ]
 
@@ -62,7 +54,7 @@ export default async function GeografisPage() {
       <Card className="p-5 sm:p-7">
         <SectionHeader
           title="Kondisi Geografis & Wilayah"
-          icon={<Compass className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<Compass className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <Prose className="mt-4">
@@ -79,7 +71,7 @@ export default async function GeografisPage() {
       <Card className="p-5 sm:p-7">
         <SectionHeader
           title="Data Letak, Batas & Luas Wilayah"
-          icon={<Maximize2 className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<ArrowsOut className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <div className="overflow-x-auto mt-4">
@@ -104,7 +96,7 @@ export default async function GeografisPage() {
       <Card className="p-5 sm:p-7">
         <SectionHeader
           title="Batas Wilayah Administratif Desa"
-          icon={<MapPin className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
+          icon={<MapPin className="w-4 h-4 text-desa-accentGreen" />}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">

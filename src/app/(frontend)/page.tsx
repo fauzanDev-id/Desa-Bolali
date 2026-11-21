@@ -22,6 +22,9 @@ import {
 } from '@/lib/cms'
 
 export default async function HomePage() {
+  const isPerfLog = process.env.PERF_LOG === '1'
+  const t0 = isPerfLog ? performance.now() : 0
+
   const [
     settings,
     contact,
@@ -41,6 +44,10 @@ export default async function HomePage() {
     getPotensiUnggulan(6),
     getGaleriTerbaru(6),
   ])
+
+  if (isPerfLog) {
+    console.log(`[PERF_LOG] Server Render / (HomePage) data fetching took ${(performance.now() - t0).toFixed(2)}ms`)
+  }
 
   return (
     <div className="pb-10">

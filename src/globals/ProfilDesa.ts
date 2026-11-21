@@ -101,6 +101,6 @@ export const ProfilDesa: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateGlobal('/profil/sejarah', '/profil/visi-misi', '/profil/geografis')],
+    afterChange: [revalidateGlobal('profil-desa', '/profil/sejarah', '/profil/visi-misi', '/profil/geografis')],
   },
 }
