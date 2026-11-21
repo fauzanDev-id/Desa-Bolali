@@ -128,7 +128,8 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
         { label: 'Sejarah Desa', url: '/profil/sejarah' },
         { label: 'Visi & Misi', url: '/profil/visi-misi' },
         { label: 'Geografis & Peta', url: '/profil/geografis' },
-        { label: 'Data Kependudukan', url: '/profil/demografi' },
+        { label: 'Data Kependudukan', url: '/profil/kependudukan' },
+        { label: 'Wilayah Dusun', url: '/profil/wilayah-dusun' },
       ],
     },
     {
@@ -138,6 +139,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
         { label: 'Struktur Organisasi', url: '/pemerintahan/struktur' },
         { label: 'Perangkat Desa', url: '/pemerintahan/perangkat-desa' },
         { label: 'Badan Permusyawaratan Desa (BPD)', url: '/pemerintahan/bpd' },
+        { label: 'Rukun Tetangga & RW', url: '/pemerintahan/rt-rw' },
       ],
     },
     {
@@ -178,6 +180,31 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
     },
     { label: 'Kontak', url: '/kontak' },
   ]
+
+  const isItemActive = (item: (typeof menuItems)[0]) => {
+    if (item.url === '/') {
+      return pathname === '/'
+    }
+    if (pathname === item.url || pathname.startsWith(item.url + '/') || pathname.startsWith(item.url + '#')) {
+      return true
+    }
+    if (
+      item.submenus &&
+      item.submenus.some((sub) => {
+        const basePath = sub.url.split('#')[0]
+        return pathname === basePath || pathname.startsWith(basePath + '/')
+      })
+    ) {
+      return true
+    }
+    if (item.url === '/informasi' && (pathname.startsWith('/berita') || pathname.startsWith('/pengumuman'))) {
+      return true
+    }
+    if (item.url === '/potensi-desa' && pathname.startsWith('/potensi')) {
+      return true
+    }
+    return false
+  }
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -237,7 +264,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
           >
             {menuItems.map((item, index) => {
               const isBeranda = item.url === '/'
-              const isActive = isBeranda ? pathname === '/' : pathname.startsWith(item.url)
+              const isActive = isItemActive(item)
               const hasSubmenus = item.submenus && item.submenus.length > 0
               const isDropdownOpen = openDropdown === item.label
 
@@ -246,13 +273,17 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                   <React.Fragment key={index}>
                     <Link
                       href="/"
-                      className={`inline-flex items-center gap-1 px-2 py-1.5 rounded-full transition-colors text-[13px] font-semibold shrink-0 ${
+                      className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full transition-colors text-[13px] font-semibold shrink-0 ${
                         isActive
                           ? 'bg-[#0B4625] text-white shadow-xs'
-                          : 'text-slate-800 hover:text-desa-primaryGreen hover:bg-slate-100'
+                          : 'text-slate-800 hover:text-desa-primaryGreen hover:bg-slate-100/70'
                       }`}
                     >
-                      <House size={15} weight="fill" className="shrink-0" />
+                      <House
+                        size={15}
+                        weight="fill"
+                        className={`shrink-0 ${isActive ? 'text-white' : 'text-slate-600'}`}
+                      />
                       <span>Beranda</span>
                     </Link>
                     <span className="text-slate-200 select-none mx-0.5" aria-hidden="true">|</span>
@@ -270,10 +301,10 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                       <button
                         type="button"
                         onClick={() => setOpenDropdown(isDropdownOpen ? null : item.label)}
-                        className={`inline-flex items-center gap-0.5 px-1 2xl:px-1.5 py-1.5 rounded-md transition-colors text-[13px] font-semibold focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen cursor-pointer shrink-0 ${
+                        className={`inline-flex items-center gap-0.5 px-2 2xl:px-2.5 py-1.5 rounded-full transition-colors text-[13px] font-semibold focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen cursor-pointer shrink-0 ${
                           isActive
-                            ? 'text-[#0B4625] font-bold'
-                            : 'text-slate-800 hover:text-[#0B4625]'
+                            ? 'bg-[#0B4625] text-white shadow-xs'
+                            : 'text-slate-800 hover:text-desa-primaryGreen hover:bg-slate-100/70'
                         }`}
                         aria-expanded={isDropdownOpen}
                         aria-haspopup="true"
@@ -282,9 +313,9 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                         <CaretDown
                           size={11}
                           weight="bold"
-                          className={`transition-transform duration-200 shrink-0 text-slate-400 ${
-                            isDropdownOpen ? 'rotate-180' : ''
-                          }`}
+                          className={`transition-transform duration-200 shrink-0 ${
+                            isActive ? 'text-white/80' : 'text-slate-400'
+                          } ${isDropdownOpen ? 'rotate-180' : ''}`}
                         />
                       </button>
 
@@ -295,7 +326,11 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                           className="absolute left-0 mt-1 w-56 rounded-desa-card bg-white shadow-desa-dropdown border border-slate-100 p-1.5 z-50 animate-in fade-in duration-150"
                         >
                           {item.submenus!.map((sub, sIndex) => {
-                            const isSubActive = pathname === sub.url
+                            const isSubActive =
+                              pathname === sub.url ||
+                              (sub.url.includes('#')
+                                ? pathname === sub.url.split('#')[0]
+                                : pathname.startsWith(sub.url))
                             return (
                               <Link
                                 key={sIndex}
@@ -325,10 +360,10 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                 <Link
                   key={index}
                   href={item.url}
-                  className={`inline-flex items-center px-1 2xl:px-1.5 py-1.5 rounded-md transition-colors text-[13px] font-semibold shrink-0 ${
+                  className={`inline-flex items-center px-2.5 py-1.5 rounded-full transition-colors text-[13px] font-semibold shrink-0 ${
                     isActive
-                      ? 'text-[#0B4625] font-bold'
-                      : 'text-slate-800 hover:text-[#0B4625]'
+                      ? 'bg-[#0B4625] text-white shadow-xs'
+                      : 'text-slate-800 hover:text-desa-primaryGreen hover:bg-slate-100/70'
                   }`}
                 >
                   <span className="whitespace-nowrap">{item.label}</span>
@@ -444,7 +479,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
               <div className="p-3 space-y-1">
                 {menuItems.map((item, index) => {
                   const isBeranda = item.url === '/'
-                  const isActive = isBeranda ? pathname === '/' : pathname.startsWith(item.url)
+                  const isActive = isItemActive(item)
                   const hasSubmenus = item.submenus && item.submenus.length > 0
                   const isExpanded = mobileExpandedGroup === item.label
 
@@ -456,7 +491,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                           onClick={() => toggleMobileGroup(item.label)}
                           className={`w-full min-h-[44px] flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold transition-colors cursor-pointer ${
                             isActive
-                              ? 'bg-desa-lightGreen text-desa-darkGreen'
+                              ? 'bg-emerald-50 text-[#0B4625] font-bold border-l-4 border-[#0B4625]'
                               : 'text-slate-800 hover:bg-slate-50'
                           }`}
                           aria-expanded={isExpanded}
@@ -466,26 +501,37 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                             size={14}
                             weight="bold"
                             className={`transition-transform duration-200 ${
-                              isExpanded ? 'rotate-180 text-desa-darkGreen' : 'text-slate-400'
+                              isExpanded
+                                ? 'rotate-180 text-desa-darkGreen'
+                                : isActive
+                                ? 'text-[#0B4625]'
+                                : 'text-slate-400'
                             }`}
                           />
                         </button>
 
                         {isExpanded && (
                           <div className="pl-4 pr-2 py-1 space-y-1 bg-slate-50/70 rounded-md my-1">
-                            {item.submenus!.map((sub, sIndex) => (
-                              <Link
-                                key={sIndex}
-                                href={sub.url}
-                                className={`block px-3 py-2.5 rounded-md text-xs font-medium transition-colors min-h-[40px] flex items-center ${
-                                  pathname === sub.url
-                                    ? 'bg-desa-lightGreen text-desa-darkGreen font-bold'
-                                    : 'text-slate-700 hover:text-desa-darkGreen hover:bg-white'
-                                }`}
-                              >
-                                {sub.label}
-                              </Link>
-                            ))}
+                            {item.submenus!.map((sub, sIndex) => {
+                              const isSubActive =
+                                pathname === sub.url ||
+                                (sub.url.includes('#')
+                                  ? pathname === sub.url.split('#')[0]
+                                  : pathname.startsWith(sub.url))
+                              return (
+                                <Link
+                                  key={sIndex}
+                                  href={sub.url}
+                                  className={`block px-3 py-2.5 rounded-md text-xs font-medium transition-colors min-h-[40px] flex items-center ${
+                                    isSubActive
+                                      ? 'bg-[#0B4625] text-white font-bold rounded-md'
+                                      : 'text-slate-700 hover:text-desa-darkGreen hover:bg-white'
+                                  }`}
+                                >
+                                  {sub.label}
+                                </Link>
+                              )
+                            })}
                           </div>
                         )}
                       </div>
@@ -498,11 +544,17 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                       href={item.url}
                       className={`min-h-[44px] flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-semibold transition-colors ${
                         isActive
-                          ? 'bg-desa-darkGreen text-white'
+                          ? 'bg-[#0B4625] text-white font-bold'
                           : 'text-slate-800 hover:bg-slate-100'
                       }`}
                     >
-                      {isBeranda && <House size={18} weight="fill" className="text-white" />}
+                      {isBeranda && (
+                        <House
+                          size={18}
+                          weight="fill"
+                          className={isActive ? 'text-white' : 'text-slate-600'}
+                        />
+                      )}
                       <span>{item.label}</span>
                     </Link>
                   )
