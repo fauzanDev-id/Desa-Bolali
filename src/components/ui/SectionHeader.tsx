@@ -25,7 +25,7 @@ export function SectionEmblem({ className = 'w-6 h-6' }: { className?: string })
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx('shrink-0', className)}
+      className={clsx('shrink-0 w-6 h-6', className)}
       aria-hidden="true"
     >
       {/* Heksagon / Perisai Hijau Solid */}
@@ -57,9 +57,9 @@ export function SectionEmblem({ className = 'w-6 h-6' }: { className?: string })
 
 /**
  * Header Seksi Konten Standar Sesuai Mockup
- * - Judul: 17px/600 (font-semibold, letter-spacing 0)
+ * - Judul: 17px/600 (font-semibold, letter-spacing 0, whitespace-nowrap)
  * - Emblem daun tunggal 24px untuk SEMUA section, KECUALI Berita (koran solid hijau)
- * - Tautan aksi "Lihat Semua / Lihat Detail" dengan panah bold 14px
+ * - Tautan aksi "Lihat Semua →" / "Lihat Detail →" dengan panah bold 13px/600 hijau di kanan
  */
 export function SectionHeader({
   title,
@@ -79,7 +79,7 @@ export function SectionHeader({
       )}
     >
       {/* Judul & Ikon Emblem */}
-      <div className="flex items-center gap-2 min-w-0 flex-1">
+      <div className="flex items-center gap-2 min-w-0">
         <div className="shrink-0 flex items-center justify-center">
           {isBeritaSection ? (
             <Newspaper size={24} weight="fill" className="text-[#1E7F3A]" />
@@ -87,27 +87,27 @@ export function SectionHeader({
             <SectionEmblem className="w-6 h-6" />
           )}
         </div>
-        <div className="min-w-0">
-          <h2 className="text-[17px] font-semibold text-desa-textDark leading-snug font-sans">
-            {title}
-          </h2>
-          {subtitle && (
-            <p className="text-xs text-desa-textMuted mt-0.5 truncate">{subtitle}</p>
-          )}
-        </div>
+        <h2 className="text-[17px] font-semibold text-slate-900 leading-snug font-sans whitespace-nowrap">
+          {title}
+        </h2>
+        {subtitle && (
+          <span className="text-xs text-slate-500 font-normal truncate hidden sm:inline">
+            — {subtitle}
+          </span>
+        )}
       </div>
 
-      {/* Tautan "Lihat Semua →" / "Lihat Detail →" */}
+      {/* Tautan "Lihat Semua →" / "Lihat Detail →" / "Lihat Peta →" */}
       {linkText && linkHref && (
         <Link
           href={linkHref}
-          className="group inline-flex items-center gap-1 text-xs font-semibold text-desa-primaryGreen hover:text-desa-darkGreen transition-colors shrink-0 py-1"
+          className="group inline-flex items-center gap-1 text-[13px] font-semibold text-[#1E7F3A] hover:text-[#17632e] transition-colors shrink-0 py-0.5"
         >
-          <span>{linkText}</span>
+          <span className="whitespace-nowrap">{linkText}</span>
           <ArrowRight
-            size={14}
+            size={13}
             weight="bold"
-            className="transition-transform duration-150 group-hover:translate-x-0.5 text-desa-primaryGreen"
+            className="transition-transform duration-150 group-hover:translate-x-0.5 text-[#1E7F3A]"
           />
         </Link>
       )}

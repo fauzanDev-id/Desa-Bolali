@@ -1,7 +1,9 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Newspaper, Calendar } from 'lucide-react'
+import { CalendarBlank } from '@phosphor-icons/react'
 import { Card } from '@/components/ui/Card'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EmptyState } from '@/components/ui/EmptyState'
@@ -16,12 +18,12 @@ interface BeritaSectionProps {
 export function BeritaSection({ beritaList }: BeritaSectionProps) {
   if (!beritaList || beritaList.length === 0) {
     return (
-      <Card className="h-full flex flex-col justify-between card-hover-lift">
+      <Card className="h-full flex flex-col justify-between">
         <SectionHeader
           title="Berita Terbaru"
-          icon={<Newspaper className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
           linkText="Lihat Semua"
           linkHref="/informasi/berita"
+          isNews
         />
         <EmptyState
           title="Belum Ada Berita"
@@ -37,24 +39,24 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
   const featuredBlur = getBlurDataUrl(featuredImgUrl)
 
   return (
-    <Card className="h-full flex flex-col justify-between card-hover-lift">
-      <div>
+    <Card className="h-full flex flex-col justify-between">
+      <div className="flex flex-col h-full justify-between">
         <SectionHeader
           title="Berita Terbaru"
-          icon={<Newspaper className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
           linkText="Lihat Semua"
           linkHref="/informasi/berita"
+          isNews
         />
 
-        {/* Tata Letak Berita: Desktop 7:5, Mobile bertumpuk */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 mt-3">
-          {/* Berita Utama (Sisi Kiri, 7 Kolom) */}
+        {/* Tata Letak Berita: Dua Kolom Seimbang dengan Pemisah Vertikal Tipis */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 mt-1 flex-1">
+          {/* Berita Utama Sisi Kiri (6 Kolom) */}
           {featured && (
-            <div className="lg:col-span-7 flex flex-col justify-between group">
+            <div className="md:col-span-6 flex flex-col justify-between pr-0 md:pr-3.5 md:border-r md:border-slate-100 group">
               <div>
                 <Link
                   href={`/berita/${featured.slug}`}
-                  className="block relative aspect-[16/10] w-full rounded-desa-card zoom-img-container shadow-xs bg-slate-100 border border-desa-border"
+                  className="block relative aspect-[16/9] w-full rounded-[8px] overflow-hidden shadow-xs bg-slate-100 border border-slate-200"
                 >
                   <Image
                     src={featuredImgUrl}
@@ -62,34 +64,32 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
                     fill
                     placeholder={featuredBlur ? 'blur' : 'empty'}
                     blurDataURL={featuredBlur}
-                    sizes="(max-width: 768px) 100vw, 420px"
-                    className="object-cover zoom-img-target"
+                    sizes="(max-width: 768px) 100vw, 360px"
+                    className="object-cover"
                   />
-                  {/* Badge Tanggal Putih di Atas Gambar */}
-                  <div className="absolute bottom-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-desa-sm bg-white/95 text-slate-800 text-[11px] font-bold shadow-xs border border-slate-200">
-                    <Calendar className="w-3.5 h-3.5 text-desa-accentGreen" strokeWidth={1.75} />
+                  {/* Badge Tanggal Putih di Kiri Bawah Gambar */}
+                  <div className="absolute bottom-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/95 text-slate-800 text-[11px] font-semibold shadow-xs border border-slate-200/80">
+                    <CalendarBlank size={12} weight="fill" className="text-[#1E7F3A]" />
                     <span>{formatDateIndonesia(featured.tanggalTerbit)}</span>
                   </div>
                 </Link>
 
-                <div className="mt-2.5 sm:mt-3 space-y-1">
-                  <h3 className="text-sm sm:text-base font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors duration-150 line-clamp-2 leading-snug font-sans">
-                    <Link
-                      href={`/berita/${featured.slug}`}
-                      className="block"
-                    >
+                <div className="mt-2 space-y-1">
+                  <h3 className="text-[15px] sm:text-[16px] font-bold text-slate-900 group-hover:text-[#1E7F3A] transition-colors duration-150 line-clamp-2 leading-snug font-sans">
+                    <Link href={`/berita/${featured.slug}`} className="block">
                       {featured.judul}
                     </Link>
                   </h3>
-                  <p className="text-xs text-desa-textMuted line-clamp-2 leading-relaxed">
+                  <p className="text-[12.5px] text-slate-500 line-clamp-2 leading-relaxed">
                     {featured.ringkasan}
                   </p>
                 </div>
               </div>
 
-              {/* Dot Carousel di Bawah */}
-              <div className="flex items-center gap-1.5 pt-3 mt-1 sm:mt-2">
-                <span className="w-5 sm:w-6 h-1.5 rounded-full bg-desa-primaryGreen transition-all duration-300" />
+              {/* Dot Carousel di Bawah Sesuai Mockup */}
+              <div className="flex items-center gap-1.5 mt-2 pt-1">
+                <span className="w-5 h-1.5 rounded-full bg-[#1E7F3A] transition-all duration-300" />
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
@@ -97,8 +97,8 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
             </div>
           )}
 
-          {/* 3 Berita Kecil di Kanan (5 Kolom) */}
-          <div className="lg:col-span-5 flex flex-col justify-between divide-y divide-slate-100 pt-2 lg:pt-0">
+          {/* 3 Berita di Kanan (6 Kolom): Thumbnail 80x56, Judul 14px/600, Tanggal 12px Abu */}
+          <div className="md:col-span-6 flex flex-col justify-between divide-y divide-slate-100 pl-0 md:pl-1">
             {sideList.map((item, idx) => {
               const imgUrl = getMediaUrl(item.gambar, `/seed/berita-${idx + 2}-thumb.webp`)
               const blur = getBlurDataUrl(imgUrl)
@@ -107,25 +107,25 @@ export function BeritaSection({ beritaList }: BeritaSectionProps) {
                 <Link
                   key={item.id}
                   href={`/berita/${item.slug}`}
-                  className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0 group"
+                  className="flex items-center gap-2.5 py-2 first:pt-0 last:pb-0 group"
                 >
-                  <div className="relative w-20 h-16 sm:w-24 sm:h-16 rounded-desa-sm zoom-img-container shrink-0 bg-slate-100 border border-desa-border shadow-xs">
+                  <div className="relative w-[80px] h-[56px] rounded-[6px] shrink-0 overflow-hidden bg-slate-100 border border-slate-200 shadow-xs">
                     <Image
                       src={imgUrl}
                       alt={item.judul}
                       fill
                       placeholder={blur ? 'blur' : 'empty'}
                       blurDataURL={blur}
-                      sizes="96px"
-                      className="object-cover zoom-img-target"
+                      sizes="80px"
+                      className="object-cover"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xs font-bold text-desa-textDark group-hover:text-desa-primaryGreen transition-colors duration-150 line-clamp-2 leading-snug font-sans">
+                    <h3 className="text-[13.5px] font-semibold text-slate-900 group-hover:text-[#1E7F3A] transition-colors duration-150 line-clamp-2 leading-snug font-sans">
                       {item.judul}
                     </h3>
-                    <div className="flex items-center gap-1 text-[10px] text-desa-textMuted mt-1">
-                      <Calendar className="w-3 h-3 text-slate-400" strokeWidth={1.75} />
+                    <div className="flex items-center gap-1 text-[11.5px] text-slate-400 mt-0.5">
+                      <CalendarBlank size={12} weight="fill" className="text-slate-400" />
                       <span>{formatDateIndonesia(item.tanggalTerbit)}</span>
                     </div>
                   </div>

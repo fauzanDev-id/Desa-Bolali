@@ -1,7 +1,8 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Sparkles } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EmptyState } from '@/components/ui/EmptyState'
@@ -16,10 +17,9 @@ interface PotensiSectionProps {
 export function PotensiSection({ potensiList }: PotensiSectionProps) {
   if (!potensiList || potensiList.length === 0) {
     return (
-      <Card className="h-full flex flex-col justify-between card-hover-lift">
+      <Card className="h-full flex flex-col justify-between">
         <SectionHeader
           title="Potensi Unggulan Desa"
-          icon={<Sparkles className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
           linkText="Lihat Semua"
           linkHref="/potensi-desa"
         />
@@ -40,7 +40,6 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
     'Seni-Budaya': 4,
     'Seni & Budaya': 4,
     Budaya: 4,
-    BUMDes: 10,
   }
 
   const sortedItems = [...potensiList]
@@ -55,22 +54,26 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
     if (item.kategori === 'Pertanian') return 'Pertanian'
     if (item.kategori === 'UMKM') return 'UMKM'
     if (item.kategori === 'Wisata Alam' || item.kategori === 'Wisata') return 'Wisata Alam'
-    if (item.kategori === 'Seni-Budaya' || item.kategori === 'Seni & Budaya' || item.kategori === 'Budaya') return 'Budaya'
+    if (
+      item.kategori === 'Seni-Budaya' ||
+      item.kategori === 'Seni & Budaya' ||
+      item.kategori === 'Budaya'
+    )
+      return 'Budaya'
     return item.judul
   }
 
   return (
-    <Card className="h-full flex flex-col justify-between card-hover-lift">
+    <Card className="h-full flex flex-col justify-between">
       <div>
         <SectionHeader
           title="Potensi Unggulan Desa"
-          icon={<Sparkles className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
           linkText="Lihat Semua"
           linkHref="/potensi-desa"
         />
 
-        {/* 4 Ubin Foto Rounded (Grid 2x2) Sesuai Mockup */}
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-3 mt-3">
+        {/* 4 Ubin Foto Dalam SATU Baris pada Desktop (xl:grid-cols-4), Grid 2x2 pada Mobile (<768px) */}
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 mt-1">
           {sortedItems.map((item, idx) => {
             const defaultImg =
               idx === 0
@@ -87,7 +90,7 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
               <Link
                 key={item.id}
                 href={`/potensi-desa#${item.slug}`}
-                className="group relative aspect-[4/3] rounded-desa-card zoom-img-container shadow-xs bg-slate-100 border border-desa-border block"
+                className="group relative aspect-[4/3] rounded-[10px] overflow-hidden shadow-xs bg-slate-100 border border-slate-200 block"
               >
                 <Image
                   src={imgUrl}
@@ -95,15 +98,15 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
                   fill
                   placeholder={blur ? 'blur' : 'empty'}
                   blurDataURL={blur}
-                  sizes="(max-width: 768px) 50vw, 220px"
-                  className="object-cover zoom-img-target"
+                  sizes="(max-width: 768px) 50vw, 150px"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                {/* Gradient Overlay Gelap Bawah */}
+                {/* Scrim Gelap Tipis di Bawah Gambar */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                {/* Label di Sudut Kiri Bawah */}
-                <div className="absolute bottom-2 left-2.5 right-2.5">
-                  <span className="text-xs sm:text-sm font-bold text-white tracking-wide font-sans drop-shadow-sm group-hover:text-desa-gold transition-colors duration-150 truncate block">
+                {/* Label Putih 13px/600 di Kiri Bawah */}
+                <div className="absolute bottom-1.5 left-2 right-2">
+                  <span className="text-[12.5px] font-semibold text-white tracking-wide font-sans truncate block">
                     {getCleanLabel(item)}
                   </span>
                 </div>

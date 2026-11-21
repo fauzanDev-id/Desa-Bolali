@@ -90,14 +90,14 @@ export default async function HomePage() {
 
         {/* ========================================================
             BARIS 2: POTENSI UNGGULAN, PETA DIGITAL DESA, GALERI DESA
-            - >=1280 (xl): 3 kolom sejajar (rasio 3 : 5 : 3.4, gap 16px)
+            - >=1280 (xl): 3 kolom sejajar (rasio 4.4 : 5.2 : 3.6, gap 16px) agar 4 ubin Potensi muat 1 baris
             - 1024-1279 (lg): Potensi + Peta berdampingan, Galeri di bawah
             - 768-1023 (md): 2 kolom / 1 kolom
             - <768: 1 kolom bertumpuk
            ======================================================== */}
         <section
           aria-label="Potensi dan Dokumentasi Desa"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-[3fr_5fr_3.4fr] gap-4 items-stretch"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-[4.4fr_5.2fr_3.6fr] gap-4 items-stretch"
         >
           {/* Card 4: Potensi Unggulan */}
           <ScrollReveal

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { FileText, Download, ArrowRight, BarChart3 } from 'lucide-react'
+import { FileText, DownloadSimple, ArrowRight } from '@phosphor-icons/react'
 import { Card } from '@/components/ui/Card'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EmptyState } from '@/components/ui/EmptyState'
@@ -17,14 +17,15 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
 
-  // Ambil persentase dari item pertama atau fallback ke 92.3%
-  const primaryDoc = dokumenList && dokumenList.length > 0
-    ? (dokumenList.find((d) => d.persentaseRealisasi) || dokumenList[0])
-    : null
+  // Ambil persentase realisasi APBDes (default 92.3%)
+  const primaryDoc =
+    dokumenList && dokumenList.length > 0
+      ? dokumenList.find((d) => d.persentaseRealisasi) || dokumenList[0]
+      : null
 
   const percentage = primaryDoc?.persentaseRealisasi ?? 92.3
-  const radius = 38
-  const circumference = 2 * Math.PI * radius // ~238.76
+  const radius = 40
+  const circumference = 2 * Math.PI * radius // ~251.32
 
   useEffect(() => {
     if (
@@ -54,10 +55,9 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
 
   if (!dokumenList || dokumenList.length === 0) {
     return (
-      <Card className="h-full flex flex-col justify-between card-hover-lift">
+      <Card className="h-full flex flex-col justify-between">
         <SectionHeader
           title="Transparansi Desa"
-          icon={<BarChart3 className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
           linkText="Lihat Detail"
           linkHref="/transparansi"
         />
@@ -69,44 +69,43 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
     )
   }
 
-  // Animasi garis menggambar dari 0 ke 92.3% saat terlihat (1 detik)
+  // Animasi menggambar cincin hijau dari 0 ke 92.3%
   const targetOffset = circumference - (percentage / 100) * circumference
   const currentOffset = isVisible ? targetOffset : circumference
 
   return (
-    <Card ref={containerRef} className="h-full flex flex-col justify-between card-hover-lift">
-      <div>
+    <Card ref={containerRef} className="h-full flex flex-col justify-between">
+      <div className="flex flex-col h-full justify-between">
         <SectionHeader
           title="Transparansi Desa"
-          icon={<BarChart3 className="w-4 h-4 text-desa-accentGreen" strokeWidth={1.75} />}
           linkText="Lihat Detail"
           linkHref="/transparansi"
         />
 
-        {/* Donut Chart Realisasi APBDes Sesuai Mockup */}
-        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-5 py-2 mt-2 text-center sm:text-left">
-          {/* Donut Chart SVG Ringan */}
-          <div className="relative w-24 h-24 shrink-0 flex items-center justify-center">
-            <svg className="w-24 h-24 -rotate-90 transform" viewBox="0 0 100 100">
-              {/* Segmen Dasar / Kuning-Emas */}
+        {/* Donut Chart Cincin Tebal (±18% diameter, ~105px, hijau #1E7F3A 92,3%, sisa kuning #F2C230) */}
+        <div className="flex items-center gap-3.5 mt-1">
+          {/* Donut Chart SVG */}
+          <div className="relative w-[105px] h-[105px] shrink-0 flex items-center justify-center">
+            <svg className="w-[105px] h-[105px] -rotate-90 transform" viewBox="0 0 105 105">
+              {/* Segmen Dasar / Kuning-Emas #F2C230 untuk sisa 7,7% */}
               <circle
-                cx="50"
-                cy="50"
+                cx="52.5"
+                cy="52.5"
                 r={radius}
-                stroke="#EAB308"
-                strokeWidth="11"
+                stroke="#F2C230"
+                strokeWidth="19"
                 fill="transparent"
               />
-              {/* Segmen Hijau Realisasi Utama (Menggambar dari 0 ke 92,3% dalam 1s) */}
+              {/* Segmen Realisasi Utama Hijau Tua #1E7F3A 92,3% */}
               <circle
-                cx="50"
-                cy="50"
+                cx="52.5"
+                cy="52.5"
                 r={radius}
-                stroke="#10B981"
-                strokeWidth="11"
+                stroke="#1E7F3A"
+                strokeWidth="19"
                 strokeDasharray={circumference}
                 strokeDashoffset={currentOffset}
-                strokeLinecap="round"
+                strokeLinecap="butt"
                 fill="transparent"
                 style={{
                   transition: 'stroke-dashoffset 1000ms cubic-bezier(0.16, 1, 0.3, 1)',
@@ -116,46 +115,48 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
             </svg>
           </div>
 
-          {/* Keterangan & Persen Besar di Kanan */}
-          <div className="flex-1 min-w-0 flex flex-col items-center sm:items-start">
-            <div className="text-xs font-bold text-slate-800 leading-tight">
+          {/* Teks Keterangan di Kanan Donut */}
+          <div className="flex-1 min-w-0">
+            <div className="text-[14px] font-semibold text-slate-800 leading-tight">
               Realisasi APBDes
             </div>
-            <div className="text-xs font-bold text-slate-800 leading-tight">
+            <div className="text-[14px] font-semibold text-slate-800 leading-tight">
               Tahun {primaryDoc?.tahun || 2026}
             </div>
-            <div className="text-3xl font-black text-desa-darkGreen tracking-tight mt-0.5 font-sans">
+            <div className="text-[28px] sm:text-[30px] font-extrabold text-[#1E7F3A] leading-tight my-0.5 tracking-tight font-sans">
               {String(percentage).replace('.', ',')}%
             </div>
-            <div className="mt-2">
+            <div className="mt-1">
               <Link
                 href="/transparansi"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-desa-darkGreen hover:bg-desa-greenHover px-4 py-2 sm:py-1.5 rounded-full transition-colors duration-150 shadow-desa-sm min-h-[44px] sm:min-h-0"
+                className="group inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#1E7F3A] hover:bg-[#17632e] text-white text-xs font-semibold shadow-xs transition-colors"
               >
                 <span>Lihat Laporan</span>
-                <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+                <ArrowRight
+                  size={12}
+                  weight="bold"
+                  className="text-white transition-transform duration-150 group-hover:translate-x-0.5"
+                />
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Garis Pembatas Tipis Antara Donut dan Daftar Dokumen */}
-        <hr className="my-3.5 border-desa-border" />
+        {/* Garis Pembatas Tipis Antara Donut dan Dokumen */}
+        <hr className="my-2.5 border-slate-100" />
 
-        {/* 3 Berkas Dokumen APBDes */}
-        <div className="space-y-1 sm:space-y-1.5">
+        {/* 3 Baris Dokumen dengan Ikon Dokumen SOLID Hijau, Nama 14px/500, Download ⤓ 13px/600 */}
+        <div className="space-y-1">
           {dokumenList.slice(0, 3).map((dok) => {
             const fileUrl = getMediaUrl(dok.filePdf, '/seed/docs/apbdes-2026.pdf')
             return (
               <div
                 key={dok.id}
-                className="flex items-center justify-between py-1 px-1 hover:bg-slate-50/80 rounded-desa-sm transition-colors duration-150 gap-2"
+                className="flex items-center justify-between py-1.5 px-1.5 rounded hover:bg-slate-50 transition-colors gap-2"
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className="w-4 h-4 rounded-desa-sm bg-emerald-50 text-desa-accentGreen flex items-center justify-center shrink-0">
-                    <FileText className="w-3 h-3" strokeWidth={1.75} />
-                  </div>
-                  <span className="text-xs font-medium text-slate-800 truncate" title={dok.judul}>
+                  <FileText size={18} weight="fill" className="text-[#1E7F3A] shrink-0" />
+                  <span className="text-[13.5px] font-medium text-slate-800 truncate" title={dok.judul}>
                     {dok.judul}
                   </span>
                 </div>
@@ -163,10 +164,10 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
                   href={fileUrl}
                   download
                   aria-label={`Unduh berkas ${dok.judul}`}
-                  className="flex items-center gap-1 text-[11px] font-semibold text-desa-darkGreen hover:text-desa-greenHover transition-colors duration-150 shrink-0 ml-1 py-1 px-1.5"
+                  className="inline-flex items-center gap-1 text-[13px] font-semibold text-[#1E7F3A] hover:text-[#17632e] transition-colors shrink-0 ml-1 py-0.5 px-1"
                 >
-                  <span className="hidden sm:inline">Download</span>
-                  <Download className="w-3 h-3" strokeWidth={1.75} />
+                  <span>Download</span>
+                  <DownloadSimple size={13} weight="bold" />
                 </a>
               </div>
             )
