@@ -192,15 +192,15 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
   }
 
   return (
-    <div className={`w-full transition-all duration-200 select-none ${navBgClass}`}>
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-4 md:px-6">
-        <div className="flex items-center justify-between h-[64px] gap-2 lg:gap-4">
+    <div className={`w-full transition-[background-color,box-shadow,border-color] duration-200 select-none ${navBgClass}`}>
+      <div className="max-w-[1440px] mx-auto px-3 sm:px-4 md:px-5 lg:px-6">
+        <div className="flex items-center justify-between h-[64px] gap-2 lg:gap-3 2xl:gap-4">
           {/* Sisi Kiri: Logo Resmi & Identitas Desa */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 sm:gap-3 min-w-0 group py-1 focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen rounded-md shrink-0"
+            className="flex items-center gap-2 sm:gap-2.5 min-w-0 group py-1 focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen rounded-md shrink-0"
           >
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 2xl:w-11 2xl:h-11 shrink-0">
               <Image
                 src={
                   settings.logo && typeof settings.logo === 'object' && settings.logo.url
@@ -209,18 +209,22 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                 }
                 alt={settings.namaWebsite || 'Logo Desa Bolali'}
                 fill
-                sizes="(max-width: 640px) 40px, 44px"
+                sizes="(max-width: 640px) 36px, 44px"
                 className="object-contain"
                 priority
               />
             </div>
 
             <div className="flex flex-col min-w-0">
-              <span className="text-lg sm:text-[19px] font-bold text-slate-900 leading-none group-hover:text-desa-primaryGreen transition-colors font-sans">
+              <span className="text-base sm:text-[17px] 2xl:text-[18px] font-bold text-slate-900 leading-none group-hover:text-desa-primaryGreen transition-colors font-sans truncate">
                 {settings.namaWebsite || 'Desa Bolali'}
               </span>
-              <span className="hidden sm:block text-[11px] sm:text-[12px] text-slate-500 font-normal leading-tight mt-1 whitespace-nowrap">
+              {/* Wilayah: ringkas di layar laptop & desktop standar, lengkap di ultra-wide (>= 1600px) */}
+              <span className="hidden min-[1600px]:block text-[11px] text-slate-500 font-normal leading-tight mt-1 whitespace-nowrap">
                 {settings.subInstansi || 'Kecamatan Wonosari • Kabupaten Klaten • Jawa Tengah'}
+              </span>
+              <span className="hidden sm:block min-[1600px]:hidden text-[10.5px] text-slate-500 font-normal leading-tight mt-1 whitespace-nowrap">
+                Kec. Wonosari, Kab. Klaten
               </span>
             </div>
           </Link>
@@ -229,7 +233,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
           <nav
             ref={dropdownRef}
             aria-label="Navigasi Utama"
-            className="hidden xl:flex items-center gap-2 text-[14px] font-semibold text-slate-800"
+            className="hidden xl:flex items-center gap-0.5 2xl:gap-1 text-[13px] font-semibold text-slate-800 shrink-0"
           >
             {menuItems.map((item, index) => {
               const isBeranda = item.url === '/'
@@ -242,16 +246,16 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                   <React.Fragment key={index}>
                     <Link
                       href="/"
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors text-[14px] font-semibold ${
+                      className={`inline-flex items-center gap-1 px-2 py-1.5 rounded-full transition-colors text-[13px] font-semibold shrink-0 ${
                         isActive
                           ? 'bg-[#0B4625] text-white shadow-xs'
                           : 'text-slate-800 hover:text-desa-primaryGreen hover:bg-slate-100'
                       }`}
                     >
-                      <House size={16} weight="fill" className="shrink-0" />
+                      <House size={15} weight="fill" className="shrink-0" />
                       <span>Beranda</span>
                     </Link>
-                    <span className="text-slate-300" aria-hidden="true">|</span>
+                    <span className="text-slate-200 select-none mx-0.5" aria-hidden="true">|</span>
                   </React.Fragment>
                 )
               }
@@ -266,7 +270,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                       <button
                         type="button"
                         onClick={() => setOpenDropdown(isDropdownOpen ? null : item.label)}
-                        className={`inline-flex items-center gap-1 px-1.5 py-1.5 rounded-md transition-colors text-[14px] font-semibold focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen cursor-pointer ${
+                        className={`inline-flex items-center gap-0.5 px-1 2xl:px-1.5 py-1.5 rounded-md transition-colors text-[13px] font-semibold focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen cursor-pointer shrink-0 ${
                           isActive
                             ? 'text-[#0B4625] font-bold'
                             : 'text-slate-800 hover:text-[#0B4625]'
@@ -276,9 +280,9 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                       >
                         <span className="whitespace-nowrap">{item.label}</span>
                         <CaretDown
-                          size={12}
+                          size={11}
                           weight="bold"
-                          className={`transition-transform duration-200 shrink-0 text-slate-500 ${
+                          className={`transition-transform duration-200 shrink-0 text-slate-400 ${
                             isDropdownOpen ? 'rotate-180' : ''
                           }`}
                         />
@@ -310,7 +314,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                       )}
                     </div>
                     {index < menuItems.length - 1 && (
-                      <span className="text-slate-300" aria-hidden="true">|</span>
+                      <span className="text-slate-200 select-none mx-0.5" aria-hidden="true">|</span>
                     )}
                   </React.Fragment>
                 )
@@ -321,7 +325,7 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
                 <Link
                   key={index}
                   href={item.url}
-                  className={`inline-flex items-center px-1.5 py-1.5 rounded-md transition-colors text-[14px] font-semibold ${
+                  className={`inline-flex items-center px-1 2xl:px-1.5 py-1.5 rounded-md transition-colors text-[13px] font-semibold shrink-0 ${
                     isActive
                       ? 'text-[#0B4625] font-bold'
                       : 'text-slate-800 hover:text-[#0B4625]'
@@ -333,20 +337,20 @@ export function Navbar({ settings, contact, isScrolled: isScrolledProp }: Navbar
             })}
           </nav>
 
-          {/* Sisi Kanan: Kolom Pencarian Desktop (Pill Shape) */}
+          {/* Sisi Kanan: Kolom Pencarian Desktop (Pill Shape Responsif & Smooth Expand) */}
           <div className="hidden xl:flex items-center shrink-0">
             <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
-                placeholder="Cari informasi..."
+                placeholder="Cari..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-44 2xl:w-48 pl-3.5 pr-8 py-1.5 text-[12px] rounded-full bg-slate-50/90 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen focus:border-transparent transition-all placeholder:text-slate-400"
+                className="w-28 xl:w-32 2xl:w-36 focus:w-44 pl-3 pr-7 py-1.5 text-[12px] rounded-full bg-slate-100/90 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-desa-primaryGreen focus:border-transparent transition-all duration-200 placeholder:text-slate-400"
               />
               <button
                 type="submit"
                 aria-label="Cari Informasi"
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-desa-darkGreen transition-colors focus:outline-none cursor-pointer"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-desa-darkGreen transition-colors focus:outline-none cursor-pointer"
               >
                 <MagnifyingGlass size={14} weight="bold" />
               </button>
