@@ -31,13 +31,18 @@
     --base-font-size: 16px;
     --background: #f2f6f3;
     --foreground: #0f172a;
+
+    /* Header & Row 2 layout tokens */
+    --header-h: 64px;
+    --row2-body-h: clamp(104px, 8.5vw, 140px);
   }
 
   html {
     font-size: var(--base-font-size);
     scroll-behavior: smooth;
     background-color: var(--color-desa-pageBg);
-    overflow-x: hidden;
+    overflow-x: clip;
+    scroll-padding-top: var(--header-h, 64px);
   }
 
   /* Aksesibilitas Font Size Scaling */
@@ -59,7 +64,7 @@
     font-family: var(--font-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
   }
 
@@ -179,6 +184,58 @@
 .leaflet-container {
   font-family: inherit;
   z-index: 10;
+}
+
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+  padding: 0 4px !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Token tinggi kartu Baris 2 presisi tanpa ruang kosong */
+.row2-card-body {
+  height: var(--row2-body-h);
+  flex-basis: var(--row2-body-h);
+}
+
+.row2-potensi-body,
+.row2-potensi-grid {
+  height: var(--row2-body-h);
+  flex-basis: var(--row2-body-h);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  gap: 8px;
+}
+
+.row2-galeri-body,
+.row2-galeri-grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  gap: 8px;
+}
+
+@media (max-width: 767px) {
+  .row2-card-body {
+    height: auto;
+    flex-basis: auto;
+  }
+  .row2-potensi-body,
+  .row2-potensi-grid {
+    height: auto;
+    flex-basis: auto;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: 8px;
+  }
+  .row2-galeri-body,
+  .row2-galeri-grid {
+    height: auto;
+    flex-basis: auto;
+  }
 }
 
 .scrollbar-none::-webkit-scrollbar {

@@ -2,6 +2,7 @@
 export * from './ui'
 
 // Global Layout Components
+export * from './layout/AppHeader'
 export * from './layout/TopBar'
 export * from './layout/Navbar'
 export * from './layout/Footer'

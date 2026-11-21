@@ -23,7 +23,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(function Card(
     <div
       ref={ref}
       className={clsx(
-        'bg-desa-surface rounded-desa-card border border-desa-border shadow-desa-sm p-4 sm:p-4.5 md:p-5 transition-shadow duration-150',
+        'bg-desa-surface rounded-desa-card border border-desa-border shadow-desa-sm p-4 transition-shadow duration-150 flex flex-col',
         hoverEffect && 'hover:shadow-desa-hover',
         className
       )}

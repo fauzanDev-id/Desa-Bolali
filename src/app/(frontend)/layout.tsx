@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import React from 'react'
 import './globals.css'
-import { TopBar, Navbar, Footer } from '@/components'
+import { AppHeader, Footer } from '@/components'
 import { getContactData, getWebsiteSettings } from '@/lib/cms'
 import { sans, allura, kaushan } from '@/lib/fonts'
 
@@ -47,9 +47,8 @@ export default async function RootLayout({
           Lewati ke konten utama
         </a>
 
-        {/* Header: TopBar (32px) + Navbar (64px) */}
-        <TopBar contact={contact} settings={settings} />
-        <Navbar settings={settings} contact={contact} />
+        {/* Header Resmi: AppHeader (TopBar collapse saat scroll + Navbar 64px sticky) */}
+        <AppHeader contact={contact} settings={settings} />
 
         {/* Main Content Area */}
         <main id="main-content" className="flex-1 min-h-[calc(100vh-76px)]">{children}</main>

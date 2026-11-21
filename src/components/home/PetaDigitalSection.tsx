@@ -14,9 +14,9 @@ const mapBlur = getBlurDataUrl('/seed/peta-desa.webp')
 const PetaDigitalLeaflet = dynamic(() => import('./PetaDigitalLeaflet'), {
   ssr: false,
   loading: () => (
-    <div className="flex flex-col md:flex-row gap-3 mt-1 items-center">
+    <div className="flex flex-col md:flex-row gap-2.5 sm:gap-3 mt-3 row2-card-body flex-1 min-h-0">
       {/* Fallback Citra Satelit Aerial */}
-      <div className="w-full md:w-[60%] h-[200px] md:h-[120px] relative rounded-[10px] overflow-hidden border border-slate-200 shadow-xs bg-slate-900 shrink-0">
+      <div className="w-full md:w-[60%] h-[240px] md:h-full relative rounded-[10px] overflow-hidden border border-slate-200 shadow-xs bg-slate-900 shrink-0">
         <Image
           src="/seed/peta-desa.webp"
           alt="Peta Satelit Wilayah Desa Bolali"
@@ -38,8 +38,8 @@ const PetaDigitalLeaflet = dynamic(() => import('./PetaDigitalLeaflet'), {
         </div>
       </div>
 
-      {/* Legenda Kategori: DAFTAR POLOS */}
-      <div className="w-full md:w-[40%] flex flex-col justify-center space-y-1 py-0.5">
+      {/* Legenda Kategori: DAFTAR POLOS (justify-between sejajar penuh) */}
+      <div className="w-full md:w-[40%] h-auto md:h-full flex flex-col justify-between py-0.5 shrink-0">
         {PETA_CATEGORIES.map((cat) => (
           <div key={cat.key} className="flex items-center gap-2 py-0.5 px-0.5">
             <span
@@ -49,7 +49,7 @@ const PetaDigitalLeaflet = dynamic(() => import('./PetaDigitalLeaflet'), {
                 backgroundColor: 'transparent',
               }}
             />
-            <span className="text-[12.5px] font-normal text-slate-600 font-sans truncate">
+            <span className="text-[12px] sm:text-[12.5px] font-normal text-slate-600 font-sans truncate">
               {cat.label}
             </span>
           </div>
@@ -68,16 +68,14 @@ export function PetaDigitalSection({ contact }: PetaDigitalSectionProps) {
   const lng = contact.longitude ?? 110.7432
 
   return (
-    <Card className="h-full flex flex-col justify-between">
-      <div>
-        <SectionHeader
-          title="Peta Digital Desa"
-          linkText="Lihat Peta"
-          linkHref={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=15/${lat}/${lng}`}
-        />
+    <Card className="flex flex-col">
+      <SectionHeader
+        title="Peta Digital Desa"
+        linkText="Lihat Peta"
+        linkHref={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=15/${lat}/${lng}`}
+      />
 
-        <PetaDigitalLeaflet centerLat={lat} centerLng={lng} />
-      </div>
+      <PetaDigitalLeaflet centerLat={lat} centerLng={lng} />
     </Card>
   )
 }

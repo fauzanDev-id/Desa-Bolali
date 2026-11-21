@@ -1,7 +1,9 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Home, ChevronRight } from 'lucide-react'
+import { House, CaretRight } from '@phosphor-icons/react'
 import type { BreadcrumbItem } from './Breadcrumb'
 
 export interface PageHeaderProps {
@@ -80,7 +82,7 @@ export function PageHeader({
                   href="/"
                   className="inline-flex items-center gap-1 text-white/80 hover:text-white transition-colors"
                 >
-                  <Home className="w-3.5 h-3.5 text-desa-gold" strokeWidth={1.75} />
+                  <House size={14} weight="fill" className="text-desa-gold" />
                   <span>Beranda</span>
                 </Link>
               </li>
@@ -90,7 +92,7 @@ export function PageHeader({
 
                 return (
                   <li key={idx} className="inline-flex items-center gap-1 sm:gap-1.5">
-                    <ChevronRight className="w-3 h-3 text-white/60 shrink-0" strokeWidth={1.75} />
+                    <CaretRight size={12} weight="bold" className="text-white/60 shrink-0" />
                     {item.href && !isLast ? (
                       <Link
                         href={item.href}

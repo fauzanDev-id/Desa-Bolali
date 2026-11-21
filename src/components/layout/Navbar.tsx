@@ -20,16 +20,17 @@ import type { WebsiteSettingsData, ContactData } from '@/lib/cms'
 interface NavbarProps {
   settings: WebsiteSettingsData
   contact?: ContactData
+  isScrolled?: boolean
 }
 
-export function Navbar({ settings, contact }: NavbarProps) {
+export function Navbar({ settings, contact, isScrolled: isScrolledProp }: NavbarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [mobileExpandedGroup, setMobileExpandedGroup] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [localScrolled, setLocalScrolled] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const drawerRef = useRef<HTMLDivElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
@@ -37,16 +38,20 @@ export function Navbar({ settings, contact }: NavbarProps) {
   // Pantau scroll untuk beralih dari transparan (90%) ke putih solid dengan bayangan tipis
   useEffect(() => {
     function handleScroll() {
-      if (window.scrollY > 20) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false)
-      }
+      setLocalScrolled(window.scrollY > 24)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const isScrolled = isScrolledProp !== undefined ? isScrolledProp : localScrolled
+  const isBeranda = pathname === '/'
+  const navBgClass = !isBeranda
+    ? 'bg-white shadow-sm border-b border-slate-100'
+    : isScrolled
+    ? 'bg-white shadow-sm border-b border-slate-100'
+    : 'bg-white/90 backdrop-blur-xs border-b border-white/20'
 
   // Tutup dropdown desktop saat klik di luar
   useEffect(() => {
@@ -187,13 +192,7 @@ export function Navbar({ settings, contact }: NavbarProps) {
   }
 
   return (
-    <header
-      className={`sticky top-0 z-40 w-full transition-all duration-200 select-none ${
-        isScrolled
-          ? 'bg-white shadow-sm border-b border-slate-100'
-          : 'bg-white/90 backdrop-blur-xs border-b border-white/20'
-      }`}
-    >
+    <div className={`w-full transition-all duration-200 select-none ${navBgClass}`}>
       <div className="max-w-[1440px] mx-auto px-4 sm:px-4 md:px-6">
         <div className="flex items-center justify-between h-[64px] gap-2 lg:gap-4">
           {/* Sisi Kiri: Logo Resmi & Identitas Desa */}
@@ -589,6 +588,6 @@ export function Navbar({ settings, contact }: NavbarProps) {
           </div>
         </div>
       )}
-    </header>
+    </div>
   )
 }

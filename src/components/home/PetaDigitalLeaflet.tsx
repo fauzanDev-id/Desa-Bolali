@@ -152,14 +152,14 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-3 mt-1 items-center">
-      {/* Peta Sisi Kiri (±60% Lebar, tinggi menyesuaikan ubin potensi ~120px) */}
-      <div className="w-full md:w-[60%] h-[200px] md:h-[120px] relative rounded-[10px] overflow-hidden border border-slate-200 shadow-xs bg-slate-100 shrink-0 z-10">
+    <div className="flex flex-col md:flex-row gap-2.5 sm:gap-3 mt-3 row2-card-body flex-1 min-h-0">
+      {/* Peta Sisi Kiri (±60% Lebar, mengisi penuh tinggi body) */}
+      <div className="w-full md:w-[60%] h-[240px] md:h-full relative rounded-[10px] overflow-hidden border border-slate-200 shadow-xs bg-slate-100 shrink-0 z-10">
         <div ref={mapContainerRef} className="w-full h-full" />
       </div>
 
-      {/* Legenda Sisi Kanan (±40% Lebar): DAFTAR POLOS (Titik 10px + Teks 13px, Tanpa Kotak/Border, Tanpa Judul) */}
-      <div className="w-full md:w-[40%] flex flex-col justify-center space-y-1 py-0.5">
+      {/* Legenda Sisi Kanan (±40% Lebar): 5 Kategori Rata Vertikal (justify-between) */}
+      <div className="w-full md:w-[40%] h-auto md:h-full flex flex-col justify-between py-0.5 shrink-0">
         {PETA_CATEGORIES.map((cat) => {
           const isActive = activeCategories[cat.key]
 
@@ -179,9 +179,9 @@ export default function PetaDigitalLeaflet({ centerLat, centerLng }: PetaDigital
                   border: `2px solid ${cat.color}`,
                 }}
               />
-              {/* Teks 12.5px */}
+              {/* Teks 12px sm:12.5px */}
               <span
-                className={`text-[12.5px] font-sans truncate transition-colors ${
+                className={`text-[12px] sm:text-[12.5px] font-sans truncate transition-colors ${
                   isActive
                     ? 'font-semibold text-slate-900'
                     : 'font-normal text-slate-600 group-hover:text-slate-900'

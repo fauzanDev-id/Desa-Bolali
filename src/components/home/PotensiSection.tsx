@@ -64,56 +64,54 @@ export function PotensiSection({ potensiList }: PotensiSectionProps) {
   }
 
   return (
-    <Card className="h-full flex flex-col justify-between">
-      <div>
-        <SectionHeader
-          title="Potensi Unggulan Desa"
-          linkText="Lihat Semua"
-          linkHref="/potensi-desa"
-        />
+    <Card className="flex flex-col">
+      <SectionHeader
+        title="Potensi Unggulan Desa"
+        linkText="Lihat Semua"
+        linkHref="/potensi-desa"
+      />
 
-        {/* 4 Ubin Foto Dalam SATU Baris pada Desktop (xl:grid-cols-4), Grid 2x2 pada Mobile (<768px) */}
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 mt-1">
-          {sortedItems.map((item, idx) => {
-            const defaultImg =
-              idx === 0
-                ? '/seed/potensi-pertanian.webp'
-                : idx === 1
-                ? '/seed/potensi-umkm.webp'
-                : idx === 2
-                ? '/seed/potensi-wisata.webp'
-                : '/seed/potensi-budaya.webp'
-            const imgUrl = getMediaUrl(item.gambar, defaultImg)
-            const blur = getBlurDataUrl(imgUrl)
+      {/* 4 Ubin Foto: 1 Baris pada Desktop (grid-cols-4) setinggi token --row2-body-h, Grid 2x2 (h-[110px]) pada Mobile */}
+      <div className="mt-3 row2-potensi-body flex-1 min-h-0">
+        {sortedItems.map((item, idx) => {
+          const defaultImg =
+            idx === 0
+              ? '/seed/potensi-pertanian.webp'
+              : idx === 1
+              ? '/seed/potensi-umkm.webp'
+              : idx === 2
+              ? '/seed/potensi-wisata.webp'
+              : '/seed/potensi-budaya.webp'
+          const imgUrl = getMediaUrl(item.gambar, defaultImg)
+          const blur = getBlurDataUrl(imgUrl)
 
-            return (
-              <Link
-                key={item.id}
-                href={`/potensi-desa#${item.slug}`}
-                className="group relative aspect-[4/3] rounded-[10px] overflow-hidden shadow-xs bg-slate-100 border border-slate-200 block"
-              >
-                <Image
-                  src={imgUrl}
-                  alt={item.judul}
-                  fill
-                  placeholder={blur ? 'blur' : 'empty'}
-                  blurDataURL={blur}
-                  sizes="(max-width: 768px) 50vw, 150px"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                {/* Scrim Gelap Tipis di Bawah Gambar */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          return (
+            <Link
+              key={item.id}
+              href={`/potensi-desa#${item.slug}`}
+              className="group relative w-full h-[110px] md:h-full rounded-[10px] overflow-hidden shadow-xs bg-slate-100 border border-slate-200 block"
+            >
+              <Image
+                src={imgUrl}
+                alt={item.judul}
+                fill
+                placeholder={blur ? 'blur' : 'empty'}
+                blurDataURL={blur}
+                sizes="(max-width: 768px) 50vw, 150px"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              {/* Scrim Gelap Tipis di Bawah Gambar */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-                {/* Label Putih 13px/600 di Kiri Bawah */}
-                <div className="absolute bottom-1.5 left-2 right-2">
-                  <span className="text-[12.5px] font-semibold text-white tracking-wide font-sans truncate block">
-                    {getCleanLabel(item)}
-                  </span>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
+              {/* Label Putih 13px/600 di Kiri Bawah */}
+              <div className="absolute bottom-1.5 left-2 right-2">
+                <span className="text-[13px] font-semibold text-white tracking-wide font-sans truncate block">
+                  {getCleanLabel(item)}
+                </span>
+              </div>
+            </Link>
+          )
+        })}
       </div>
     </Card>
   )
