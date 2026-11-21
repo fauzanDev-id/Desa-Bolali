@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { anyone, canManageOperatorContent } from '../access/roles'
+import { readPublishedOnly, canManageOperatorContent } from '../access/roles'
 import { formatSlugHook } from '../hooks/slug'
 import { revalidateCollection, revalidateCollectionDelete } from '../hooks/revalidate'
 
@@ -15,7 +15,7 @@ export const Berita: CollectionConfig = {
     group: 'Informasi',
   },
   access: {
-    read: anyone,
+    read: readPublishedOnly,
     create: canManageOperatorContent,
     update: canManageOperatorContent,
     delete: canManageOperatorContent,

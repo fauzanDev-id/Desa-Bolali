@@ -41,5 +41,7 @@ Thumbs.db
 lighthouse-*.json
 qa-report.json
 .chrome-*
+test-results/
+playwright-report/
 
 

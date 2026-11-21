@@ -57,6 +57,39 @@ async function seed() {
     console.log(`Pengguna sudah ada (${existingUsers.totalDocs} akun).`)
   }
 
+  // 1.1 SEED AKUN UJI KHUSUS LINGKUNGAN PENGUJIAN / LOKAL (NON-PRODUCTION)
+  if (process.env.NODE_ENV !== 'production') {
+    const testPassword = process.env.TEST_USER_PASSWORD || 'DesaBolali2026!'
+    const testAccounts = [
+      { name: 'Super Admin Test', email: 'super@desa.test', role: 'super-admin' },
+      { name: 'Admin Desa Test', email: 'admin@desa.test', role: 'admin-desa' },
+      { name: 'Operator Test', email: 'operator@desa.test', role: 'operator' },
+    ]
+
+    for (const acc of testAccounts) {
+      const exists = await payload.find({
+        collection: 'users',
+        where: {
+          email: {
+            equals: acc.email,
+          },
+        },
+      })
+      if (exists.totalDocs === 0) {
+        console.log(`Creating test user: ${acc.email} (${acc.role})`)
+        await payload.create({
+          collection: 'users',
+          data: {
+            name: acc.name,
+            email: acc.email,
+            password: testPassword,
+            role: acc.role as any,
+          },
+        })
+      }
+    }
+  }
+
   // 2. HELPER UPLOAD MEDIA
   const mediaMap: Record<string, any> = {}
 

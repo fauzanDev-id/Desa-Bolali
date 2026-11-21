@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
-import { anyone, isStaff } from '../access/roles'
+import { APIError } from 'payload'
+import { anyone, canCreateMedia, canUpdateMedia, canDeleteMedia } from '../access/roles'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -10,12 +11,13 @@ export const Media: CollectionConfig = {
   admin: {
     useAsTitle: 'alt',
     group: 'Pustaka & Konten',
+    defaultColumns: ['filename', 'alt', 'uploadedBy', 'createdAt'],
   },
   access: {
     read: anyone,
-    create: isStaff,
-    update: isStaff,
-    delete: isStaff,
+    create: canCreateMedia,
+    update: canUpdateMedia,
+    delete: canDeleteMedia,
   },
   fields: [
     {
@@ -30,7 +32,55 @@ export const Media: CollectionConfig = {
       type: 'text',
       required: false,
     },
+    {
+      name: 'uploadedBy',
+      label: 'Diunggah Oleh',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeChange: [
+          ({ req, operation, value }) => {
+            if (operation === 'create' && req?.user) {
+              return req.user.id
+            }
+            return value
+          },
+        ],
+      },
+    },
   ],
+  hooks: {
+    beforeValidate: [
+      ({ req }) => {
+        if (req && req.file) {
+          const { size, mimetype, name } = req.file
+
+          // 1. Validasi Batas Ukuran Berkas
+          if (mimetype.startsWith('image/') && size > 5 * 1024 * 1024) {
+            throw new APIError('Ukuran gambar melebihi batas maksimum 5MB.', 400)
+          }
+          if (mimetype === 'application/pdf' && size > 20 * 1024 * 1024) {
+            throw new APIError('Ukuran dokumen PDF melebihi batas maksimum 20MB.', 400)
+          }
+          if (mimetype === 'video/mp4' && size > 50 * 1024 * 1024) {
+            throw new APIError('Ukuran video MP4 melebihi batas maksimum 50MB.', 400)
+          }
+
+          // 2. Sanitasi Nama Berkas (Karakter khusus diganti garis bawah, huruf kecil)
+          if (name) {
+            req.file.name = name
+              .toLowerCase()
+              .replace(/[^a-z0-9._-]/g, '_')
+              .replace(/_{2,}/g, '_')
+          }
+        }
+      },
+    ],
+  },
   upload: {
     staticDir: 'media',
     formatOptions: {
@@ -58,6 +108,13 @@ export const Media: CollectionConfig = {
       },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*', 'video/*', 'application/pdf'],
+    // Dibatasi ketat hanya untuk tipe file yang diizinkan (jpg, png, webp, pdf, mp4)
+    mimeTypes: [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'application/pdf',
+      'video/mp4',
+    ],
   },
 }

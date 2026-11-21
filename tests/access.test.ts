@@ -1,80 +1,150 @@
-import test from 'node:test'
-import assert from 'node:assert/strict'
+import { describe, it, expect } from 'vitest'
 import {
-  canManageOperatorContent,
+  anyone,
+  readPublishedOnly,
   canManageContent,
+  canManageOperatorContent,
   canManageWebsiteSettings,
-  canManageUsers,
+  canCreateUsers,
+  canReadUsers,
+  canUpdateUsers,
+  canDeleteUsers,
+  canCreateMedia,
+  canUpdateMedia,
+  canDeleteMedia,
   isSuperAdminField,
+  canReadSensitiveUserField,
   hideForOperator,
   hideForNonSuperAdmin,
-  anyone,
-} from '../src/access/roles.ts'
+} from '../src/access/roles'
 
-test('Verifikasi Hak Akses RBAC Website Desa Bolali', async (t) => {
-  const operatorUser = { id: 3, name: 'Operator Desa', role: 'operator' }
-  const adminDesaUser = { id: 2, name: 'Admin Desa', role: 'admin-desa' }
-  const superAdminUser = { id: 1, name: 'Super Admin', role: 'super-admin' }
-  const anonReq = { req: { user: null } } as any
+describe('RBAC Access Control Unit Tests', () => {
+  const superAdmin = { id: '1', role: 'super-admin', email: 'super@desa.test' }
+  const adminDesa = { id: '2', role: 'admin-desa', email: 'admin@desa.test' }
+  const operator = { id: '3', role: 'operator', email: 'operator@desa.test' }
 
-  await t.test('1. Publik / Siapa saja dapat melihat konten publik (read access)', () => {
-    assert.equal(anyone(anonReq), true)
+  describe('1. Super Admin', () => {
+    const req = { req: { user: superAdmin } } as any
+
+    it('bisa mengelola semua konten desa', () => {
+      expect(canManageContent(req)).toBe(true)
+      expect(canManageOperatorContent(req)).toBe(true)
+    })
+
+    it('bisa mengelola pengaturan website', () => {
+      expect(canManageWebsiteSettings(req)).toBe(true)
+    })
+
+    it('bisa CRUD pengguna (users)', () => {
+      expect(canCreateUsers(req)).toBe(true)
+      expect(canReadUsers(req)).toBe(true)
+      expect(canUpdateUsers(req)).toBe(true)
+      expect(canDeleteUsers(req)).toBe(true)
+    })
+
+    it('bisa CRUD media apapun', () => {
+      expect(canCreateMedia(req)).toBe(true)
+      expect(canUpdateMedia(req)).toBe(true)
+      expect(canDeleteMedia(req)).toBe(true)
+    })
+
+    it('memiliki akses ke field sensitif', () => {
+      expect(isSuperAdminField(req)).toBe(true)
+      expect(canReadSensitiveUserField({ req: { user: superAdmin }, doc: { id: '999' } } as any)).toBe(true)
+    })
+
+    it('tidak ada menu admin panel yang disembunyikan', () => {
+      expect(hideForOperator({ user: superAdmin })).toBe(false)
+      expect(hideForNonSuperAdmin({ user: superAdmin })).toBe(false)
+    })
   })
 
-  await t.test('2. Operator HANYA bisa CRUD konten operasional (berita, pengumuman, agenda, galeri)', () => {
-    const opReq = { req: { user: operatorUser } } as any
+  describe('2. Admin Desa', () => {
+    const req = { req: { user: adminDesa } } as any
 
-    // Operator DIIZINKAN mengelola konten operasional harian
-    assert.equal(canManageOperatorContent(opReq), true)
+    it('bisa mengelola konten desa & operasional', () => {
+      expect(canManageContent(req)).toBe(true)
+      expect(canManageOperatorContent(req)).toBe(true)
+    })
 
-    // Operator DITOLAK mengelola konten desa lain (perangkat desa, BPD, RT/RW, dusun, potensi, transparansi)
-    assert.equal(canManageContent(opReq), false, 'Operator harus DITOLAK mengelola konten desa lain')
+    it('DITOLAK mengelola pengaturan website', () => {
+      expect(canManageWebsiteSettings(req)).toBe(false)
+    })
 
-    // Operator DITOLAK mengelola pengaturan website
-    assert.equal(canManageWebsiteSettings(opReq), false, 'Operator harus DITOLAK mengelola pengaturan website')
+    it('DITOLAK membuat atau menghapus pengguna', () => {
+      expect(canCreateUsers(req)).toBe(false)
+      expect(canDeleteUsers(req)).toBe(false)
+    })
 
-    // Operator DITOLAK mengubah field sensitif role
-    assert.equal(isSuperAdminField(opReq), false, 'Operator tidak boleh mengubah role')
+    it('hanya bisa membaca dan mengedit akun miliknya sendiri', () => {
+      expect(canReadUsers(req)).toEqual({ id: { equals: '2' } })
+      expect(canUpdateUsers(req)).toEqual({ id: { equals: '2' } })
+    })
 
-    // Menu non-operasional harus DISEMBUNYIKAN dari UI admin Operator
-    assert.equal(hideForOperator({ user: operatorUser }), true, 'Menu harus disembunyikan dari Operator')
+    it('DITOLAK memodifikasi field role', () => {
+      expect(isSuperAdminField(req)).toBe(false)
+    })
+
+    it('menu pengaturan website & users disembunyikan', () => {
+      expect(hideForNonSuperAdmin({ user: adminDesa })).toBe(true)
+      expect(hideForOperator({ user: adminDesa })).toBe(false)
+    })
   })
 
-  await t.test('3. Admin Desa bisa mengelola seluruh konten desa, tetapi DITOLAK mengelola Pengaturan Website & User', () => {
-    const adminReq = { req: { user: adminDesaUser } } as any
+  describe('3. Operator', () => {
+    const req = { req: { user: operator } } as any
 
-    // Admin Desa DIIZINKAN mengelola konten desa & operasional
-    assert.equal(canManageContent(adminReq), true)
-    assert.equal(canManageOperatorContent(adminReq), true)
+    it('HANYA bisa mengelola 4 konten operasional (berita, pengumuman, agenda, galeri)', () => {
+      expect(canManageOperatorContent(req)).toBe(true)
+    })
 
-    // Admin Desa TIDAK disembunyikan dari menu konten
-    assert.equal(hideForOperator({ user: adminDesaUser }), false)
+    it('DITOLAK mengelola konten desa non-operasional', () => {
+      expect(canManageContent(req)).toBe(false)
+    })
 
-    // Admin Desa DITOLAK mengelola Pengaturan Website
-    assert.equal(canManageWebsiteSettings(adminReq), false, 'Admin Desa tidak boleh ubah Pengaturan Website')
+    it('DITOLAK mengelola pengaturan website', () => {
+      expect(canManageWebsiteSettings(req)).toBe(false)
+    })
 
-    // Menu Pengaturan Website & User harus DISEMBUNYIKAN dari UI Admin Desa
-    assert.equal(hideForNonSuperAdmin({ user: adminDesaUser }), true, 'Pengaturan website harus disembunyikan dari Admin Desa')
+    it('DITOLAK membuat atau menghapus pengguna', () => {
+      expect(canCreateUsers(req)).toBe(false)
+      expect(canDeleteUsers(req)).toBe(false)
+    })
+
+    it('hanya bisa mengedit media miliknya sendiri', () => {
+      expect(canCreateMedia(req)).toBe(true)
+      expect(canUpdateMedia(req)).toEqual({ uploadedBy: { equals: '3' } })
+      expect(canDeleteMedia(req)).toEqual({ uploadedBy: { equals: '3' } })
+    })
+
+    it('DITOLAK memodifikasi field role', () => {
+      expect(isSuperAdminField(req)).toBe(false)
+    })
+
+    it('menu non-operasional & pengaturan disembunyikan dari sidebar', () => {
+      expect(hideForOperator({ user: operator })).toBe(true)
+      expect(hideForNonSuperAdmin({ user: operator })).toBe(true)
+    })
   })
 
-  await t.test('4. Super Admin memiliki akses penuh (CRUD semua modul)', () => {
-    const superReq = { req: { user: superAdminUser } } as any
+  describe('4. Publik / Anonim', () => {
+    const anonReq = { req: { user: null } } as any
 
-    assert.equal(canManageContent(superReq), true)
-    assert.equal(canManageOperatorContent(superReq), true)
-    assert.equal(canManageWebsiteSettings(superReq), true)
-    assert.equal(isSuperAdminField(superReq), true)
-    assert.equal(canManageUsers(superReq), true)
+    it('hanya dapat membaca konten berstatus terbit (draft dilarang)', () => {
+      expect(readPublishedOnly(anonReq)).toEqual({ status: { equals: 'terbit' } })
+      expect(anyone(anonReq)).toBe(true)
+    })
 
-    // Tidak ada menu yang disembunyikan untuk Super Admin
-    assert.equal(hideForOperator({ user: superAdminUser }), false)
-    assert.equal(hideForNonSuperAdmin({ user: superAdminUser }), false)
-  })
+    it('DITOLAK membaca data pengguna (users)', () => {
+      expect(canReadUsers(anonReq)).toBe(false)
+    })
 
-  await t.test('5. Pengguna tanpa login (anonim) ditolak dari semua operasi mutasi', () => {
-    assert.equal(canManageContent(anonReq), false)
-    assert.equal(canManageOperatorContent(anonReq), false)
-    assert.equal(canManageWebsiteSettings(anonReq), false)
-    assert.equal(canManageUsers(anonReq), false)
+    it('DITOLAK melakukan mutasi apapun', () => {
+      expect(canManageContent(anonReq)).toBe(false)
+      expect(canManageOperatorContent(anonReq)).toBe(false)
+      expect(canManageWebsiteSettings(anonReq)).toBe(false)
+      expect(canCreateUsers(anonReq)).toBe(false)
+      expect(canCreateMedia(anonReq)).toBe(false)
+    })
   })
 })
