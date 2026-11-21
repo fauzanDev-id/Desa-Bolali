@@ -27,6 +27,7 @@ export function TransparansiCard({ dokumenList }: TransparansiCardProps) {
   const radius = 40
   const circumference = 2 * Math.PI * radius // ~251.32
 
+
   useEffect(() => {
     if (
       typeof window !== 'undefined' &&

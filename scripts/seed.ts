@@ -178,6 +178,7 @@ async function seed() {
 
   console.log('📸 Mengunggah pustaka media awal...')
   const hero1Media = (await uploadMediaFile('hero-1.webp', 'Pemandangan Alam Desa Bolali 1')) || (await uploadMediaFile('hero-desa.jpg', 'Pemandangan Alam Desa Bolali'))
+  const heroMedia = hero1Media
   const hero2Media = await uploadMediaFile('hero-2.webp', 'Harmoni Alam Pertanian Bolali')
   const hero3Media = await uploadMediaFile('hero-3.webp', 'Perkampungan Asri Desa Bolali')
   const hero4Media = await uploadMediaFile('hero-4.webp', 'Panorama Lembah Fajar Bolali')
@@ -641,7 +642,7 @@ async function seed() {
   // 5. SEED POTENSI UNGGULAN
   console.log('🌾 Menyemai Potensi Unggulan Desa...')
   const existingPotensi = await payload.find({ collection: 'potensi', limit: 10 })
-  if (existingPotensi.totalDocs < 5) {
+  if (existingPotensi.totalDocs === 0) {
     await payload.create({
       collection: 'potensi',
       data: {
@@ -661,7 +662,7 @@ async function seed() {
   // 6. SEED GALERI DESA
   console.log('🖼️ Menyemai Galeri Foto Kegiatan...')
   const existingGaleri = await payload.find({ collection: 'galeri', limit: 10 })
-  if (existingGaleri.totalDocs < 6) {
+  if (existingGaleri.totalDocs === 0) {
     await payload.create({
       collection: 'galeri',
       data: {
