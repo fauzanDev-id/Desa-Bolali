@@ -43,22 +43,21 @@ export default async function HomePage() {
   ])
 
   return (
-    <div className="pb-16 sm:pb-20 space-y-8 md:space-y-12">
+    <div className="pb-10">
       {/* 1. Hero Banner Slider */}
       <HeroSection settings={settings} statistik={statistik} />
 
-      {/* 2. Floating Statistics Counter Bar (Overlap -40px) */}
+      {/* 2. Floating Statistics Counter Bar (Overlap menimpa hero) */}
       <StatsBar statistik={statistik} />
 
-      {/* Main Content Sections: Container 1344px, Konsisten Jarak Vertikal (32px mobile, 48px desktop) */}
-      <div className="max-w-[1344px] mx-auto px-4 md:px-6 lg:px-8 space-y-8 md:space-y-12">
+      {/* Main Content Sections: Container 1440px, Jarak Antar Baris Kartu 16px Rapat Sesuai Mockup */}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-4 md:px-6 mt-4 space-y-4">
         {/* ========================================================
             BARIS 1: SAMBUTAN KADES, BERITA TERBARU, TRANSPARANSI APBDes
             - >=1280 (xl): 3 kolom sejajar (rasio 3 : 5 : 3.4, gap 16px)
             - 1024-1279 (lg): Sambutan + Transparansi berdampingan, Berita di bawah
             - 768-1023 (md): 2 kolom / 1 kolom
             - <768: 1 kolom bertumpuk
-            - Scroll Reveal: Fade-in + Naik 16px, 400ms, stagger 60ms
            ======================================================== */}
         <section
           aria-label="Informasi Utama Desa"
@@ -95,7 +94,6 @@ export default async function HomePage() {
             - 1024-1279 (lg): Potensi + Peta berdampingan, Galeri di bawah
             - 768-1023 (md): 2 kolom / 1 kolom
             - <768: 1 kolom bertumpuk
-            - Scroll Reveal: Fade-in + Naik 16px, 400ms, stagger 60ms
            ======================================================== */}
         <section
           aria-label="Potensi dan Dokumentasi Desa"

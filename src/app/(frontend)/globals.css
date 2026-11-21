@@ -69,25 +69,26 @@
     outline-offset: 2px;
   }
 
-  /* Tipografi Fluid Sesuai Hirarki Pemerintahan Desa */
+  /* Tipografi Fluid Sesuai Hirarki Pemerintahan Desa (Letter-spacing 0) */
   h1 {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     line-height: 1.15;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
 
   h2 {
     font-size: clamp(1.25rem, 2.5vw, 1.5rem);
     line-height: 1.25;
     font-weight: 700;
-    letter-spacing: -0.015em;
+    letter-spacing: 0;
   }
 
   h3 {
     font-size: clamp(1rem, 2vw, 1.25rem);
     line-height: 1.35;
     font-weight: 700;
+    letter-spacing: 0;
   }
 
   /* Prose Bacaan Standar: Maksimal 70 karakter per baris untuk kenyamanan mata */

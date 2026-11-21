@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Accessibility } from 'lucide-react'
+import { Wheelchair } from '@phosphor-icons/react'
 
 type FontSize = 'small' | 'normal' | 'large'
 
@@ -23,21 +23,23 @@ export function AccessibilityResizer() {
   }
 
   return (
-    <div className="flex items-center gap-1.5 text-xs text-emerald-100">
-      <div className="flex items-center gap-1 mr-1 text-emerald-200">
-        <Accessibility className="w-3.5 h-3.5 text-emerald-300" />
-        <span className="hidden sm:inline font-medium">Aksesibilitas</span>
+    <div className="flex items-center gap-2 text-xs text-white">
+      <div className="flex items-center gap-1 text-white select-none">
+        <Wheelchair size={14} weight="fill" className="text-white" />
+        <span className="hidden sm:inline font-normal text-[12px]">Aksesibilitas</span>
       </div>
-      <div className="flex items-center bg-black/25 rounded border border-white/20 p-0.5">
+
+      {/* Kontrol A- A A+ Polos Tanpa Kotak Kuning, Ukuran Aktif Bergaris Bawah */}
+      <div className="flex items-center gap-2 ml-1 text-[12px]">
         <button
           type="button"
           onClick={() => changeSize('small')}
           title="Perkecil Ukuran Font (A-)"
           aria-label="Perkecil Ukuran Font (A-)"
-          className={`px-1.5 py-0.5 rounded text-[11px] font-bold transition-colors ${
+          className={`py-0.5 transition-colors cursor-pointer ${
             fontSize === 'small'
-              ? 'bg-desa-gold text-desa-darkGreen shadow-sm'
-              : 'text-emerald-100 hover:bg-white/10'
+              ? 'font-bold text-white border-b border-white'
+              : 'text-white/80 hover:text-white'
           }`}
         >
           A-
@@ -47,10 +49,10 @@ export function AccessibilityResizer() {
           onClick={() => changeSize('normal')}
           title="Ukuran Font Standar (A)"
           aria-label="Ukuran Font Standar (A)"
-          className={`px-1.5 py-0.5 rounded text-[11px] font-bold transition-colors ${
+          className={`py-0.5 transition-colors cursor-pointer ${
             fontSize === 'normal'
-              ? 'bg-desa-gold text-desa-darkGreen shadow-sm'
-              : 'text-emerald-100 hover:bg-white/10'
+              ? 'font-bold text-white border-b border-white'
+              : 'text-white/80 hover:text-white'
           }`}
         >
           A
@@ -60,10 +62,10 @@ export function AccessibilityResizer() {
           onClick={() => changeSize('large')}
           title="Perbesar Ukuran Font (A+)"
           aria-label="Perbesar Ukuran Font (A+)"
-          className={`px-1.5 py-0.5 rounded text-[11px] font-bold transition-colors ${
+          className={`py-0.5 transition-colors cursor-pointer ${
             fontSize === 'large'
-              ? 'bg-desa-gold text-desa-darkGreen shadow-sm'
-              : 'text-emerald-100 hover:bg-white/10'
+              ? 'font-bold text-white border-b border-white'
+              : 'text-white/80 hover:text-white'
           }`}
         >
           A+

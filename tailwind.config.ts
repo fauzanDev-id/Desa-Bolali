@@ -47,8 +47,8 @@ const config: Config = {
         'desa-border': '#e2e8f0',
       },
       maxWidth: {
-        'desa-container': '1344px',
-        'desa-canvas': '1376px',
+        'desa-container': '1440px',
+        'desa-canvas': '1440px',
       },
       borderRadius: {
         'desa-sm': '6px',
@@ -57,12 +57,19 @@ const config: Config = {
       },
       boxShadow: {
         'desa-sm': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03)',
-        'desa-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04)',
-        'desa-dropdown': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03)',
+        'desa-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.03)',
+        'desa-dropdown': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.03)',
+      },
+      letterSpacing: {
+        tighter: '0',
+        tight: '0',
+        normal: '0',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        script: ['var(--font-script)', 'Dancing Script', 'cursive'],
+        allura: ['var(--font-allura)', 'Allura', 'cursive'],
+        kaushan: ['var(--font-kaushan)', 'Kaushan Script', 'cursive'],
+        script: ['var(--font-allura)', 'Allura', 'cursive'],
       },
     },
   },

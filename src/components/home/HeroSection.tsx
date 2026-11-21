@@ -3,29 +3,88 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  ChevronLeft,
-  ChevronRight,
-  Play,
-  ArrowRight,
-  BarChart3,
-  Award,
-} from 'lucide-react'
-import { Button } from '@/components/ui/Button'
+import { CaretLeft, CaretRight, Play, CaretRight as ArrowIcon } from '@phosphor-icons/react'
 import type { WebsiteSettingsData, StatistikDesaData } from '@/lib/cms'
 import { getMediaUrl } from '@/lib/utils'
 import { getBlurDataUrl } from '@/lib/blur'
+import { allura, kaushan } from '@/lib/fonts'
 
 interface HeroSectionProps {
   settings: WebsiteSettingsData
   statistik: StatistikDesaData
 }
 
+/**
+ * 3 Batang Grafik Naik Solid Hijau (SVG) Sesuai Mockup
+ */
+function RisingBarsIcon({ className = 'w-7 h-8' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+      <rect x="2" y="18" width="6.5" height="14" rx="2" fill="#1E7F3A" />
+      <rect x="10.5" y="10" width="6.5" height="22" rx="2" fill="#1E7F3A" />
+      <rect x="19" y="2" width="6.5" height="30" rx="2" fill="#1E7F3A" />
+    </svg>
+  )
+}
+
+/**
+ * Segel Bintang Emas dengan Karangan Daun Laurel Melingkar (SVG) Sesuai Mockup
+ */
+function GoldStarWreathSeal({ className = 'w-11 h-11' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+      {/* Karangan Daun Kiri Melingkar */}
+      <g fill="#EAB308">
+        <path d="M11 16C12 12 16 10 17 14C15 17 12 17 11 16Z" />
+        <path d="M9 22C9 18 13 17 15 20C14 23 11 24 9 22Z" />
+        <path d="M9 28C8 24 12 23 15 26C14 29 11 30 9 28Z" />
+        <path d="M11 34C10 30 14 29 17 32C16 35 13 36 11 34Z" />
+        <path d="M15 39C13 36 17 34 20 37C19 40 16 41 15 39Z" />
+        <path d="M21 42C19 40 22 37 25 39C24 42 22 43 21 42Z" />
+
+        {/* Karangan Daun Kanan Melingkar */}
+        <path d="M37 16C36 12 32 10 31 14C33 17 36 17 37 16Z" />
+        <path d="M39 22C39 18 35 17 33 20C34 23 37 24 39 22Z" />
+        <path d="M39 28C40 24 36 23 33 26C34 29 37 30 39 28Z" />
+        <path d="M37 34C38 30 34 29 31 32C32 35 35 36 37 34Z" />
+        <path d="M33 39C35 36 31 34 28 37C29 40 32 41 33 39Z" />
+        <path d="M27 42C29 40 26 37 23 39C24 42 26 43 27 42Z" />
+      </g>
+      {/* Garis Batang Lengkung Laurel */}
+      <path d="M14 14C8 24 10 38 24 43C38 38 40 24 34 14" stroke="#EAB308" strokeWidth="1.75" strokeLinecap="round" fill="none" />
+      {/* Bintang Emas Pusat */}
+      <polygon
+        points="24,14 26.8,21.5 35,21.5 28.5,26.2 31,34 24,29.5 17,34 19.5,26.2 13,21.5 21.2,21.5"
+        fill="#EAB308"
+      />
+    </svg>
+  )
+}
+
+/**
+ * Garis Lengkung Emas (SVG Swoosh) di bawah Maju Bersama
+ */
+function GoldSwoosh({ className = 'w-56 h-4' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 240 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+      <path
+        d="M2 14C70 18 160 16 238 2C170 8 80 10 2 14Z"
+        fill="#EAB308"
+      />
+      <path
+        d="M20 18C80 20 150 17 210 7C160 12 90 14 20 18Z"
+        fill="#F59E0B"
+        opacity="0.8"
+      />
+    </svg>
+  )
+}
+
 export function HeroSection({ settings, statistik }: HeroSectionProps) {
   const defaultSlides = [
     {
       gambar: '/seed/hero-1.webp',
-      judul: 'Selamat Datang di Desa Bolali',
+      judul: 'Desa Bolali',
       subjudul: '“Desa Maju, Mandiri, Sejahtera”',
       teksTombolUtama: 'Jelajahi Desa',
       tautanTombolUtama: '#potensi',
@@ -59,19 +118,8 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const touchStartXRef = useRef<number | null>(null)
   const touchEndXRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-      setPrefersReducedMotion(mediaQuery.matches)
-      const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
-      mediaQuery.addEventListener('change', handler)
-      return () => mediaQuery.removeEventListener('change', handler)
-    }
-  }, [])
 
   const prevSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
@@ -81,7 +129,6 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
     setCurrentIndex((prev) => (prev + 1) % slides.length)
   }, [slides.length])
 
-  // Slider otomatis 6 detik, jeda saat hover maupun fokus
   useEffect(() => {
     if (slides.length <= 1 || isPaused) return
     const timer = setInterval(() => {
@@ -90,7 +137,6 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
     return () => clearInterval(timer)
   }, [slides.length, isPaused, nextSlide])
 
-  // Touch gesture handler untuk swipe di mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartXRef.current = e.targetTouches[0].clientX
   }
@@ -124,9 +170,9 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="relative w-full min-h-[460px] md:min-h-[380px] lg:min-h-[340px] xl:min-h-[320px] flex items-center bg-desa-darkGreen overflow-hidden select-none"
+      className="relative w-full -mt-16 pt-16 min-h-[460px] md:min-h-[380px] lg:h-[clamp(310px,24vw,370px)] flex items-center bg-desa-darkGreen overflow-hidden select-none"
     >
-      {/* 1. Background Layers: Crossfade 700ms + Slow Zoom Scale 1 ke 1.06 selama 8s */}
+      {/* 1. Background Layers: Foto Lanskap Asri & Overlay Tipis 15% */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {slides.map((slide, idx) => {
           const isActive = idx === currentIndex
@@ -141,130 +187,116 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
                 isActive ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none z-0'
               }`}
             >
-              <div
-                className={`relative w-full h-full transform ${
-                  isActive && !prefersReducedMotion
-                    ? 'scale-[1.06] transition-transform duration-[8000ms] ease-out'
-                    : 'scale-100 duration-0'
-                }`}
-              >
-                <Image
-                  src={imgUrl}
-                  alt={slide.judul || 'Lanskap Desa Bolali'}
-                  fill
-                  priority={idx === 0}
-                  placeholder={blurUrl ? 'blur' : 'empty'}
-                  blurDataURL={blurUrl}
-                  sizes="100vw"
-                  className="object-cover object-center"
-                />
-              </div>
-              {/* Overlay Gelap Tipis Seragam Kontras WCAG AA */}
-              <div className="absolute inset-0 bg-black/40" />
+              <Image
+                src={imgUrl}
+                alt={slide.judul || 'Lanskap Desa Bolali'}
+                fill
+                priority={idx === 0}
+                placeholder={blurUrl ? 'blur' : 'empty'}
+                blurDataURL={blurUrl}
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+              {/* Overlay Gelap Tipis Seragam ±15% (Foto Tetap Terang & Hidup Sesuai Mockup) */}
+              <div className="absolute inset-0 bg-black/15" />
             </div>
           )
         })}
       </div>
 
-      {/* 2. Main Content Overlay: Container 1344px */}
-      <div className="relative z-20 max-w-[1344px] mx-auto px-4 md:px-6 lg:px-8 py-9 sm:py-11 md:py-12 xl:py-9 pb-16 sm:pb-16 xl:pb-16 w-full flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6 lg:gap-10">
-        {/* Sisi Kiri: Teks Masuk Bertahap (Fade + Naik 12px, Jeda 80ms) */}
-        <div className="max-w-2xl text-white space-y-2.5 sm:space-y-3.5 text-left">
-          {/* Baris 1: Script Emas (delay 0ms) */}
-          <div
-            key={`hero-t1-${currentIndex}`}
-            className="transition-all duration-500 ease-out translate-y-0 opacity-100 motion-reduce:transition-none"
-          >
-            <span className="block text-2xl sm:text-3xl lg:text-3xl font-script text-desa-gold drop-shadow-sm select-none">
+      {/* 2. Main Content Overlay: Container 1440px */}
+      <div className="relative z-20 max-w-[1440px] mx-auto px-4 sm:px-4 md:px-6 py-4 sm:py-6 md:py-6 pb-12 sm:pb-14 lg:pb-12 w-full flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-8">
+        {/* Sisi Kiri: Teks Hero Sesuai Mockup */}
+        <div className="max-w-2xl text-white space-y-1 sm:space-y-1.5 text-left">
+          {/* Baris 1: Script Emas "Selamat Datang di" (Allura) */}
+          <div>
+            <span
+              className={`${allura.className} text-[44px] sm:text-[50px] leading-tight block select-none`}
+              style={{
+                backgroundImage: 'linear-gradient(180deg, #F7DC6F 0%, #E0A81B 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.45))',
+              }}
+            >
               Selamat Datang di
             </span>
           </div>
 
-          {/* Baris 2: Judul Utama Sangat Tebal (delay 80ms) */}
-          <div
-            key={`hero-t2-${currentIndex}`}
-            style={{ transitionDelay: prefersReducedMotion ? '0ms' : '80ms' }}
-            className="transition-all duration-500 ease-out translate-y-0 opacity-100 motion-reduce:transition-none"
-          >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black tracking-tight text-white drop-shadow-md mt-0.5 font-sans">
+          {/* Baris 2: Judul Utama "Desa Bolali" (H1, 800) */}
+          <div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[48px] font-black text-white drop-shadow-md font-sans leading-none tracking-normal">
               {settings.namaWebsite || 'Desa Bolali'}
             </h1>
           </div>
 
-          {/* Baris 3: Tagline Berkutip (delay 160ms) */}
-          <div
-            key={`hero-t3-${currentIndex}`}
-            style={{ transitionDelay: prefersReducedMotion ? '0ms' : '160ms' }}
-            className="transition-all duration-500 ease-out translate-y-0 opacity-100 motion-reduce:transition-none"
-          >
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-white/95 tracking-tight mt-1 font-sans italic">
+          {/* Baris 3: Tagline Berkutip */}
+          <div>
+            <p className="text-base sm:text-lg md:text-xl font-bold text-white tracking-normal font-sans italic drop-shadow-sm">
               {currentSlide.subjudul || settings.tagline || '“Desa Maju, Mandiri, Sejahtera”'}
             </p>
           </div>
 
-          {/* Baris 4: Paragraf Deskripsi Singkat (delay 240ms) */}
-          <div
-            key={`hero-t4-${currentIndex}`}
-            style={{ transitionDelay: prefersReducedMotion ? '0ms' : '240ms' }}
-            className="transition-all duration-500 ease-out translate-y-0 opacity-100 motion-reduce:transition-none"
-          >
-            <p className="text-sm sm:text-base text-white/90 leading-relaxed max-w-xl drop-shadow-sm font-sans">
+          {/* Baris 4: Paragraf Deskripsi Singkat */}
+          <div>
+            <p className="text-xs sm:text-[14px] text-white/95 leading-relaxed max-w-xl drop-shadow-sm font-sans font-normal">
               {settings.deskripsiHero ||
                 'Bersama membangun desa dengan pelayanan terbaik, informasi yang transparan dan inovasi untuk masa depan.'}
             </p>
           </div>
 
-          {/* Baris 5: Dua Tombol Aksi (delay 320ms) */}
-          <div
-            key={`hero-t5-${currentIndex}`}
-            style={{ transitionDelay: prefersReducedMotion ? '0ms' : '320ms' }}
-            className="pt-1.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3 w-full sm:w-auto transition-all duration-500 ease-out translate-y-0 opacity-100 motion-reduce:transition-none"
-          >
-            <Button
+          {/* Baris 5: Dua Tombol Aksi */}
+          <div className="pt-2 flex flex-row items-center justify-start gap-3 w-full sm:w-auto">
+            <Link
               href={currentSlide.tautanTombolUtama || '#potensi'}
-              variant="gold"
-              size="md"
-              icon={<ArrowRight className="w-5 h-5" strokeWidth={1.75} />}
-              iconPosition="right"
-              className="w-full sm:w-auto justify-center min-h-[44px] transition-colors duration-150"
+              className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#EAB308] hover:bg-[#CA8A04] text-slate-950 font-bold text-xs sm:text-[13px] shadow-sm transition-colors cursor-pointer"
             >
-              {currentSlide.teksTombolUtama || 'Jelajahi Desa'}
-            </Button>
+              <ArrowIcon size={14} weight="bold" />
+              <span>{currentSlide.teksTombolUtama || 'Jelajahi Desa'}</span>
+            </Link>
 
             <Link
               href="/profil/sejarah"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-white/80 text-white font-semibold text-sm hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white transition-all duration-150 backdrop-blur-xs w-full sm:w-auto min-h-[44px]"
+              className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-white/85 text-white font-bold text-xs sm:text-[13px] hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white transition-colors backdrop-blur-xs cursor-pointer"
             >
-              <Play className="w-4 h-4 fill-white" strokeWidth={1.75} />
+              <Play size={12} weight="fill" className="text-white" />
               <span>Profil Desa</span>
             </Link>
           </div>
         </div>
 
-        {/* Sisi Kanan: Script Putih & Kartu IDM Mandiri */}
-        <div className="w-full lg:w-auto flex flex-col items-start lg:items-end justify-center mt-2 lg:mt-0">
-          <p className="hidden sm:block text-2xl lg:text-[28px] font-script text-white drop-shadow-md mb-3 text-left lg:text-right leading-tight -rotate-3 max-w-xs select-none">
-            Maju Bersama<br />
-            Untuk Desa Lebih Baik
-          </p>
+        {/* Sisi Kanan: Script Putih & Kartu IDM Mandiri Sesuai Mockup */}
+        <div className="w-full lg:w-auto flex flex-col items-start lg:items-end justify-center mt-3 lg:mt-0">
+          <div className="flex flex-col items-end">
+            <div className={`${kaushan.className} text-[28px] sm:text-[34px] text-white -rotate-[4deg] text-right leading-tight select-none drop-shadow-md pr-2`}>
+              <div>Maju Bersama</div>
+              <div>Untuk Desa Lebih Baik</div>
+            </div>
+            {/* Garis Lengkung Emas (SVG Swoosh) */}
+            <div className="-mt-1 mb-2 pr-1">
+              <GoldSwoosh className="w-52 sm:w-60 h-4" />
+            </div>
+          </div>
 
-          {/* Kartu IDM Mandiri: Card hover lift */}
-          <div className="card-hover-lift bg-white rounded-desa-card p-2.5 sm:p-4 shadow-desa-dropdown border border-white/80 flex items-center gap-2.5 sm:gap-4 max-w-sm w-full">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-desa-sm bg-desa-lightGreen flex items-center justify-center text-desa-accentGreen shrink-0 border border-emerald-200">
-              <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-desa-accentGreen" strokeWidth={1.75} />
+          {/* Kartu IDM Mandiri: Ikon 3 Batang Naik Hijau + Segel Bintang Emas Daun */}
+          <div className="bg-white rounded-2xl px-5 py-3 shadow-md border border-white/90 flex items-center gap-4 max-w-sm w-full sm:w-auto select-none">
+            {/* Ikon 3 Batang Grafik Solid Hijau */}
+            <div className="shrink-0 flex items-center justify-center">
+              <RisingBarsIcon className="w-7 h-8" />
             </div>
 
-            <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-semibold text-desa-textMuted uppercase tracking-wider truncate">
+            <div className="flex-1 min-w-0 pr-2">
+              <div className="text-[12px] font-semibold text-slate-600 leading-tight">
                 Indeks Desa Membangun
               </div>
-              <div className="text-lg sm:text-2xl font-black text-desa-textDark tracking-tight leading-tight truncate">
+              <div className="text-[26px] font-bold text-[#1E7F3A] leading-tight font-sans">
                 {statistik.indeksDesaMembangun || 'Mandiri'}
               </div>
             </div>
 
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-desa-goldLight flex items-center justify-center text-desa-gold shrink-0 border border-desa-gold/40">
-              <Award className="w-4 h-4 sm:w-5 sm:h-5 fill-desa-gold text-desa-gold" strokeWidth={1.75} />
+            {/* Segel Bintang Emas dengan Karangan Daun Laurel */}
+            <div className="shrink-0 flex items-center justify-center">
+              <GoldStarWreathSeal className="w-11 h-11" />
             </div>
           </div>
         </div>
@@ -277,34 +309,34 @@ export function HeroSection({ settings, statistik }: HeroSectionProps) {
             type="button"
             onClick={prevSlide}
             aria-label="Slide Banner Sebelumnya"
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-white/60 bg-black/25 hover:bg-black/50 text-white flex items-center justify-center backdrop-blur-xs transition-colors duration-150 z-30 focus:outline-none focus:ring-2 focus:ring-white"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 min-w-[40px] min-h-[40px] w-10 h-10 rounded-full border border-white/70 bg-black/20 hover:bg-black/45 text-white flex items-center justify-center backdrop-blur-xs transition-colors duration-150 z-30 focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
           >
-            <ChevronLeft className="w-6 h-6" strokeWidth={1.75} />
+            <CaretLeft size={18} weight="bold" />
           </button>
           <button
             type="button"
             onClick={nextSlide}
             aria-label="Slide Banner Selanjutnya"
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-white/60 bg-black/25 hover:bg-black/50 text-white flex items-center justify-center backdrop-blur-xs transition-colors duration-150 z-30 focus:outline-none focus:ring-2 focus:ring-white"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 min-w-[40px] min-h-[40px] w-10 h-10 rounded-full border border-white/70 bg-black/20 hover:bg-black/45 text-white flex items-center justify-center backdrop-blur-xs transition-colors duration-150 z-30 focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
           >
-            <ChevronRight className="w-6 h-6" strokeWidth={1.75} />
+            <CaretRight size={18} weight="bold" />
           </button>
 
           {/* Dot Pagination di Bawah (Aktif Berbentuk Pil Kuning) */}
-          <div className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1">
+          <div className="absolute bottom-10 sm:bottom-12 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5">
             {slides.map((_, dotIdx) => (
               <button
                 key={dotIdx}
                 type="button"
                 onClick={() => setCurrentIndex(dotIdx)}
                 aria-label={`Pindah ke banner ${dotIdx + 1}`}
-                className="min-w-[32px] min-h-[32px] flex items-center justify-center p-1 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-desa-gold"
+                className="min-w-[28px] min-h-[28px] flex items-center justify-center p-1 rounded-full focus:outline-none cursor-pointer"
               >
                 <span
-                  className={`h-2.5 rounded-full transition-all duration-300 block ${
+                  className={`h-2 rounded-full transition-all duration-300 block ${
                     currentIndex === dotIdx
-                      ? 'w-7 bg-desa-gold shadow-xs'
-                      : 'w-2.5 bg-white/50 hover:bg-white'
+                      ? 'w-6 bg-[#EAB308] shadow-xs'
+                      : 'w-2 bg-white/70 hover:bg-white'
                   }`}
                 />
               </button>

@@ -40,4 +40,6 @@ Thumbs.db
 # QA & Test Reports
 lighthouse-*.json
 qa-report.json
+.chrome-*
+
 
