@@ -79,7 +79,17 @@ export const RtRw: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/pemerintahan')],
-    afterDelete: [revalidateCollectionDelete('/pemerintahan')],
+    afterChange: [
+      revalidateCollection(
+        ['/pemerintahan', '/pemerintahan/rt-rw'],
+        'rt-rw'
+      ),
+    ],
+    afterDelete: [
+      revalidateCollectionDelete(
+        ['/pemerintahan', '/pemerintahan/rt-rw'],
+        'rt-rw'
+      ),
+    ],
   },
 }

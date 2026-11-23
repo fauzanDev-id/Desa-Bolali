@@ -90,7 +90,17 @@ export const PerangkatDesa: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/pemerintahan')],
-    afterDelete: [revalidateCollectionDelete('/pemerintahan')],
+    afterChange: [
+      revalidateCollection(
+        ['/pemerintahan', '/pemerintahan/struktur', '/pemerintahan/perangkat-desa'],
+        'perangkat-desa'
+      ),
+    ],
+    afterDelete: [
+      revalidateCollectionDelete(
+        ['/pemerintahan', '/pemerintahan/struktur', '/pemerintahan/perangkat-desa'],
+        'perangkat-desa'
+      ),
+    ],
   },
 }

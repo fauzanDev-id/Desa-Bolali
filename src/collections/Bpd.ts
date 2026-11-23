@@ -65,7 +65,17 @@ export const Bpd: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/pemerintahan')],
-    afterDelete: [revalidateCollectionDelete('/pemerintahan')],
+    afterChange: [
+      revalidateCollection(
+        ['/pemerintahan', '/pemerintahan/bpd', '/pemerintahan/struktur'],
+        'bpd'
+      ),
+    ],
+    afterDelete: [
+      revalidateCollectionDelete(
+        ['/pemerintahan', '/pemerintahan/bpd', '/pemerintahan/struktur'],
+        'bpd'
+      ),
+    ],
   },
 }

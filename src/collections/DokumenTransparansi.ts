@@ -115,7 +115,7 @@ export const DokumenTransparansi: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/transparansi', 'dokumen-transparansi')],
-    afterDelete: [revalidateCollectionDelete('/transparansi', 'dokumen-transparansi')],
+    afterChange: [revalidateCollection(['/transparansi', '/'], 'transparansi')],
+    afterDelete: [revalidateCollectionDelete(['/transparansi', '/'], 'transparansi')],
   },
 }

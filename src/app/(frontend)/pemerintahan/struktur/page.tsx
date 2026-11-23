@@ -19,17 +19,28 @@ export default async function StrukturOrganisasiPage() {
     getBpdList(),
   ])
 
-  const kades = perangkatList.find((p) => p.kategoriJabatan === 'Kepala-Desa') || perangkatList[0]
-  const sekdes = perangkatList.find(
-    (p) => p.jabatan.toLowerCase().includes('sekretaris') && p.kategoriJabatan === 'Sekretariat'
-  )
-  const ketuaBpd = bpdList.find((b) => b.jabatan.toLowerCase().includes('ketua') && !b.jabatan.toLowerCase().includes('wakil')) || bpdList[0]
+  const activePerangkat = perangkatList.filter((p) => p.statusAktif ?? true)
+  const kades = activePerangkat.find((p) => p.kategoriJabatan === 'Kepala-Desa') || activePerangkat[0] || perangkatList[0]
+  const sekdes =
+    activePerangkat.find(
+      (p) =>
+        p.kategoriJabatan === 'Sekretariat' &&
+        (p.jabatan.toLowerCase().includes('sekretaris') ||
+          p.jabatan.toLowerCase().includes('sekdes') ||
+          p.jabatan.toLowerCase().includes('carik'))
+    ) || activePerangkat.find((p) => p.kategoriJabatan === 'Sekretariat')
 
-  const kaurs = perangkatList.filter(
-    (p) => p.kategoriJabatan === 'Sekretariat' && !p.jabatan.toLowerCase().includes('sekretaris')
+  const ketuaBpd =
+    bpdList.find(
+      (b) =>
+        b.jabatan.toLowerCase().includes('ketua') &&
+        !b.jabatan.toLowerCase().includes('wakil')) || bpdList[0]
+
+  const kaurs = activePerangkat.filter(
+    (p) => p.kategoriJabatan === 'Sekretariat' && p.id !== sekdes?.id
   )
-  const kasis = perangkatList.filter((p) => p.kategoriJabatan === 'Teknis')
-  const kadus = perangkatList.filter((p) => p.kategoriJabatan === 'Kewilayahan')
+  const kasis = activePerangkat.filter((p) => p.kategoriJabatan === 'Teknis')
+  const kadus = activePerangkat.filter((p) => p.kategoriJabatan === 'Kewilayahan')
 
   const cleanName = (name: string) => name.replace(/\s*\[Data Dummy\]/gi, '')
 
@@ -118,7 +129,18 @@ export default async function StrukturOrganisasiPage() {
 
           {/* Level 2: Sekretaris Desa */}
           {sekdes && (
-            <div className="w-60 bg-white border-2 border-desa-primaryGreen rounded-desa-card p-3.5 text-center shadow-desa-sm">
+            <div className="w-60 bg-white border-2 border-desa-primaryGreen rounded-desa-card p-3.5 text-center shadow-desa-sm relative z-10">
+              {sekdes.foto && (
+                <div className="relative w-14 h-14 mx-auto rounded-full overflow-hidden border border-emerald-300 mb-2 bg-slate-50">
+                  <Image
+                    src={getMediaUrl(sekdes.foto)}
+                    alt={cleanName(sekdes.nama)}
+                    fill
+                    className="object-cover object-top"
+                    sizes="56px"
+                  />
+                </div>
+              )}
               <span className="inline-block px-2 py-0.5 rounded-full bg-desa-lightGreen text-desa-darkGreen text-[10px] font-extrabold uppercase mb-1">
                 {sekdes.jabatan}
               </span>
@@ -137,8 +159,8 @@ export default async function StrukturOrganisasiPage() {
                 Kepala Seksi (Kasi) & Kepala Urusan (Kaur)
               </span>
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              {[...kasis, ...kaurs].slice(0, 6).map((staff) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {[...kasis, ...kaurs].map((staff) => (
                 <div
                   key={staff.id}
                   className="p-3 rounded-desa-sm bg-slate-50 border border-desa-border text-center hover:border-emerald-300 transition-colors"
@@ -162,7 +184,7 @@ export default async function StrukturOrganisasiPage() {
                 Pelaksana Kewilayahan (Kepala Dusun)
               </span>
             </div>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {kadus.map((staff) => (
                 <div
                   key={staff.id}

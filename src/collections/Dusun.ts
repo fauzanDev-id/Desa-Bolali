@@ -81,7 +81,17 @@ export const Dusun: CollectionConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCollection('/profil/wilayah-dusun')],
-    afterDelete: [revalidateCollectionDelete('/profil/wilayah-dusun')],
+    afterChange: [
+      revalidateCollection(
+        ['/profil', '/profil/wilayah-dusun', '/pemerintahan/struktur'],
+        'dusun'
+      ),
+    ],
+    afterDelete: [
+      revalidateCollectionDelete(
+        ['/profil', '/profil/wilayah-dusun', '/pemerintahan/struktur'],
+        'dusun'
+      ),
+    ],
   },
 }

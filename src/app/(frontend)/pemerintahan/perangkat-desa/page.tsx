@@ -83,9 +83,19 @@ export default async function PerangkatDesaPage() {
 
                 {/* Badge Status Aktif */}
                 <div className="absolute top-2 right-2">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 text-[10px] font-bold text-desa-darkGreen shadow-2xs border border-slate-200">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    <span>Aktif</span>
+                  <span
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 text-[10px] font-bold shadow-2xs border ${
+                      perangkat.statusAktif ?? true
+                        ? 'text-desa-darkGreen border-slate-200'
+                        : 'text-slate-500 border-slate-300'
+                    }`}
+                  >
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        perangkat.statusAktif ?? true ? 'bg-emerald-500' : 'bg-slate-400'
+                      }`}
+                    />
+                    <span>{perangkat.statusAktif ?? true ? 'Aktif' : 'Purnatugas'}</span>
                   </span>
                 </div>
               </div>
